@@ -378,6 +378,41 @@
             vertical-align: middle;
         }
 
+        .booking-map-time {
+            font-size: 0.70rem;
+            font-weight: 700;
+            color: #0369a1;
+            background: #f0f9ff;
+            padding: 1px 5px;
+            border-radius: 4px;
+            border: 1px solid #bae6fd;
+            white-space: nowrap;
+            display: inline-block;
+            line-height: 1.2;
+            vertical-align: middle;
+            margin-left: 2px;
+        }
+
+        .cust-header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+        .cust-main-name {
+            display: block;
+        }
+        .cust-text {
+            font-weight: 700;
+            color: #111;
+        }
+        .cust-loc-sub {
+            font-size: 0.76rem;
+            color: #555;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
         /* Desktop status indicator borders */
         table.plan-styled-table tbody tr.card-status-sent td:first-child {
             border-left: 4px solid #16a34a;
@@ -1065,53 +1100,53 @@
             }
 
             .controls-panel {
-                margin: 8px 8px 6px;
-                padding: 8px;
+                margin: 4px 6px 3px;
+                padding: 5px;
             }
 
             .stats-strip {
-                margin: 0 8px 8px;
-                padding: 5px 3px;
-                gap: 2px;
+                margin: 0 6px 4px;
+                padding: 4px 2px;
+                gap: 1px;
             }
             .stat-num {
-                font-size: 0.95rem;
+                font-size: 0.88rem;
             }
             .stat-label {
-                font-size: 0.58rem;
+                font-size: 0.52rem;
             }
             .stat-sym {
-                font-size: 0.82rem;
+                font-size: 0.75rem;
             }
             .stat-item-clickable {
-                padding: 3px 1px;
+                padding: 2px 1px;
             }
 
             .mobile-select-all-bar {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                margin: 0 8px 8px;
-                padding: 6px 12px;
+                margin: 0 6px 4px;
+                padding: 3px 8px;
                 background: #ffffff;
-                border-radius: 8px;
+                border-radius: 6px;
                 border: 1px solid #dcdcdc;
-                font-size: 0.78rem;
+                font-size: 0.72rem;
                 font-weight: 700;
                 color: #2e7d32;
             }
             .mobile-select-all-bar label {
                 display: inline-flex;
                 align-items: center;
-                gap: 6px;
+                gap: 5px;
                 cursor: pointer;
                 margin: 0;
             }
 
             .table-card {
-                width: calc(100% - 16px) !important;
+                width: calc(100% - 12px) !important;
                 max-width: 100% !important;
-                margin: 0 8px 24px 8px !important;
+                margin: 0 6px 16px 6px !important;
                 border: 1px solid #dcdcdc;
                 background: transparent !important;
                 box-shadow: none !important;
@@ -1122,7 +1157,7 @@
                 width: 100% !important;
             }
 
-            /* Transform Table into Responsive Mobile Cards */
+            /* Transform Table into Responsive Compact Mobile Cards */
             table.plan-styled-table {
                 width: 100% !important;
                 display: block !important;
@@ -1133,19 +1168,19 @@
             table.plan-styled-table tbody {
                 display: flex !important;
                 flex-direction: column !important;
-                gap: 9px !important;
+                gap: 5px !important;
                 width: 100% !important;
             }
             table.plan-styled-table tbody tr {
                 display: flex !important;
                 flex-direction: column !important;
-                gap: 6px !important;
+                gap: 2px !important;
                 width: 100% !important;
-                padding: 11px 12px !important;
+                padding: 5px 8px !important;
                 background: #ffffff !important;
-                border-radius: 10px !important;
-                border: 1.5px solid #dce4dc !important;
-                box-shadow: 0 2px 5px rgba(0,0,0,0.04) !important;
+                border-radius: 7px !important;
+                border: 1px solid #dce4dc !important;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.03) !important;
                 box-sizing: border-box !important;
             }
             table.plan-styled-table tbody tr:nth-child(even) {
@@ -1154,18 +1189,18 @@
 
             /* Mobile Card Border Colors based on Status (✅ Green, 🔴 Red, ⏳ Amber) */
             table.plan-styled-table tbody tr.card-status-sent {
-                border: 1.5px solid #86efac !important;
-                border-left: 6px solid #16a34a !important;
+                border: 1px solid #86efac !important;
+                border-left: 4px solid #16a34a !important;
                 background: #fbfdfb !important;
             }
             table.plan-styled-table tbody tr.card-status-pending {
-                border: 1.5px solid #fca5a5 !important;
-                border-left: 6px solid #dc2626 !important;
+                border: 1px solid #fca5a5 !important;
+                border-left: 4px solid #dc2626 !important;
                 background: #fffafa !important;
             }
             table.plan-styled-table tbody tr.card-status-rest {
-                border: 1.5px solid #fde68a !important;
-                border-left: 6px solid #d97706 !important;
+                border: 1px solid #fde68a !important;
+                border-left: 4px solid #d97706 !important;
                 background: #fffdf5 !important;
             }
 
@@ -1177,55 +1212,125 @@
                 width: 100% !important;
             }
 
-            /* Card Section 1: Customer Name + Location + Remarks */
+            /* Card Section 1: Customer Name + Container Meta on same top line */
             table.plan-styled-table td.cell-cust-loc {
-                border-bottom: 1px solid #edf2ed !important;
-                padding-bottom: 6px !important;
+                border-bottom: 1px solid #f1f5f9 !important;
+                padding-bottom: 2px !important;
+                margin-bottom: 1px !important;
             }
-
-            /* Card Section 2: Booking No + Checkbox + Metadata (Container & Date) */
-            table.plan-styled-table td.cell-booking-col {
-                width: 100% !important;
-            }
-            .booking-wrap {
+            .cust-header-row {
                 display: flex !important;
                 align-items: center !important;
                 justify-content: space-between !important;
+                gap: 4px !important;
                 width: 100% !important;
-                gap: 8px !important;
             }
-            .cell-booking {
+            .cust-main-name {
+                flex: 1 !important;
+                min-width: 0 !important;
                 display: inline-flex !important;
                 align-items: center !important;
-                gap: 6px !important;
+                gap: 3px !important;
                 flex-wrap: wrap !important;
             }
-            .booking-num-sym {
-                display: inline-flex !important;
-                align-items: center !important;
-                gap: 5px !important;
-                white-space: nowrap !important;
-                flex-shrink: 0 !important;
+            .cust-text {
+                font-size: 0.80rem !important;
+                font-weight: 800 !important;
+                color: #0f172a !important;
+                line-height: 1.2 !important;
             }
-            .booking-status-sym {
-                display: inline-block !important;
-                font-size: 0.88rem !important;
-                line-height: 1 !important;
-                vertical-align: middle !important;
+            .cust-remark-tag {
+                font-size: 0.68rem !important;
+                padding: 0 3px !important;
+                font-weight: 800 !important;
+            }
+            .cust-loc-sub {
+                font-size: 0.66rem !important;
+                color: #64748b !important;
+                font-weight: 600 !important;
+                margin-left: 2px !important;
             }
             .mobile-meta-tag {
                 display: inline-flex !important;
                 align-items: center !important;
-                gap: 4px !important;
-                font-size: 0.74rem !important;
+                gap: 2px !important;
+                font-size: 0.68rem !important;
                 font-weight: 700 !important;
                 color: #334155 !important;
                 background: #f1f5f9 !important;
                 border: 1px solid #e2e8f0 !important;
-                padding: 2px 7px !important;
-                border-radius: 5px !important;
+                padding: 1px 4px !important;
+                border-radius: 4px !important;
                 white-space: nowrap !important;
                 flex-shrink: 0 !important;
+                line-height: 1.2 !important;
+            }
+
+            /* Card Section 2: Booking No + Checkbox + Inline Map Time */
+            table.plan-styled-table td.cell-booking-col {
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            .booking-wrap {
+                display: flex !important;
+                align-items: center !important;
+                width: 100% !important;
+                gap: 4px !important;
+            }
+            .cell-booking {
+                display: flex !important;
+                align-items: center !important;
+                gap: 5px !important;
+                white-space: nowrap !important;
+                overflow-x: auto !important;
+                scrollbar-width: none !important;
+                width: 100% !important;
+                font-size: 0.80rem !important;
+                line-height: 1.2 !important;
+            }
+            .cell-booking::-webkit-scrollbar {
+                display: none !important;
+            }
+            .booking-row-chk {
+                width: 14px !important;
+                height: 14px !important;
+                flex-shrink: 0 !important;
+                margin: 0 !important;
+            }
+            .booking-num-sym {
+                display: inline-flex !important;
+                align-items: center !important;
+                gap: 4px !important;
+                white-space: nowrap !important;
+                flex-shrink: 0 !important;
+            }
+            .booking-link {
+                font-size: 0.82rem !important;
+                font-weight: 800 !important;
+            }
+            .booking-status-sym {
+                display: inline-block !important;
+                font-size: 0.80rem !important;
+                line-height: 1 !important;
+                vertical-align: middle !important;
+            }
+            .booking-map-time {
+                font-size: 0.66rem !important;
+                font-weight: 700 !important;
+                color: #0284c7 !important;
+                background: #e0f2fe !important;
+                border: 1px solid #bae6fd !important;
+                padding: 0 4px !important;
+                border-radius: 3px !important;
+                white-space: nowrap !important;
+                line-height: 1.3 !important;
+            }
+            .booking-line-tag {
+                font-size: 0.72rem !important;
+                font-weight: 700 !important;
+                color: #047857 !important;
+                white-space: nowrap !important;
             }
 
             /* Hide separate container and date table cells on mobile */
@@ -1234,17 +1339,22 @@
                 display: none !important;
             }
 
-            /* Card Section 3: Status input full width */
+            /* Card Section 3: Compact Status Input */
             table.plan-styled-table td.cell-status {
                 width: 100% !important;
-                margin-top: 2px !important;
+                margin: 0 !important;
+                padding: 0 !important;
             }
             table.plan-styled-table td.cell-status .status-input {
                 width: 100% !important;
-                padding: 6px 9px !important;
-                font-size: 0.82rem !important;
-                border-radius: 6px !important;
-                background: #fcfdfc !important;
+                height: 23px !important;
+                padding: 1px 6px !important;
+                font-size: 0.74rem !important;
+                border-radius: 4px !important;
+                background: #f8fafc !important;
+                border: 1px solid #cbd5e1 !important;
+                box-sizing: border-box !important;
+                line-height: 1.2 !important;
             }
 
             /* Modal adjustments on mobile */
@@ -2046,6 +2156,53 @@
         }
 
         // ==========================================
+        //  BOOKING MAPPING TIME HELPERS
+        // ==========================================
+        function getBookingMappedTime(bookingNo) {
+            if (!bookingNo || bookingNo === '-') return null;
+            const cleanB = bookingNo.trim().toUpperCase();
+            const dRecord = dispatchData[cleanB];
+            if (!dRecord) return null;
+            if (dRecord.mappedAt) {
+                if (typeof dRecord.mappedAt.toDate === 'function') {
+                    return dRecord.mappedAt.toDate();
+                }
+                const d = new Date(dRecord.mappedAt);
+                if (!isNaN(d.getTime())) return d;
+            }
+            if (dRecord.updatedAt) {
+                if (typeof dRecord.updatedAt.toDate === 'function') {
+                    return dRecord.updatedAt.toDate();
+                }
+                const d = new Date(dRecord.updatedAt);
+                if (!isNaN(d.getTime())) return d;
+            }
+            // Fallback to latest container addedAt / updatedAt
+            if (Array.isArray(dRecord.containers) && dRecord.containers.length > 0) {
+                let latestTime = 0;
+                dRecord.containers.forEach(c => {
+                    const timeStr = c.updatedAt || c.addedAt;
+                    if (timeStr) {
+                        const t = new Date(timeStr).getTime();
+                        if (!isNaN(t) && t > latestTime) latestTime = t;
+                    }
+                });
+                if (latestTime > 0) return new Date(latestTime);
+            }
+            return null;
+        }
+
+        function formatMapTime(dateObj) {
+            if (!dateObj || !(dateObj instanceof Date) || isNaN(dateObj.getTime())) return '';
+            const dd = String(dateObj.getDate()).padStart(2, '0');
+            const mm = String(dateObj.getMonth() + 1).padStart(2, '0');
+            const yy = String(dateObj.getFullYear()).slice(-2);
+            const hh = String(dateObj.getHours()).padStart(2, '0');
+            const min = String(dateObj.getMinutes()).padStart(2, '0');
+            return `(${dd}.${mm}.${yy} ${hh}:${min})`;
+        }
+
+        // ==========================================
         //  ROW STATUS CLASSIFICATION & HELPER
         // ==========================================
         function getRowStatusInfo(r) {
@@ -2197,8 +2354,21 @@
                 return info.statusType === currentStatusFilter;
             });
 
-            // Priority sort: 1. Trident, 2. Jawandsons, 3. IOL Chemicals, 4. Rest all
-            filteredRows.sort(compareCustomerShipper);
+            // Sorting:
+            // When user clicks 'sent', sort by latest mapped timestamp first!
+            if (currentStatusFilter === 'sent') {
+                filteredRows.sort((a, b) => {
+                    const timeA = getBookingMappedTime(a.booking);
+                    const timeB = getBookingMappedTime(b.booking);
+                    const msA = timeA ? timeA.getTime() : 0;
+                    const msB = timeB ? timeB.getTime() : 0;
+                    if (msB !== msA) return msB - msA; // Latest mapped first
+                    return compareCustomerShipper(a, b);
+                });
+            } else {
+                // Priority sort: 1. Trident, 2. Jawandsons, 3. IOL Chemicals, 4. Rest all
+                filteredRows.sort(compareCustomerShipper);
+            }
 
             renderTable();
         }
@@ -2286,6 +2456,11 @@
                     lineTag = ` <span class="booking-line-tag">(${escapeHtml(r.line)})</span>`;
                 }
 
+                // Map Time Tag: (dd.mm.yy hh:mm)
+                const mapTime = getBookingMappedTime(cleanBooking);
+                const mapTimeStr = formatMapTime(mapTime);
+                const mapTimeTag = mapTimeStr ? ` <span class="booking-map-time">${mapTimeStr}</span>` : '';
+
                 const currentStatusVal = info.currentStatusVal;
                 const defaultStatus = info.defaultStatus;
                 const rowKey = info.rowKey;
@@ -2306,6 +2481,7 @@
                             <span class="booking-num-sym">
                                 <a href="javascript:void(0)" class="booking-link" onclick="openBookingDetailsModal('${escapeHtml(cleanBooking)}')" title="View Dispatched Containers Details">${escapeHtml(r.booking)}</a>
                                 <span class="booking-status-sym" title="${escapeHtml(info.statusTitle)}">${info.statusSymbol}</span>
+                                ${mapTimeTag}
                             </span>
                             ${lineTag}
                         </span>
@@ -2315,6 +2491,7 @@
                         <span class="cell-booking">
                             <span class="booking-num-sym">
                                 <span class="booking-status-sym" title="${escapeHtml(info.statusTitle)}">${info.statusSymbol}</span>
+                                ${mapTimeTag}
                             </span>
                             ${lineTag}
                         </span>
@@ -2339,21 +2516,19 @@
                 }
 
                 // Customer + Location combined display with Customer Remarks (e.g. TRIDENT DHAULA (NISHU))
-                let custLocHtml = '';
                 const custName = r.customer || '';
                 const locName = r.location || '';
                 const remarkTag = r.customerRemark ? ` <span class="cust-remark-tag">(${escapeHtml(r.customerRemark)})</span>` : '';
 
-                if (custName && locName && custName.toUpperCase() === locName.toUpperCase()) {
-                    custLocHtml = `<div style="font-weight: 700; color: #111;">${escapeHtml(custName)}${remarkTag}</div>`;
-                } else if (custName && locName) {
-                    custLocHtml = `
-                        <div style="font-weight: 700; color: #111; line-height: 1.2;">${escapeHtml(custName)}${remarkTag}</div>
-                        <div style="font-size: 0.76rem; color: #555; font-weight: 600; margin-top: 2px;">📍 ${escapeHtml(locName)}</div>
-                    `;
-                } else {
-                    custLocHtml = `<div style="font-weight: 700; color: #111;">${escapeHtml(custName || locName || '-')}${remarkTag}</div>`;
-                }
+                const custLocHtml = `
+                    <div class="cust-header-row">
+                        <div class="cust-main-name">
+                            <span class="cust-text">${escapeHtml(custName || locName || '-')}${remarkTag}</span>
+                            ${(locName && custName && locName.toUpperCase() !== custName.toUpperCase()) ? `<span class="cust-loc-sub">📍 ${escapeHtml(locName)}</span>` : ''}
+                        </div>
+                        <span class="mobile-meta-tag">${escapeHtml(r.cnt)} • ${escapeHtml(r.displayDate)}${dateBadge}</span>
+                    </div>
+                `;
 
                 const statusHtml = `
                     <input type="text"
@@ -2372,7 +2547,6 @@
                     <td class="cell-booking-col">
                         <div class="booking-wrap">
                             ${bookingHtml}
-                            <span class="mobile-meta-tag">${escapeHtml(r.cnt)} • ${escapeHtml(r.displayDate)}${dateBadge}</span>
                         </div>
                     </td>
                     <td class="cell-status">${statusHtml}</td>
@@ -3204,18 +3378,28 @@
                 totalSavedOrUpdated++;
             }
 
-            // Apply Status updates for missing container numbers
-            for (const rowKey in statusUpdates) {
-                saveRowStatus(rowKey, statusUpdates[rowKey]);
-            }
-
-            // Save to Firestore and local storage
+            const nowIso = new Date().toISOString();
             const bookingKeys = Object.keys(byBooking);
+
+            // Auto-update Status to Dispatch for mapped bookings (clearing old remarks)
             for (const bNo of bookingKeys) {
+                const matchRow = allParsedRows.find(r => (r.booking || '').trim().toUpperCase() === bNo);
+                const targetRowKey = matchRow ? matchRow.rowKey : ('bk_' + bNo);
+                const cCount = byBooking[bNo].length;
+                const totalReq = matchRow ? (matchRow.totalContainers || 1) : 1;
+
+                if (!statusUpdates[targetRowKey]) {
+                    const newStatusText = (cCount >= totalReq)
+                        ? `Dispatch ${cCount} (All Sent)`
+                        : `Dispatch ${cCount} | Pending ${Math.max(0, totalReq - cCount)}`;
+                    statusUpdates[targetRowKey] = newStatusText;
+                }
+
                 dispatchData[bNo] = {
                     bookingNo: bNo,
                     containers: byBooking[bNo],
-                    customer: byBooking[bNo].customer || (dispatchData[bNo] ? dispatchData[bNo].customer : '')
+                    customer: byBooking[bNo].customer || (dispatchData[bNo] ? dispatchData[bNo].customer : ''),
+                    mappedAt: nowIso
                 };
 
                 try {
@@ -3223,11 +3407,18 @@
                         bookingNo: bNo,
                         containers: byBooking[bNo],
                         customer: dispatchData[bNo].customer || '',
+                        mappedAt: nowIso,
                         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
                     }, { merge: true });
                 } catch (err) {
                     console.warn("Firestore save error for " + bNo, err);
                 }
+            }
+
+            // Apply Status updates (overwriting old remarks with Dispatch ... and saving to Firestore)
+            for (const rowKey in statusUpdates) {
+                statusData[rowKey] = statusUpdates[rowKey];
+                saveRowStatus(rowKey, statusUpdates[rowKey]);
             }
 
             try {
@@ -3352,6 +3543,18 @@
                 try {
                     localStorage.setItem(DISPATCH_CACHE_KEY, JSON.stringify(dispatchData));
                 } catch(e) {}
+
+                // Sync Status upon container deletion
+                const bRow = allParsedRows.find(r => (r.booking || '').trim().toUpperCase() === bNo);
+                if (bRow) {
+                    const targetRowKey = bRow.rowKey;
+                    const totalReq = bRow.totalContainers || 1;
+                    const newStatus = updated.length === 0
+                        ? `Pending ${totalReq}`
+                        : (updated.length >= totalReq ? `Dispatch ${updated.length} (All Sent)` : `Dispatch ${updated.length} | Pending ${totalReq - updated.length}`);
+                    statusData[targetRowKey] = newStatus;
+                    saveRowStatus(targetRowKey, newStatus);
+                }
 
                 openBookingDetailsModal(bNo);
                 applyFiltersAndRender();

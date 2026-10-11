@@ -366,6 +366,19 @@
             white-space: nowrap;
         }
 
+        .booking-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .booking-main-line {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
+        }
+
         .booking-num-sym {
             display: inline-flex;
             align-items: center;
@@ -381,6 +394,11 @@
             vertical-align: middle;
         }
 
+        .booking-time-line {
+            display: inline-flex;
+            align-items: center;
+        }
+
         .booking-map-time {
             font-size: 0.70rem;
             font-weight: 700;
@@ -393,7 +411,6 @@
             display: inline-block;
             line-height: 1.2;
             vertical-align: middle;
-            margin-left: 2px;
         }
 
         .cust-header-row {
@@ -1206,19 +1223,19 @@
             table.plan-styled-table tbody {
                 display: flex !important;
                 flex-direction: column !important;
-                gap: 5px !important;
+                gap: 10px !important; /* Clear gap between cards (Requirement 4) */
                 width: 100% !important;
             }
             table.plan-styled-table tbody tr {
                 display: flex !important;
                 flex-direction: column !important;
-                gap: 2px !important;
+                gap: 3px !important;
                 width: 100% !important;
-                padding: 5px 8px !important;
+                padding: 6px 8px !important;
                 background: #ffffff !important;
-                border-radius: 7px !important;
+                border-radius: 6px !important;
                 border: 1px solid #dce4dc !important;
-                box-shadow: 0 1px 3px rgba(0,0,0,0.03) !important;
+                box-shadow: 0 1px 4px rgba(0,0,0,0.06) !important;
                 box-sizing: border-box !important;
             }
             table.plan-styled-table tbody tr:nth-child(even) {
@@ -1242,8 +1259,14 @@
                 background: #fffdf5 !important;
             }
 
-            table.plan-styled-table td {
+            /* Remove internal cell borders - specifically removing the vertical line before Customer Name (Requirement 1) */
+            table.plan-styled-table td,
+            table.plan-styled-table tbody tr td:first-child,
+            table.plan-styled-table tbody tr.card-status-sent td:first-child,
+            table.plan-styled-table tbody tr.card-status-pending td:first-child,
+            table.plan-styled-table tbody tr.card-status-rest td:first-child {
                 display: block !important;
+                border-left: none !important;
                 border-right: none !important;
                 padding: 0 !important;
                 white-space: normal !important;
@@ -1272,18 +1295,18 @@
                 flex-wrap: wrap !important;
             }
             .cust-text {
-                font-size: 0.80rem !important;
+                font-size: 0.76rem !important;
                 font-weight: 800 !important;
                 color: #0f172a !important;
                 line-height: 1.2 !important;
             }
             .cust-remark-tag {
-                font-size: 0.68rem !important;
+                font-size: 0.64rem !important;
                 padding: 0 3px !important;
                 font-weight: 800 !important;
             }
             .cust-loc-sub {
-                font-size: 0.66rem !important;
+                font-size: 0.64rem !important;
                 color: #64748b !important;
                 font-weight: 600 !important;
                 margin-left: 2px !important;
@@ -1292,19 +1315,19 @@
                 display: inline-flex !important;
                 align-items: center !important;
                 gap: 2px !important;
-                font-size: 0.68rem !important;
+                font-size: 0.64rem !important;
                 font-weight: 700 !important;
                 color: #334155 !important;
                 background: #f1f5f9 !important;
                 border: 1px solid #e2e8f0 !important;
                 padding: 1px 4px !important;
-                border-radius: 4px !important;
+                border-radius: 3px !important;
                 white-space: nowrap !important;
                 flex-shrink: 0 !important;
                 line-height: 1.2 !important;
             }
 
-            /* Card Section 2: Booking No + Checkbox + Inline Map Time */
+            /* Card Section 2: Booking No + Checkbox + Shipping Line, and Next Row Map Time */
             table.plan-styled-table td.cell-booking-col {
                 width: 100% !important;
                 margin: 0 !important;
@@ -1312,27 +1335,26 @@
             }
             .booking-wrap {
                 display: flex !important;
-                align-items: center !important;
+                flex-direction: column !important;
                 width: 100% !important;
-                gap: 4px !important;
+                gap: 2px !important;
             }
-            .cell-booking {
+            .booking-main-line {
                 display: flex !important;
                 align-items: center !important;
                 gap: 5px !important;
+                width: 100% !important;
                 white-space: nowrap !important;
                 overflow-x: auto !important;
                 scrollbar-width: none !important;
-                width: 100% !important;
-                font-size: 0.80rem !important;
                 line-height: 1.2 !important;
             }
-            .cell-booking::-webkit-scrollbar {
+            .booking-main-line::-webkit-scrollbar {
                 display: none !important;
             }
             .booking-row-chk {
-                width: 14px !important;
-                height: 14px !important;
+                width: 13px !important;
+                height: 13px !important;
                 flex-shrink: 0 !important;
                 margin: 0 !important;
             }
@@ -1344,31 +1366,37 @@
                 flex-shrink: 0 !important;
             }
             .booking-link {
-                font-size: 0.82rem !important;
+                font-size: 0.78rem !important;
                 font-weight: 800 !important;
             }
             .booking-status-sym {
                 display: inline-block !important;
-                font-size: 0.80rem !important;
+                font-size: 0.74rem !important;
                 line-height: 1 !important;
                 vertical-align: middle !important;
             }
+            .booking-line-tag {
+                font-size: 0.68rem !important;
+                font-weight: 700 !important;
+                color: #047857 !important;
+                white-space: nowrap !important;
+            }
+            .booking-time-line {
+                display: flex !important;
+                align-items: center !important;
+                margin-top: 1px !important;
+                margin-bottom: 2px !important;
+            }
             .booking-map-time {
-                font-size: 0.66rem !important;
+                font-size: 0.62rem !important;
                 font-weight: 700 !important;
                 color: #0284c7 !important;
                 background: #e0f2fe !important;
                 border: 1px solid #bae6fd !important;
-                padding: 0 4px !important;
+                padding: 1px 5px !important;
                 border-radius: 3px !important;
                 white-space: nowrap !important;
-                line-height: 1.3 !important;
-            }
-            .booking-line-tag {
-                font-size: 0.72rem !important;
-                font-weight: 700 !important;
-                color: #047857 !important;
-                white-space: nowrap !important;
+                line-height: 1.25 !important;
             }
 
             /* Hide separate container and date table cells on mobile */
@@ -1385,9 +1413,9 @@
             }
             table.plan-styled-table td.cell-status .status-input {
                 width: 100% !important;
-                height: 23px !important;
+                height: 22px !important;
                 padding: 1px 6px !important;
-                font-size: 0.74rem !important;
+                font-size: 0.72rem !important;
                 border-radius: 4px !important;
                 background: #f8fafc !important;
                 border: 1px solid #cbd5e1 !important;
@@ -2592,57 +2620,63 @@
                 // Shipping Line Tag
                 let lineTag = '';
                 if (r.line && r.line !== '-') {
-                    lineTag = ` <span class="booking-line-tag">(${escapeHtml(r.line)})</span>`;
+                    lineTag = `<span class="booking-line-tag">(${escapeHtml(r.line)})</span>`;
                 }
 
                 // Map Time Tag: (dd.mm.yy hh:mm)
                 const mapTime = getBookingMappedTime(cleanBooking);
                 const mapTimeStr = formatMapTime(mapTime);
-                const mapTimeTag = mapTimeStr ? ` <span class="booking-map-time">${mapTimeStr}</span>` : '';
+                const mapTimeLine = mapTimeStr ? `<div class="booking-time-line"><span class="booking-map-time">🕒 (${mapTimeStr})</span></div>` : '';
 
                 const currentStatusVal = info.currentStatusVal;
                 const defaultStatus = info.defaultStatus;
                 const rowKey = info.rowKey;
 
-                // Booking cell with Checkbox for multi-selection, Hyperlink, and inline status symbol
+                // Booking cell with Checkbox for multi-selection, Hyperlink, inline status symbol, and shipping line right with Booking No
                 let bookingHtml = '-';
                 if (r.booking && r.booking !== '-') {
                     const isChecked = selectedBookings.has(cleanBooking);
                     bookingHtml = `
-                        <span class="cell-booking">
-                            <input type="checkbox"
-                                class="booking-row-chk"
-                                value="${escapeHtml(cleanBooking)}"
-                                onchange="toggleBookingRowSelect('${escapeHtml(cleanBooking)}', this.checked)"
-                                ${isChecked ? 'checked' : ''}
-                                title="Select booking to share on WhatsApp"
-                            />
-                            <span class="booking-num-sym">
-                                <a href="javascript:void(0)" class="booking-link" onclick="openBookingDetailsModal('${escapeHtml(cleanBooking)}')" title="View Dispatched Containers Details">${escapeHtml(r.booking)}</a>
-                                <span class="booking-status-sym" title="${escapeHtml(info.statusTitle)}">${info.statusSymbol}</span>
-                                ${mapTimeTag}
-                            </span>
-                            ${lineTag}
-                        </span>
+                        <div class="booking-wrap">
+                            <div class="booking-main-line">
+                                <input type="checkbox"
+                                    class="booking-row-chk"
+                                    value="${escapeHtml(cleanBooking)}"
+                                    onchange="toggleBookingRowSelect('${escapeHtml(cleanBooking)}', this.checked)"
+                                    ${isChecked ? 'checked' : ''}
+                                    title="Select booking to share on WhatsApp"
+                                />
+                                <span class="booking-num-sym">
+                                    <a href="javascript:void(0)" class="booking-link" onclick="openBookingDetailsModal('${escapeHtml(cleanBooking)}')" title="View Dispatched Containers Details">${escapeHtml(r.booking)}</a>
+                                    <span class="booking-status-sym" title="${escapeHtml(info.statusTitle)}">${info.statusSymbol}</span>
+                                    ${lineTag}
+                                </span>
+                            </div>
+                            ${mapTimeLine}
+                        </div>
                     `;
                 } else if (lineTag) {
                     bookingHtml = `
-                        <span class="cell-booking">
-                            <span class="booking-num-sym">
-                                <span class="booking-status-sym" title="${escapeHtml(info.statusTitle)}">${info.statusSymbol}</span>
-                                ${mapTimeTag}
-                            </span>
-                            ${lineTag}
-                        </span>
+                        <div class="booking-wrap">
+                            <div class="booking-main-line">
+                                <span class="booking-num-sym">
+                                    <span class="booking-status-sym" title="${escapeHtml(info.statusTitle)}">${info.statusSymbol}</span>
+                                    ${lineTag}
+                                </span>
+                            </div>
+                            ${mapTimeLine}
+                        </div>
                     `;
                 } else {
                     bookingHtml = `
-                        <span class="cell-booking">
-                            <span class="booking-num-sym">
-                                <span class="booking-status-sym" title="${escapeHtml(info.statusTitle)}">${info.statusSymbol}</span>
-                                <span>-</span>
-                            </span>
-                        </span>
+                        <div class="booking-wrap">
+                            <div class="booking-main-line">
+                                <span class="booking-num-sym">
+                                    <span class="booking-status-sym" title="${escapeHtml(info.statusTitle)}">${info.statusSymbol}</span>
+                                    <span>-</span>
+                                </span>
+                            </div>
+                        </div>
                     `;
                 }
 
@@ -2683,11 +2717,7 @@
                 // Order: Customer Name + Location | Booking No | Status | Containers | Stuffing Date
                 tr.innerHTML = `
                     <td class="cell-cust-loc">${custLocHtml}</td>
-                    <td class="cell-booking-col">
-                        <div class="booking-wrap">
-                            ${bookingHtml}
-                        </div>
-                    </td>
+                    <td class="cell-booking-col">${bookingHtml}</td>
                     <td class="cell-status">${statusHtml}</td>
                     <td class="cell-cnt">${escapeHtml(r.cnt)}</td>
                     <td class="cell-date">${escapeHtml(r.displayDate)}${dateBadge}</td>

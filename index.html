@@ -18,6 +18,9 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
+    <!-- SheetJS (xlsx-js-style) for styled Excel (.xlsx) export -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
+
     <style>
         :root {
             --tbl-header-bg: #43a047;
@@ -477,6 +480,39 @@
             border-radius: 4px;
             margin-left: 3px;
             font-weight: 700;
+        }
+
+        .excel-preset-btn {
+            background: #f1f5f9;
+            color: #334155;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            padding: 3px 8px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .excel-preset-btn:hover {
+            background: #e2e8f0;
+            color: #0f172a;
+        }
+        .excel-date-input {
+            width: 100%;
+            padding: 6px 8px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #1e293b;
+            outline: none;
+            box-sizing: border-box;
+            background: #ffffff;
+            transition: all 0.15s ease;
+        }
+        .excel-date-input:focus {
+            border-color: #0284c7;
+            box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.2);
         }
 
         .cell-loc {
@@ -1090,12 +1126,14 @@
                 display: flex;
                 width: 100%;
                 gap: 5px;
+                flex-wrap: wrap;
             }
             .header-actions .btn-action {
-                flex: 1;
+                flex: 1 1 calc(33.33% - 5px);
+                min-width: 80px;
                 justify-content: center;
-                padding: 7px 4px;
-                font-size: 0.72rem;
+                padding: 6px 4px;
+                font-size: 0.70rem;
                 white-space: nowrap;
             }
 
@@ -1401,6 +1439,14 @@
                     </svg>
                     Update Dispatch
                 </button>
+                <button class="btn-action" onclick="openExcelExportModal()" style="background: #0284c7; border-color: #38bdf8; font-weight: 800;" title="Download Dispatch Excel Report">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    Download Excel
+                </button>
                 <button class="btn-action" id="btnWhatsappSelected" onclick="shareSelectedBookingsWhatsApp()" style="background: #25D366; border-color: #128C7E; font-weight: 800; display: none;" title="Share Selected Bookings on WhatsApp">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2zm.01 1.67c4.55 0 8.24 3.7 8.24 8.24 0 2.2-.86 4.28-2.42 5.84-1.56 1.56-3.64 2.41-5.83 2.41-1.45 0-2.88-.39-4.13-1.12l-.3-.18-3.07.81.82-2.99-.2-.31a8.16 8.16 0 0 1-1.25-4.46c0-4.54 3.69-8.24 8.24-8.24z"/>
@@ -1630,6 +1676,99 @@
                     Share on WhatsApp
                 </button>
                 <button class="btn-modal btn-modal-secondary" onclick="closeBookingDetailsModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- EXCEL DOWNLOAD MODAL -->
+    <div class="modal-overlay" id="excelModal">
+        <div class="modal-card" style="max-width: 480px;">
+            <div class="modal-header" style="background: linear-gradient(135deg, #0369a1 0%, #0284c7 100%);">
+                <div class="modal-title" style="display:flex; align-items:center; gap:8px;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    <span>Download Dispatch Excel Report</span>
+                </div>
+                <button class="modal-close-btn" onclick="closeExcelExportModal()">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 16px;">
+                <p style="font-size: 0.82rem; color: #475569; margin-bottom: 12px; font-weight: 600;">
+                    Kunal Sahi Export Plan & Dispatch Mapping ki complete details excel (.xlsx) me download karne ke liye Date Range chuniye:
+                </p>
+
+                <!-- Quick Date Presets -->
+                <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px;">
+                    <button type="button" class="excel-preset-btn" onclick="setExcelDatePreset('today')">Today</button>
+                    <button type="button" class="excel-preset-btn" onclick="setExcelDatePreset('yesterday')">Yesterday</button>
+                    <button type="button" class="excel-preset-btn" onclick="setExcelDatePreset('last7')">Last 7 Days</button>
+                    <button type="button" class="excel-preset-btn" onclick="setExcelDatePreset('month')">This Month</button>
+                    <button type="button" class="excel-preset-btn" onclick="setExcelDatePreset('all')">All Dates</button>
+                </div>
+
+                <!-- Date Range Selection -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px;">
+                    <div>
+                        <label style="display: block; font-size: 0.76rem; font-weight: 700; color: #334155; margin-bottom: 4px;">
+                            📅 From Date (Is Date Se):
+                        </label>
+                        <input type="date" id="excelFromDate" class="excel-date-input" onchange="updateExcelPreviewCount()">
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 0.76rem; font-weight: 700; color: #334155; margin-bottom: 4px;">
+                            📅 To Date (Is Date Tak):
+                        </label>
+                        <input type="date" id="excelToDate" class="excel-date-input" onchange="updateExcelPreviewCount()">
+                    </div>
+                </div>
+
+                <!-- Scope / Filter options -->
+                <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 10px 12px; margin-bottom: 12px;">
+                    <div style="font-size: 0.78rem; font-weight: 700; color: #1e293b; margin-bottom: 6px;">Report Type:</div>
+                    <div style="display: flex; flex-direction: column; gap: 6px; font-size: 0.78rem; color: #334155;">
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                            <input type="radio" name="excelReportScope" value="dispatched" checked onchange="updateExcelPreviewCount()" style="accent-color: #0284c7;">
+                            <span><strong>Only Dispatched Containers</strong> (Jo map ho chuke hain)</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                            <input type="radio" name="excelReportScope" value="all" onchange="updateExcelPreviewCount()" style="accent-color: #0284c7;">
+                            <span><strong>All Bookings</strong> (Dispatched + Pending dono)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Date Criteria option -->
+                <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 10px 12px; margin-bottom: 14px;">
+                    <div style="font-size: 0.78rem; font-weight: 700; color: #1e293b; margin-bottom: 6px;">Date Filter By:</div>
+                    <div style="display: flex; gap: 14px; font-size: 0.78rem; color: #334155;">
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                            <input type="radio" name="excelDateType" value="stuffing" checked onchange="updateExcelPreviewCount()" style="accent-color: #0284c7;">
+                            <span>Stuffing / Plan Date</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                            <input type="radio" name="excelDateType" value="mapping" onchange="updateExcelPreviewCount()" style="accent-color: #0284c7;">
+                            <span>Mapping Time</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Live Count Badge -->
+                <div id="excelPreviewCountBox" style="font-size: 0.80rem; font-weight: 700; color: #0369a1; background: #e0f2fe; border: 1px solid #bae6fd; padding: 8px 12px; border-radius: 6px; text-align: center;">
+                    Calculating rows...
+                </div>
+            </div>
+            <div class="modal-footer" style="padding: 12px 16px; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;">
+                <button class="btn-modal btn-modal-secondary" onclick="closeExcelExportModal()">Cancel</button>
+                <button class="btn-modal" id="btnDownloadExcelSubmit" onclick="executeExcelDownload()" style="background: #0284c7; color: white; font-weight: 800; display: inline-flex; align-items: center; gap: 6px;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    Download Excel (.xlsx)
+                </button>
             </div>
         </div>
     </div>
@@ -2606,37 +2745,54 @@
         // Strip WhatsApp timestamp and sender prefixes
         function stripWhatsAppPrefix(rawLine) {
             if (!rawLine) return '';
-            let line = rawLine.trim();
-            // Format 1: [10/10, 10:37 pm] Sender: Content  or  [10/10/24, 10:37:15 AM] Sender: Content
-            line = line.replace(/^\[\d{1,2}[/.-]\d{1,2}(?:[/.-]\d{2,4})?,?\s*[\d:]+(?::\d{2})?[\s\u202f\u00a0]*[APap][Mm]?\]\s*[^:]*:\s*/i, '');
+            let line = rawLine.replace(/[\u200e\u200f\ufeff]/g, '').trim();
+            // Format 1: [10/10, 10:37 pm] Sender: Content  or  10/10, 10:37 pm] Sender: Content
+            line = line.replace(/^\[?[^\]\n]+\]\s*[^:\n]*:\s*/i, '');
             // Format 2: 10/10/24, 10:37 pm - Sender: Content (Android WhatsApp without brackets)
-            line = line.replace(/^\d{1,2}[/.-]\d{1,2}(?:[/.-]\d{2,4})?,?\s*[\d:]+(?::\d{2})?[\s\u202f\u00a0]*[APap][Mm]?\s*-\s*[^:]*:\s*/i, '');
-            // Format 3: Forwarded banner
+            line = line.replace(/^\d{1,2}[/.-]\d{1,2}(?:[/.-]\d{2,4})?,?\s*[\d:]+(?::\d{2})?[\s\u202f\u00a0]*[APap][Mm]?(?:\s*-\s*|\s*\]?\s*)[^:\n]*:\s*/i, '');
+            // Format 3: Generic prefix ending before standard dispatch keys or Office:
+            line = line.replace(/^.*?(?:HCPL\s*)?Kilaraipur\s*Office:\s*/i, '');
+            // Format 4: Forwarded banner
             line = line.replace(/^Forwarded\s*/i, '');
             return line.trim();
         }
 
         // Check if line indicates start of a message
         function isMessageStartLine(rawLine) {
-            const trimmed = rawLine.trim();
+            if (!rawLine) return false;
+            const trimmed = rawLine.replace(/[\u200e\u200f\ufeff]/g, '').trim();
             if (!trimmed) return false;
-            // WhatsApp bracket timestamp header
-            if (/^\[\d{1,2}[/.-]\d{1,2}(?:[/.-]\d{2,4})?,?\s*[\d:]+(?::\d{2})?[\s\u202f\u00a0]*[APap][Mm]?\]/i.test(trimmed)) {
+
+            // 1. Line containing Kilaraipur Office: (the exact sender name)
+            if (/Kilaraipur\s*Office/i.test(trimmed)) {
                 return true;
             }
-            // WhatsApp dash timestamp header
-            if (/^\d{1,2}[/.-]\d{1,2}(?:[/.-]\d{2,4})?,?\s*[\d:]+(?::\d{2})?[\s\u202f\u00a0]*[APap][Mm]?\s*-\s*/i.test(trimmed)) {
+
+            // 2. WhatsApp bracket timestamp header e.g. [11/10, 3:03 pm] or [11/10/2026, 15:03]
+            if (/^\[[^\]]+\]/i.test(trimmed)) {
                 return true;
             }
+
+            // 3. Bracket missing opening bracket: 11/10, 3:03 pm]
+            if (/^\d{1,2}[/.-]\d{1,2}[\s\S]*?\]/i.test(trimmed)) {
+                return true;
+            }
+
+            // 4. WhatsApp dash timestamp header (Android export): 11/10/26, 3:03 pm - ...
+            if (/^\d{1,2}[/.-]\d{1,2}.*?-\s*/i.test(trimmed)) {
+                return true;
+            }
+
+            // 5. Standalone or prefixed VEHICLE NO header
             const clean = stripWhatsAppPrefix(trimmed);
-            return /^(?:VEHICLE|TRUCK)[\s_]*NO[\s:-]/i.test(clean) ||
-                   /^(?:VEHICLE|TRUCK)[\s:-]/i.test(clean);
+            return /(?:^|[\s,;])(?:VEHICLE|TRUCK)[\s_]*NO[\s:-]/i.test(clean) ||
+                   /(?:^|[\s,;])(?:VEHICLE|TRUCK)[\s:-]/i.test(clean);
         }
 
         // Split multiple WhatsApp messages pasted together
         function splitIntoMessageBlocks(rawText) {
             if (!rawText || typeof rawText !== 'string') return [];
-            const text = rawText.replace(/\r\n/g, '\n').replace(/\r/g, '\n').trim();
+            const text = rawText.replace(/[\u200e\u200f\ufeff]/g, '').replace(/\r\n/g, '\n').replace(/\r/g, '\n').trim();
             if (!text) return [];
 
             const lines = text.split('\n');
@@ -2695,6 +2851,7 @@
                 isContainerMissing: false,
                 lrNo: '',
                 route: '',
+                shippingLine: '',
                 msgPartyName: '',
                 selected: true,
                 rawMessage: text.trim()
@@ -2704,12 +2861,16 @@
                 let line = stripWhatsAppPrefix(rawLine);
                 if (!line) return;
 
-                // Extract PARTY NAME for cross-check display before checking (No Need)
+                // Extract PARTY NAME and SHIPPING LINE before checking (No Need)
                 const partyMatch = line.match(/^([A-Za-z0-9\s]+?)\s*[:\-]\s*(.*)$/);
                 if (partyMatch) {
                     const k = partyMatch[1].trim().toUpperCase();
                     if (k.includes('PARTY')) {
                         data.msgPartyName = partyMatch[2].replace(/\(No\s*Need\)/gi, '').replace(/^\*+|\*+$/g, '').trim().toUpperCase();
+                        return;
+                    }
+                    if (k.includes('SHIPPING') || k === 'LINE') {
+                        data.shippingLine = partyMatch[2].replace(/\(No\s*Need\)/gi, '').trim().toUpperCase();
                         return;
                     }
                 }
@@ -2719,17 +2880,27 @@
                     return;
                 }
 
+                // Inline fallback for vehicle number if prefix was tricky
+                const vehMatch = line.match(/(?:^|[\s,;])(?:VEHICLE|TRUCK)(?:\s*NO)?\s*[:\-]\s*([A-Za-z0-9\s]+)/i);
+                if (vehMatch && !data.vehicleNo) {
+                    data.vehicleNo = vehMatch[1].trim().toUpperCase().split(/\s{2,}|\t/)[0];
+                }
+
                 const match = line.match(/^([A-Za-z0-9\s]+?)\s*[:\-]\s*(.*)$/);
                 if (match) {
                     const key = match[1].trim().toUpperCase();
                     let val = match[2].trim().replace(/\(No\s*Need\)/gi, '').trim();
 
-                    // Discard specific non-required keys (OPS, TRACKING, SHIPPING LINE, WIRE SEAL)
+                    // Discard specific non-required keys (OPS, TRACKING, WIRE SEAL)
                     if (key.includes('OPS') || 
                         key.includes('TRACKING') || 
-                        key.includes('SHIPPING LINE') || 
                         key.includes('WIRE SEAL') ||
                         key === 'SEAL') {
+                        return;
+                    }
+
+                    if (key.includes('SHIPPING') || key === 'LINE') {
+                        data.shippingLine = val.toUpperCase();
                         return;
                     }
 
@@ -3355,6 +3526,8 @@
                         byBooking[cleanB][existingIdx].mobileNo = parsed.mobileNo || byBooking[cleanB][existingIdx].mobileNo;
                         byBooking[cleanB][existingIdx].lrNo = parsed.lrNo || byBooking[cleanB][existingIdx].lrNo;
                         byBooking[cleanB][existingIdx].route = parsed.route || byBooking[cleanB][existingIdx].route;
+                        byBooking[cleanB][existingIdx].shippingLine = parsed.shippingLine || byBooking[cleanB][existingIdx].shippingLine;
+                        byBooking[cleanB][existingIdx].partyName = parsed.msgPartyName || byBooking[cleanB][existingIdx].partyName;
                         byBooking[cleanB][existingIdx].rawMessage = parsed.rawMessage;
                         byBooking[cleanB][existingIdx].updatedAt = new Date().toISOString();
                         totalSavedOrUpdated++;
@@ -3371,6 +3544,8 @@
                     mobileNo: parsed.mobileNo || '-',
                     lrNo: parsed.lrNo || '-',
                     route: parsed.route || '',
+                    shippingLine: parsed.shippingLine || '',
+                    partyName: parsed.msgPartyName || '',
                     isContainerMissing: !!parsed.isContainerMissing,
                     addedAt: new Date().toISOString(),
                     rawMessage: parsed.rawMessage
@@ -3395,10 +3570,17 @@
                     statusUpdates[targetRowKey] = newStatusText;
                 }
 
+                // Determine customer from byBooking, parsed party name, or existing
+                const existingCust = dispatchData[bNo] ? dispatchData[bNo].customer : '';
+                const lastPartyName = (byBooking[bNo] && byBooking[bNo].length > 0)
+                    ? (byBooking[bNo][byBooking[bNo].length - 1].partyName || '')
+                    : '';
+                const finalCustomer = byBooking[bNo].customer || existingCust || lastPartyName || '';
+
                 dispatchData[bNo] = {
                     bookingNo: bNo,
                     containers: byBooking[bNo],
-                    customer: byBooking[bNo].customer || (dispatchData[bNo] ? dispatchData[bNo].customer : ''),
+                    customer: finalCustomer,
                     mappedAt: nowIso
                 };
 
@@ -3406,7 +3588,7 @@
                     await DISPATCH_COLLECTION.doc(bNo).set({
                         bookingNo: bNo,
                         containers: byBooking[bNo],
-                        customer: dispatchData[bNo].customer || '',
+                        customer: finalCustomer,
                         mappedAt: nowIso,
                         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
                     }, { merge: true });
@@ -3568,47 +3750,17 @@
         // WhatsApp Share of Single Booking Details
         function shareActiveBookingWhatsApp() {
             if (!activeBookingForModal) return;
-            const bNo = activeBookingForModal;
-            const bRow = allParsedRows.find(r => (r.booking || '').trim().toUpperCase() === bNo);
-            const dRecord = dispatchData[bNo];
-            const containers = (dRecord && Array.isArray(dRecord.containers)) ? dRecord.containers : [];
-
-            const customer = bRow ? bRow.customer : '-';
-            const location = bRow ? bRow.location : '-';
-            const line = bRow ? bRow.line : '-';
-            const sDate = bRow ? bRow.displayDate : '-';
-            const totalRequired = bRow ? (bRow.totalContainers || 1) : Math.max(1, containers.length);
-            const isAllSent = containers.length >= totalRequired;
-
-            const statusRemark = getRowStatusRemark(bRow, bNo);
-
-            let msg = `*HTPL CONTAINER DISPATCH REPORT*\n`;
-            msg += `📦 Booking: ${bNo} (${line})\n`;
-            msg += `🏢 Shipper: ${customer} - ${location}\n`;
-            msg += `🗓️ Stuffing Date: ${sDate}\n`;
-            msg += `📊 Status: Dispatch ${containers.length} | Pending ${Math.max(0, totalRequired - containers.length)} ${isAllSent ? '(All Sent)' : '(Pending)'}\n`;
-            if (statusRemark) {
-                msg += `📝 Remarks: ${statusRemark}\n`;
-            }
-            msg += `------------------------------------\n\n`;
-
-            if (containers.length === 0) {
-                msg += `_No containers dispatched yet._\n\n`;
-            } else {
-                containers.forEach((c, idx) => {
-                    msg += `🚛 *Container ${idx + 1}: ${c.containerNo}*\n`;
-                    msg += `• Vehicle No: ${c.vehicleNo}\n`;
-                    msg += `• Driver: ${c.driverName} (${c.mobileNo})\n`;
-                    msg += `• LR No: ${c.lrNo}\n`;
-                    if (c.route) msg += `• Route: ${c.route}\n`;
-                    msg += `\n`;
-                });
+            const fullMsg = buildWhatsAppDispatchReport([activeBookingForModal]);
+            if (!fullMsg) {
+                showToast("No dispatch details found.");
+                return;
             }
 
-            msg += `------------------------------------\n`;
-            msg += `HTPL Logistics`;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(fullMsg).catch(() => {});
+            }
 
-            const url = `https://wa.me/?text=${encodeURIComponent(msg)}`;
+            const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(fullMsg)}`;
             window.open(url, '_blank');
         }
 
@@ -3715,29 +3867,80 @@
             return '';
         }
 
-        // Format a single container in exact WhatsApp message format
+        // Build standardized WhatsApp Dispatch Report for single or multiple bookings
+        function buildWhatsAppDispatchReport(bookingList) {
+            const reportDivider = '------------------------------------';
+            const headerDivider = '-------------------------------------';
+            const blocks = [];
+
+            bookingList.forEach(bookingNo => {
+                const cleanB = (bookingNo || '').trim().toUpperCase();
+                if (!cleanB || cleanB === '-') return;
+
+                const bRow = allParsedRows.find(r => (r.booking || '').trim().toUpperCase() === cleanB);
+                const dRecord = dispatchData[cleanB];
+                const containers = (dRecord && Array.isArray(dRecord.containers)) ? dRecord.containers : [];
+
+                let stuffingDate = '-';
+                if (bRow) {
+                    if (bRow.displayDate) stuffingDate = bRow.displayDate;
+                    else if (bRow.date && /^\d{4}-\d{2}-\d{2}$/.test(bRow.date)) {
+                        const parts = bRow.date.split('-');
+                        stuffingDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+                    } else if (bRow.date) stuffingDate = bRow.date;
+                }
+
+                const defaultLine = (bRow && bRow.line && bRow.line !== '-') ? bRow.line : '';
+                const defaultShipper = bRow ? (bRow.customerRemark ? `${bRow.customer} (${bRow.customerRemark})` : bRow.customer) : (dRecord ? dRecord.customer : '-');
+
+                if (containers.length > 0) {
+                    containers.forEach(c => {
+                        const line = c.shippingLine || defaultLine;
+                        const lineStr = line ? ` (${line})` : '';
+                        const shipper = c.partyName || defaultShipper || '-';
+                        const cNo = c.containerNo || '-';
+                        const vNo = c.vehicleNo || '-';
+                        const dName = (c.driverName || '-').toUpperCase();
+                        const dMob = (c.mobileNo && c.mobileNo !== '-') ? ` (${c.mobileNo})` : '';
+                        const lr = c.lrNo || '-';
+                        let rRoute = (c.route || '').replace(/^.*?HCPL\s*Kilaraipur\s*Office:[^:]*?(?:VEHICLE|TRUCK)[^\n:]*?\s*/i, '').replace(/^.*?VEHICLE\s*NO-[^\n]*?\s*/i, '').trim();
+                        if (!rRoute) rRoute = '-';
+
+                        let block = `🗓️ Stuffing Date: ${stuffingDate}\n`;
+                        block += `📂 Booking: ${cleanB}${lineStr}\n`;
+                        block += `🏢 Shipper: ${shipper} \n`;
+                        block += `📦 Container : ${cNo}\n`;
+                        block += `🚛  Vehicle No: ${vNo}\n`;
+                        block += `👤 Driver: ${dName}${dMob}\n`;
+                        block += `📝 LR No: ${lr}\n`;
+                        block += ` 📍Route: ${rRoute}`;
+                        blocks.push(block);
+                    });
+                } else {
+                    const lineStr = defaultLine ? ` (${defaultLine})` : '';
+                    const statusRemark = getRowStatusRemark(bRow, cleanB) || 'Pending Dispatch';
+                    const cntReq = bRow ? bRow.cnt : '1x40';
+
+                    let block = `🗓️ Stuffing Date: ${stuffingDate}\n`;
+                    block += `📂 Booking: ${cleanB}${lineStr}\n`;
+                    block += `🏢 Shipper: ${defaultShipper || '-'} \n`;
+                    block += `📦 Container : Pending (${cntReq})\n`;
+                    block += `📝 Status: ${statusRemark}`;
+                    blocks.push(block);
+                }
+            });
+
+            if (blocks.length === 0) return '';
+
+            let fullMsg = `📒DISPATCH REPORT\n${headerDivider}\n`;
+            fullMsg += blocks.join(`\n${reportDivider}\n`);
+            fullMsg += `\n${reportDivider}`;
+            return fullMsg;
+        }
+
+        // Format a single container in exact WhatsApp message format (fallback)
         function formatContainerForWhatsApp(c, bookingRow) {
-            const lines = [];
-            if (c.vehicleNo) lines.push(`VEHICLE NO- ${c.vehicleNo}`);
-            if (c.driverName) lines.push(`DRIVER NAME- ${c.driverName}`);
-            if (c.mobileNo) lines.push(`MOBILE NO- ${c.mobileNo}`);
-            if (c.containerNo) lines.push(`CONTAINER NO- ${c.containerNo}`);
-            const party = c.partyName || (bookingRow ? (bookingRow.customerRemark ? `${bookingRow.customer} (${bookingRow.customerRemark})` : bookingRow.customer) : '');
-            if (party) lines.push(`PARTY NAME- ${party}`);
-            const line = c.shippingLine || (bookingRow && bookingRow.line !== '-' ? bookingRow.line : '');
-            if (line) lines.push(`SHIPPING LINE- ${line}`);
-            if (c.lrNo) lines.push(`LR NO- ${c.lrNo}`);
-            const bkg = c.bookingNo || (bookingRow ? bookingRow.booking : '');
-            if (bkg && bkg !== '-') lines.push(`BOOKING NO- ${bkg}`);
-            if (c.route) lines.push(c.route);
-
-            // Remarks picked directly from Status column in the table
-            const statusRemark = getRowStatusRemark(bookingRow, c.bookingNo);
-            if (statusRemark) {
-                lines.push(`REMARKS- ${statusRemark}`);
-            }
-
-            return lines.join('\n');
+            return buildWhatsAppDispatchReport([c.bookingNo || (bookingRow ? bookingRow.booking : '')]);
         }
 
         // Share All Selected Bookings in One WhatsApp Message
@@ -3747,41 +3950,19 @@
                 return;
             }
 
-            const messageBlocks = [];
-
-            selectedBookings.forEach(bookingNo => {
-                const bRow = allParsedRows.find(r => (r.booking || '').trim().toUpperCase() === bookingNo);
-                const dRecord = dispatchData[bookingNo];
-                const containers = (dRecord && Array.isArray(dRecord.containers)) ? dRecord.containers : [];
-
-                if (containers.length > 0) {
-                    containers.forEach(c => {
-                        messageBlocks.push(formatContainerForWhatsApp(c, bRow));
-                    });
-                } else {
-                    // Pending container block
-                    let bMsg = `BOOKING NO- ${bookingNo}`;
-                    if (bRow) {
-                        const party = bRow.customerRemark ? `${bRow.customer} (${bRow.customerRemark})` : bRow.customer;
-                        if (party) bMsg += `\nPARTY NAME- ${party}`;
-                        if (bRow.line && bRow.line !== '-') bMsg += `\nSHIPPING LINE- ${bRow.line}`;
-                        if (bRow.location) bMsg += `\nLOCATION- ${bRow.location}`;
-                        bMsg += `\nCONTAINER- ${bRow.cnt}`;
-                    }
-                    const statusRemark = getRowStatusRemark(bRow, bookingNo) || 'Pending Dispatch';
-                    bMsg += `\nREMARKS- ${statusRemark}`;
-                    messageBlocks.push(bMsg);
-                }
-            });
-
-            const combinedMsg = messageBlocks.join('\n\n');
+            const bookingList = Array.from(selectedBookings);
+            const fullMsg = buildWhatsAppDispatchReport(bookingList);
+            if (!fullMsg) {
+                showToast("No dispatch details found for selected bookings.");
+                return;
+            }
 
             // Copy to clipboard
             if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(combinedMsg).catch(() => {});
+                navigator.clipboard.writeText(fullMsg).catch(() => {});
             }
 
-            const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(combinedMsg)}`;
+            const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(fullMsg)}`;
             window.open(url, '_blank');
             showToast(`✅ WhatsApp msg ready (${selectedBookings.size} bookings)`);
         }
@@ -3826,6 +4007,461 @@
 
             const url = `https://wa.me/?text=${encodeURIComponent(msg)}`;
             window.open(url, '_blank');
+        }
+
+        // ==========================================
+        //  EXCEL DISPATCH REPORT EXPORT
+        // ==========================================
+        function openExcelExportModal() {
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            const todayISO = `${yyyy}-${mm}-${dd}`;
+
+            const sevenDaysAgo = new Date(today);
+            sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+            const f_yyyy = sevenDaysAgo.getFullYear();
+            const f_mm = String(sevenDaysAgo.getMonth() + 1).padStart(2, '0');
+            const f_dd = String(sevenDaysAgo.getDate()).padStart(2, '0');
+            const fromISO = `${f_yyyy}-${f_mm}-${f_dd}`;
+
+            const fromInput = document.getElementById('excelFromDate');
+            const toInput = document.getElementById('excelToDate');
+            if (fromInput && !fromInput.value) fromInput.value = fromISO;
+            if (toInput && !toInput.value) toInput.value = todayISO;
+
+            updateExcelPreviewCount();
+            document.getElementById('excelModal').classList.add('active');
+        }
+
+        function closeExcelExportModal() {
+            document.getElementById('excelModal').classList.remove('active');
+        }
+
+        function setExcelDatePreset(preset) {
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            const todayISO = `${yyyy}-${mm}-${dd}`;
+
+            let fromISO = todayISO;
+            let toISO = todayISO;
+
+            if (preset === 'today') {
+                fromISO = todayISO;
+                toISO = todayISO;
+            } else if (preset === 'yesterday') {
+                const yest = new Date(today);
+                yest.setDate(yest.getDate() - 1);
+                fromISO = `${yest.getFullYear()}-${String(yest.getMonth() + 1).padStart(2, '0')}-${String(yest.getDate()).padStart(2, '0')}`;
+                toISO = fromISO;
+            } else if (preset === 'last7') {
+                const d7 = new Date(today);
+                d7.setDate(d7.getDate() - 7);
+                fromISO = `${d7.getFullYear()}-${String(d7.getMonth() + 1).padStart(2, '0')}-${String(d7.getDate()).padStart(2, '0')}`;
+                toISO = todayISO;
+            } else if (preset === 'month') {
+                fromISO = `${yyyy}-${mm}-01`;
+                toISO = todayISO;
+            } else if (preset === 'all') {
+                fromISO = '2020-01-01';
+                toISO = '2030-12-31';
+            }
+
+            document.getElementById('excelFromDate').value = fromISO;
+            document.getElementById('excelToDate').value = toISO;
+            updateExcelPreviewCount();
+        }
+
+        function extractDispatchMsgFields(rawMsg) {
+            if (!rawMsg) return {};
+            const res = {};
+            const lines = rawMsg.split('\n');
+            lines.forEach(rawL => {
+                const l = rawL.trim();
+                const vehM = l.match(/(?:^|[\s,;])(?:VEHICLE|TRUCK)(?:\s*NO)?\s*[:\-]\s*([A-Za-z0-9\s]+)/i);
+                if (vehM && !res.vehicleNo) {
+                    res.vehicleNo = vehM[1].trim().toUpperCase().split(/\s{2,}|\t/)[0];
+                }
+                const partM = l.match(/(?:^|[\s,;])PARTY(?:\s*NAME)?\s*[:\-]\s*([^,\n]+)/i);
+                if (partM && !res.partyName) {
+                    res.partyName = partM[1].replace(/\(No\s*Need\)/gi, '').replace(/^\*+|\*+$/g, '').trim().toUpperCase();
+                }
+                const lineM = l.match(/(?:^|[\s,;])(?:SHIPPING\s*LINE|LINE)\s*[:\-]\s*([A-Za-z0-9\s]+)/i);
+                if (lineM && !res.shippingLine) {
+                    res.shippingLine = lineM[1].replace(/\(No\s*Need\)/gi, '').trim().toUpperCase();
+                }
+                const drivM = l.match(/(?:^|[\s,;])DRIVER(?:\s*NAME)?\s*[:\-]\s*([A-Za-z0-9\s]+)/i);
+                if (drivM && !res.driverName) {
+                    res.driverName = drivM[1].trim().toUpperCase();
+                }
+                const mobM = l.match(/(?:^|[\s,;])(?:MOBILE|PHONE|CONTACT)(?:\s*NO)?\s*[:\-]\s*([0-9\s,]+)/i);
+                if (mobM && !res.mobileNo) {
+                    res.mobileNo = mobM[1].trim();
+                }
+                const lrM = l.match(/(?:^|[\s,;])LR(?:\s*NO)?\s*[:\-]\s*([A-Za-z0-9\s]+)/i);
+                if (lrM && !res.lrNo) {
+                    res.lrNo = lrM[1].trim().toUpperCase();
+                }
+            });
+            return res;
+        }
+
+        function extractRouteFromMessage(rawMsg, fallbackRoute) {
+            if (rawMsg) {
+                const lines = rawMsg.split('\n').map(l => l.trim()).filter(Boolean);
+                for (let i = lines.length - 1; i >= 0; i--) {
+                    const line = lines[i];
+                    if (/\bTO\b/i.test(line) && !line.match(/^(?:VEHICLE|DRIVER|MOBILE|KR\s*OPS|TRACKING|CONTAINER|PARTY|SHIPPING|LR|WIRE\s*SEAL|BOOKING)/i)) {
+                        return line.replace(/^\[?[\d/.,:\s\u202f\u00a0]+[APap][Mm]\]?\s*[^:]*:\s*/i, '').replace(/^\*+|\*+$/g, '').trim();
+                    }
+                }
+            }
+            if (fallbackRoute) {
+                let r = fallbackRoute.trim();
+                r = r.replace(/^.*?HCPL\s*Kilaraipur\s*Office:\s*/i, '');
+                r = r.replace(/VEHICLE(?:\s*NO)?\s*[:\-]\s*[A-Za-z0-9\s]+/i, '');
+                r = r.replace(/^\*+|\*+$/g, '').trim();
+                if (r && r.includes('TO')) return r;
+            }
+            return fallbackRoute || 'PGL TO BARNALA TO HTPL';
+        }
+
+        function formatStuffingDate(dateStr) {
+            if (!dateStr || dateStr === '-') return '-';
+            const m = dateStr.match(/^(\d{4})-(\d{2})-(\d{2})/);
+            if (m) return `${m[3]}-${m[2]}-${m[1]}`;
+            return dateStr;
+        }
+
+        function getFilteredExcelData() {
+            const fromDate = document.getElementById('excelFromDate')?.value || '1970-01-01';
+            const toDate = document.getElementById('excelToDate')?.value || '2099-12-31';
+            const scope = document.querySelector('input[name="excelReportScope"]:checked')?.value || 'dispatched';
+            const dateType = document.querySelector('input[name="excelDateType"]:checked')?.value || 'stuffing';
+
+            const excelRows = [];
+            const handledBookings = new Set();
+
+            allParsedRows.forEach(r => {
+                const cleanB = (r.booking && r.booking !== '-') ? r.booking.trim().toUpperCase() : '';
+                const dRecord = cleanB ? dispatchData[cleanB] : null;
+                const containers = (dRecord && Array.isArray(dRecord.containers)) ? dRecord.containers : [];
+                const info = getRowStatusInfo(r);
+                const mapTime = getBookingMappedTime(cleanB);
+                const mapTimeStr = formatMapTime(mapTime).replace(/[()]/g, '');
+
+                let matchesDate = false;
+                if (dateType === 'stuffing') {
+                    if (r.isoDate >= fromDate && r.isoDate <= toDate) {
+                        matchesDate = true;
+                    }
+                } else {
+                    if (mapTime) {
+                        const mapIso = mapTime.toISOString().slice(0, 10);
+                        if (mapIso >= fromDate && mapIso <= toDate) {
+                            matchesDate = true;
+                        }
+                    } else if (scope === 'all' && r.isoDate >= fromDate && r.isoDate <= toDate) {
+                        matchesDate = true;
+                    }
+                }
+
+                if (!matchesDate) return;
+                if (cleanB) handledBookings.add(cleanB);
+
+                if (containers.length > 0) {
+                    containers.forEach(c => {
+                        if (dateType === 'mapping') {
+                            const cTimeStr = c.updatedAt || c.addedAt;
+                            if (cTimeStr) {
+                                const cIso = new Date(cTimeStr).toISOString().slice(0, 10);
+                                if (cIso < fromDate || cIso > toDate) return;
+                            }
+                        }
+
+                        const cMapTime = (c.updatedAt || c.addedAt)
+                            ? formatMapTime(new Date(c.updatedAt || c.addedAt)).replace(/[()]/g, '')
+                            : mapTimeStr;
+
+                        const extra = extractDispatchMsgFields(c.rawMessage);
+                        const finalCust = (r.customer && r.customer !== '-')
+                            ? r.customer
+                            : (dRecord?.customer || c.partyName || extra.partyName || '-');
+
+                        const finalParty = c.partyName || extra.partyName || finalCust;
+                        const finalLine = (r.line && r.line !== '-')
+                            ? r.line
+                            : (c.shippingLine || extra.shippingLine || '-');
+
+                        const finalVeh = (c.vehicleNo && c.vehicleNo !== '-')
+                            ? c.vehicleNo
+                            : (extra.vehicleNo || '-');
+
+                        const finalDriver = (c.driverName && c.driverName !== '-')
+                            ? c.driverName
+                            : (extra.driverName || '-');
+
+                        const finalMobile = (c.mobileNo && c.mobileNo !== '-')
+                            ? c.mobileNo
+                            : (extra.mobileNo || '-');
+
+                        const finalLr = (c.lrNo && c.lrNo !== '-')
+                            ? c.lrNo
+                            : (extra.lrNo || '-');
+
+                        const finalRoute = extractRouteFromMessage(c.rawMessage, c.route || r.location);
+
+                        excelRows.push({
+                            bookingNo: r.booking || '-',
+                            customerName: finalCust,
+                            containers: r.cnt || '-',
+                            shippingLine: finalLine,
+                            stuffingDate: formatStuffingDate(r.displayDate || r.isoDate),
+                            status: info.currentStatusVal || '-',
+                            containerNo: c.containerNo || '-',
+                            vehicleNo: finalVeh,
+                            driverName: finalDriver,
+                            mobileNo: finalMobile,
+                            partyName: finalParty,
+                            lrNo: finalLr,
+                            route: finalRoute,
+                            mapTime: cMapTime || '-'
+                        });
+                    });
+                } else if (scope === 'all') {
+                    excelRows.push({
+                        bookingNo: r.booking || '-',
+                        customerName: r.customer || '-',
+                        containers: r.cnt || '-',
+                        shippingLine: r.line || '-',
+                        stuffingDate: formatStuffingDate(r.displayDate || r.isoDate),
+                        status: info.currentStatusVal || 'Pending',
+                        containerNo: '-',
+                        vehicleNo: '-',
+                        driverName: '-',
+                        mobileNo: '-',
+                        partyName: r.customer || '-',
+                        lrNo: '-',
+                        route: r.location || 'PGL TO BARNALA TO HTPL',
+                        mapTime: '-'
+                    });
+                }
+            });
+
+            // Include any dispatches in dispatchData whose bookings are not in allParsedRows
+            if (scope === 'dispatched') {
+                Object.keys(dispatchData).forEach(bNo => {
+                    if (handledBookings.has(bNo)) return;
+                    const dRecord = dispatchData[bNo];
+                    if (!dRecord || !Array.isArray(dRecord.containers)) return;
+                    dRecord.containers.forEach(c => {
+                        const cTime = c.updatedAt || c.addedAt || dRecord.mappedAt;
+                        if (cTime) {
+                            const cIso = new Date(cTime).toISOString().slice(0, 10);
+                            if (cIso >= fromDate && cIso <= toDate) {
+                                const extra = extractDispatchMsgFields(c.rawMessage);
+                                const finalCust = (dRecord.customer && dRecord.customer !== '-')
+                                    ? dRecord.customer
+                                    : (c.partyName || extra.partyName || '-');
+                                const finalParty = c.partyName || extra.partyName || finalCust;
+                                const finalLine = c.shippingLine || extra.shippingLine || '-';
+                                const finalVeh = (c.vehicleNo && c.vehicleNo !== '-') ? c.vehicleNo : (extra.vehicleNo || '-');
+                                const finalDriver = (c.driverName && c.driverName !== '-') ? c.driverName : (extra.driverName || '-');
+                                const finalMobile = (c.mobileNo && c.mobileNo !== '-') ? c.mobileNo : (extra.mobileNo || '-');
+                                const finalLr = (c.lrNo && c.lrNo !== '-') ? c.lrNo : (extra.lrNo || '-');
+                                const finalRoute = extractRouteFromMessage(c.rawMessage, c.route);
+
+                                excelRows.push({
+                                    bookingNo: bNo,
+                                    customerName: finalCust,
+                                    containers: '1x40',
+                                    shippingLine: finalLine,
+                                    stuffingDate: formatStuffingDate(cIso),
+                                    status: (dRecord.containers.length >= 1 ? `Dispatch ${dRecord.containers.length} (All Sent)` : `Dispatch ${dRecord.containers.length}`),
+                                    containerNo: c.containerNo || '-',
+                                    vehicleNo: finalVeh,
+                                    driverName: finalDriver,
+                                    mobileNo: finalMobile,
+                                    partyName: finalParty,
+                                    lrNo: finalLr,
+                                    route: finalRoute,
+                                    mapTime: formatMapTime(new Date(cTime)).replace(/[()]/g, '')
+                                });
+                            }
+                        }
+                    });
+                });
+            }
+
+            return excelRows;
+        }
+
+        function updateExcelPreviewCount() {
+            const rows = getFilteredExcelData();
+            const box = document.getElementById('excelPreviewCountBox');
+            if (box) {
+                box.innerHTML = `📊 <strong>${rows.length}</strong> record(s) found in selected range.`;
+            }
+        }
+
+        function executeExcelDownload() {
+            if (typeof XLSX === 'undefined') {
+                const btn = document.getElementById('btnDownloadExcelSubmit');
+                if (btn) btn.textContent = 'Loading Excel Library...';
+                const script = document.createElement('script');
+                script.src = 'https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js';
+                script.onload = () => {
+                    executeExcelDownload();
+                };
+                script.onerror = () => {
+                    alert("Failed to load Excel library. Please check your internet connection.");
+                    if (btn) btn.textContent = 'Download Excel (.xlsx)';
+                };
+                document.head.appendChild(script);
+                return;
+            }
+
+            const rows = getFilteredExcelData();
+            if (rows.length === 0) {
+                alert("⚠️ Chuni gayi date range me koi dispatch records nahi mile! Kripya dates check karein.");
+                return;
+            }
+
+            const fromDate = document.getElementById('excelFromDate').value || 'All';
+            const toDate = document.getElementById('excelToDate').value || 'All';
+
+            // Headers matching user requirements exactly:
+            // Booking No, Customer name, Containers, Shipping Line, Stuffing Date, Status,
+            // then mapping details: VEHICLE NO, DRIVER NAME, MOBILE NO, CONTAINER NO, PARTY NAME, SHIPPING LINE, LR NO, ROUTE
+            const headers = [
+                "S.NO",
+                "BOOKING NO",
+                "CUSTOMER NAME",
+                "CONTAINERS",
+                "SHIPPING LINE",
+                "STUFFING DATE",
+                "STATUS",
+                "CONTAINER NO",
+                "VEHICLE NO",
+                "DRIVER NAME",
+                "MOBILE NO",
+                "PARTY NAME",
+                "LR NO",
+                "ROUTE (PGL TO BARNALA TO HTPL)",
+                "MAPPING TIME"
+            ];
+
+            const aoa = [headers];
+            rows.forEach((r, idx) => {
+                aoa.push([
+                    idx + 1,
+                    r.bookingNo,
+                    r.customerName,
+                    r.containers,
+                    r.shippingLine,
+                    r.stuffingDate,
+                    r.status,
+                    r.containerNo,
+                    r.vehicleNo,
+                    r.driverName,
+                    r.mobileNo,
+                    r.partyName,
+                    r.lrNo,
+                    r.route,
+                    r.mapTime
+                ]);
+            });
+
+            const ws = XLSX.utils.aoa_to_sheet(aoa);
+
+            // Styling Header & Cells
+            const range = XLSX.utils.decode_range(ws['!ref']);
+            const headerFill = { fgColor: { rgb: "1E3A1E" } }; // Deep Green
+            const headerFont = { name: "Calibri", sz: 11, bold: true, color: { rgb: "FFFFFF" } };
+            const dataFont = { name: "Calibri", sz: 10 };
+            const thinBorder = {
+                top: { style: "thin", color: { rgb: "CBD5E1" } },
+                bottom: { style: "thin", color: { rgb: "CBD5E1" } },
+                left: { style: "thin", color: { rgb: "CBD5E1" } },
+                right: { style: "thin", color: { rgb: "CBD5E1" } }
+            };
+
+            for (let R = range.s.r; R <= range.e.r; ++R) {
+                for (let C = range.s.c; C <= range.e.c; ++C) {
+                    const cellAddress = XLSX.utils.encode_cell({ r: R, c: C });
+                    if (!ws[cellAddress]) continue;
+
+                    if (R === 0) {
+                        ws[cellAddress].s = {
+                            fill: headerFill,
+                            font: headerFont,
+                            alignment: { horizontal: "center", vertical: "center", wrapText: true },
+                            border: {
+                                top: { style: "thin", color: { rgb: "000000" } },
+                                bottom: { style: "medium", color: { rgb: "000000" } },
+                                left: { style: "thin", color: { rgb: "000000" } },
+                                right: { style: "thin", color: { rgb: "000000" } }
+                            }
+                        };
+                    } else {
+                        const isEven = R % 2 === 0;
+                        const rowFill = isEven ? { fgColor: { rgb: "F8FAFC" } } : { fgColor: { rgb: "FFFFFF" } };
+                        
+                        let align = "left";
+                        let isBold = false;
+
+                        // Center alignment for S.No, Dates, Status, Numbers
+                        if (C === 0 || C === 3 || C === 5 || C === 6 || C === 12 || C === 14) {
+                            align = "center";
+                        } else if (C === 1 || C === 7 || C === 8) {
+                            // Booking, Container, Vehicle: Center + Bold
+                            align = "center";
+                            isBold = true;
+                        }
+
+                        ws[cellAddress].s = {
+                            fill: rowFill,
+                            font: isBold ? { name: "Calibri", sz: 10, bold: true } : dataFont,
+                            alignment: { horizontal: align, vertical: "center" },
+                            border: thinBorder
+                        };
+                    }
+                }
+            }
+
+            // Column Widths
+            ws['!cols'] = [
+                { wch: 6 },  // S.NO
+                { wch: 18 }, // BOOKING NO
+                { wch: 28 }, // CUSTOMER NAME
+                { wch: 12 }, // CONTAINERS
+                { wch: 16 }, // SHIPPING LINE
+                { wch: 14 }, // STUFFING DATE
+                { wch: 22 }, // STATUS
+                { wch: 18 }, // CONTAINER NO
+                { wch: 16 }, // VEHICLE NO
+                { wch: 18 }, // DRIVER NAME
+                { wch: 16 }, // MOBILE NO
+                { wch: 28 }, // PARTY NAME
+                { wch: 12 }, // LR NO
+                { wch: 32 }, // ROUTE (PGL TO BARNALA TO HTPL)
+                { wch: 18 }  // MAPPING TIME
+            ];
+
+            // Header row height
+            ws['!rows'] = [{ hpt: 26 }];
+
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Dispatch Report");
+
+            const fileName = `Kunal_Sahi_Dispatch_Report_${fromDate}_to_${toDate}.xlsx`;
+            XLSX.writeFile(wb, fileName);
+
+            closeExcelExportModal();
+            showToast(`📥 ${rows.length} records exported to ${fileName}`);
         }
 
         // ==========================================

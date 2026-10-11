@@ -30,7 +30,7 @@
             --tbl-row-hover: #e3f2e1;
             --tbl-border: #e0e0e0;
             --tbl-text: #222222;
-            --app-bg: #f4f6f8;
+            --app-bg: #1e293b;
             --card-bg: #ffffff;
             --accent-green: #388e3c;
         }
@@ -160,8 +160,8 @@
 
         .search-box input {
             width: 100%;
-            padding: 9px 12px 9px 34px;
-            font-size: 0.88rem;
+            padding: 7px 10px 7px 32px;
+            font-size: 0.80rem;
             border: 1.5px solid #c8e6c9;
             border-radius: 8px;
             background: #fafdfa;
@@ -195,9 +195,9 @@
         .filter-row::-webkit-scrollbar { display: none; }
 
         .pill-btn {
-            padding: 5px 12px;
-            border-radius: 16px;
-            font-size: 0.74rem;
+            padding: 4px 10px;
+            border-radius: 14px;
+            font-size: 0.68rem;
             font-weight: 700;
             border: 1px solid #c8e6c9;
             background: #f1f8f1;
@@ -248,20 +248,51 @@
             box-shadow: 0 1px 4px rgba(0,0,0,0.08);
         }
         #statFilterAll.active {
-            background: #e8f5e9;
-            outline: 1.5px solid #2e7d32;
+            background: #1e3a1e;
+            color: #ffffff;
+            outline: 2px solid #14532d;
         }
+        #statFilterAll.active .stat-num {
+            color: #ffffff;
+        }
+        #statFilterAll.active .stat-label {
+            color: #bbf7d0;
+        }
+
         #statFilterSent.active {
-            background: #dcfce7;
-            outline: 1.5px solid #16a34a;
+            background: #15803d;
+            color: #ffffff;
+            outline: 2px solid #166534;
         }
+        #statFilterSent.active .stat-num {
+            color: #ffffff;
+        }
+        #statFilterSent.active .stat-label {
+            color: #dcfce7;
+        }
+
         #statFilterPending.active {
-            background: #fee2e2;
-            outline: 1.5px solid #dc2626;
+            background: #b91c1c;
+            color: #ffffff;
+            outline: 2px solid #991b1b;
         }
+        #statFilterPending.active .stat-num {
+            color: #ffffff;
+        }
+        #statFilterPending.active .stat-label {
+            color: #fee2e2;
+        }
+
         #statFilterRest.active {
-            background: #fef3c7;
-            outline: 1.5px solid #d97706;
+            background: #b45309;
+            color: #ffffff;
+            outline: 2px solid #92400e;
+        }
+        #statFilterRest.active .stat-num {
+            color: #ffffff;
+        }
+        #statFilterRest.active .stat-label {
+            color: #fef3c7;
         }
         .stat-sym {
             font-size: 0.88rem;
@@ -277,7 +308,7 @@
         }
 
         .stat-label {
-            font-size: 0.65rem;
+            font-size: 0.58rem;
             font-weight: 700;
             color: #666666;
             text-transform: uppercase;
@@ -303,7 +334,7 @@
 
         table.plan-styled-table {
             border-collapse: collapse;
-            font-size: 0.83rem;
+            font-size: 0.76rem;
             text-align: left;
             width: auto;
         }
@@ -311,9 +342,9 @@
         table.plan-styled-table thead th {
             background-color: var(--tbl-header-bg);
             color: var(--tbl-header-text);
-            padding: 6px 10px;
+            padding: 4px 8px;
             font-weight: 700;
-            font-size: 0.83rem;
+            font-size: 0.76rem;
             white-space: nowrap;
             border-right: 1px solid rgba(255, 255, 255, 0.2);
             position: sticky;
@@ -344,9 +375,9 @@
         }
 
         table.plan-styled-table td {
-            padding: 5px 10px;
+            padding: 4px 8px;
             color: var(--tbl-text);
-            font-size: 0.83rem;
+            font-size: 0.76rem;
             vertical-align: middle;
             border-right: 1px solid #ebebeb;
             white-space: nowrap;
@@ -433,15 +464,24 @@
             margin-top: 2px;
         }
 
-        /* Desktop status indicator borders */
+        /* Desktop status indicator borders & backgrounds */
         table.plan-styled-table tbody tr.card-status-sent td:first-child {
             border-left: 4px solid #16a34a;
+        }
+        table.plan-styled-table tbody tr.card-status-sent {
+            background-color: #f0fdf4 !important;
         }
         table.plan-styled-table tbody tr.card-status-pending td:first-child {
             border-left: 4px solid #dc2626;
         }
+        table.plan-styled-table tbody tr.card-status-pending {
+            background-color: #fef2f2 !important;
+        }
         table.plan-styled-table tbody tr.card-status-rest td:first-child {
             border-left: 4px solid #d97706;
+        }
+        table.plan-styled-table tbody tr.card-status-rest {
+            background-color: #fffbeb !important;
         }
 
         .booking-row-chk {
@@ -454,13 +494,13 @@
         }
 
         .cust-remark-tag {
-            color: #c2410c;
+            color: #7c2d12;
             font-weight: 800;
-            font-size: 0.78rem;
-            background: #ffedd5;
+            font-size: 0.72rem;
+            background: #fed7aa;
             padding: 1px 5px;
             border-radius: 4px;
-            border: 1px solid #fed7aa;
+            border: 1px solid #fb923c;
             margin-left: 4px;
             display: inline-block;
         }
@@ -479,24 +519,26 @@
 
         .date-badge-today {
             display: inline-block;
-            background: #e3f2fd;
-            color: #0d47a1;
-            font-size: 0.70rem;
+            background: #bfdbfe;
+            color: #1e3a8a;
+            border: 1px solid #60a5fa;
+            font-size: 0.68rem;
             padding: 1px 4px;
             border-radius: 4px;
             margin-left: 3px;
-            font-weight: 700;
+            font-weight: 800;
         }
 
         .date-badge-adv {
             display: inline-block;
-            background: #ffebee;
-            color: #c62828;
-            font-size: 0.70rem;
+            background: #fecaca;
+            color: #7f1d1d;
+            border: 1px solid #f87171;
+            font-size: 0.68rem;
             padding: 1px 4px;
             border-radius: 4px;
             margin-left: 3px;
-            font-weight: 700;
+            font-weight: 800;
         }
 
         .excel-preset-btn {
@@ -538,10 +580,11 @@
         }
 
         .booking-line-tag {
-            font-size: 0.78rem;
-            font-weight: 700;
-            color: #1b5e20;
-            background: #e8f5e9;
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: #14532d;
+            background: #bbf7d0;
+            border: 1px solid #86efac;
             padding: 1px 5px;
             border-radius: 4px;
             margin-left: 3px;
@@ -556,8 +599,8 @@
 
         .status-input {
             width: 145px;
-            padding: 4px 7px;
-            font-size: 0.78rem;
+            padding: 3px 6px;
+            font-size: 0.72rem;
             font-family: inherit;
             font-weight: 600;
             color: #111;
@@ -1125,53 +1168,69 @@
         /* Responsive Mobile Layout (Phones & small screens) */
         @media (max-width: 768px) {
             body {
-                padding-bottom: 85px;
+                padding-bottom: 75px;
             }
 
             .app-bar {
-                padding: 10px 12px;
+                padding: 6px 8px;
             }
             .app-bar-inner {
                 flex-direction: column;
                 align-items: stretch;
-                gap: 9px;
+                gap: 6px;
             }
             .app-title-group {
                 justify-content: flex-start;
+                gap: 6px;
+            }
+            .app-logo {
+                width: 28px;
+                height: 28px;
+                font-size: 0.76rem;
+            }
+            .app-title {
+                font-size: 0.95rem !important;
+            }
+            .app-sub {
+                font-size: 0.60rem !important;
             }
             .header-actions {
                 display: flex;
                 width: 100%;
-                gap: 5px;
+                gap: 4px;
                 flex-wrap: wrap;
             }
             .header-actions .btn-action {
-                flex: 1 1 calc(33.33% - 5px);
-                min-width: 80px;
+                flex: 1 1 calc(33.33% - 4px);
+                min-width: 70px;
                 justify-content: center;
-                padding: 6px 4px;
-                font-size: 0.70rem;
+                padding: 4px 2px;
+                font-size: 0.62rem;
                 white-space: nowrap;
             }
 
             .controls-panel {
-                margin: 4px 6px 3px;
-                padding: 5px;
+                margin: 3px 4px 2px;
+                padding: 3px;
+            }
+            #btnSync {
+                font-size: 0.70rem !important;
+                padding: 4px !important;
             }
 
             .stats-strip {
-                margin: 0 6px 4px;
-                padding: 4px 2px;
+                margin: 0 4px 3px;
+                padding: 3px 2px;
                 gap: 1px;
             }
             .stat-num {
-                font-size: 0.88rem;
+                font-size: 0.76rem !important;
             }
             .stat-label {
-                font-size: 0.52rem;
+                font-size: 0.46rem !important;
             }
             .stat-sym {
-                font-size: 0.75rem;
+                font-size: 0.62rem !important;
             }
             .stat-item-clickable {
                 padding: 2px 1px;
@@ -1181,28 +1240,32 @@
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                margin: 0 6px 4px;
-                padding: 3px 8px;
+                margin: 0 4px 3px;
+                padding: 2px 6px;
                 background: #ffffff;
-                border-radius: 6px;
-                border: 1px solid #dcdcdc;
-                font-size: 0.72rem;
+                border-radius: 5px;
+                border: 1px solid #cbd5e1;
+                font-size: 0.64rem;
                 font-weight: 700;
-                color: #2e7d32;
+                color: #166534;
             }
             .mobile-select-all-bar label {
                 display: inline-flex;
                 align-items: center;
-                gap: 5px;
+                gap: 4px;
                 cursor: pointer;
                 margin: 0;
             }
+            .mobile-select-all-bar input[type="checkbox"] {
+                width: 12px;
+                height: 12px;
+            }
 
             .table-card {
-                width: calc(100% - 12px) !important;
+                width: calc(100% - 8px) !important;
                 max-width: 100% !important;
-                margin: 0 6px 16px 6px !important;
-                border: 1px solid #dcdcdc;
+                margin: 0 4px 12px 4px !important;
+                border: none !important;
                 background: transparent !important;
                 box-shadow: none !important;
             }
@@ -1218,48 +1281,48 @@
                 display: block !important;
             }
             table.plan-styled-table thead {
-                display: none !important; /* Hide wide desktop headers */
+                display: none !important;
             }
             table.plan-styled-table tbody {
                 display: flex !important;
                 flex-direction: column !important;
-                gap: 10px !important; /* Clear gap between cards (Requirement 4) */
+                gap: 6px !important;
                 width: 100% !important;
             }
             table.plan-styled-table tbody tr {
                 display: flex !important;
                 flex-direction: column !important;
-                gap: 3px !important;
+                gap: 2px !important;
                 width: 100% !important;
-                padding: 6px 8px !important;
+                padding: 4px 6px !important;
                 background: #ffffff !important;
-                border-radius: 6px !important;
-                border: 1px solid #dce4dc !important;
-                box-shadow: 0 1px 4px rgba(0,0,0,0.06) !important;
+                border-radius: 5px !important;
+                border: 1px solid #cbd5e1 !important;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.25) !important;
                 box-sizing: border-box !important;
             }
             table.plan-styled-table tbody tr:nth-child(even) {
                 background-color: #ffffff !important;
             }
 
-            /* Mobile Card Border Colors based on Status (✅ Green, 🔴 Red, ⏳ Amber) */
+            /* Darker / richer highlighted background for status cards */
             table.plan-styled-table tbody tr.card-status-sent {
-                border: 1px solid #86efac !important;
-                border-left: 4px solid #16a34a !important;
-                background: #fbfdfb !important;
+                border: 1.5px solid #4ade80 !important;
+                border-left: 5px solid #15803d !important;
+                background: #f0fdf4 !important;
             }
             table.plan-styled-table tbody tr.card-status-pending {
-                border: 1px solid #fca5a5 !important;
-                border-left: 4px solid #dc2626 !important;
-                background: #fffafa !important;
+                border: 1.5px solid #f87171 !important;
+                border-left: 5px solid #dc2626 !important;
+                background: #fef2f2 !important;
             }
             table.plan-styled-table tbody tr.card-status-rest {
-                border: 1px solid #fde68a !important;
-                border-left: 4px solid #d97706 !important;
-                background: #fffdf5 !important;
+                border: 1.5px solid #facc15 !important;
+                border-left: 5px solid #d97706 !important;
+                background: #fffbeb !important;
             }
 
-            /* Remove internal cell borders - specifically removing the vertical line before Customer Name (Requirement 1) */
+            /* Remove internal cell borders */
             table.plan-styled-table td,
             table.plan-styled-table tbody tr td:first-child,
             table.plan-styled-table tbody tr.card-status-sent td:first-child,
@@ -1275,7 +1338,7 @@
 
             /* Card Section 1: Customer Name + Container Meta on same top line */
             table.plan-styled-table td.cell-cust-loc {
-                border-bottom: 1px solid #f1f5f9 !important;
+                border-bottom: 1px solid #e2e8f0 !important;
                 padding-bottom: 2px !important;
                 margin-bottom: 1px !important;
             }
@@ -1283,7 +1346,7 @@
                 display: flex !important;
                 align-items: center !important;
                 justify-content: space-between !important;
-                gap: 4px !important;
+                gap: 3px !important;
                 width: 100% !important;
             }
             .cust-main-name {
@@ -1295,18 +1358,18 @@
                 flex-wrap: wrap !important;
             }
             .cust-text {
-                font-size: 0.76rem !important;
+                font-size: 0.68rem !important;
                 font-weight: 800 !important;
                 color: #0f172a !important;
-                line-height: 1.2 !important;
+                line-height: 1.15 !important;
             }
             .cust-remark-tag {
-                font-size: 0.64rem !important;
+                font-size: 0.54rem !important;
                 padding: 0 3px !important;
                 font-weight: 800 !important;
             }
             .cust-loc-sub {
-                font-size: 0.64rem !important;
+                font-size: 0.56rem !important;
                 color: #64748b !important;
                 font-weight: 600 !important;
                 margin-left: 2px !important;
@@ -1315,16 +1378,20 @@
                 display: inline-flex !important;
                 align-items: center !important;
                 gap: 2px !important;
-                font-size: 0.64rem !important;
+                font-size: 0.54rem !important;
                 font-weight: 700 !important;
-                color: #334155 !important;
-                background: #f1f5f9 !important;
-                border: 1px solid #e2e8f0 !important;
-                padding: 1px 4px !important;
+                color: #0f172a !important;
+                background: #e2e8f0 !important;
+                border: 1px solid #cbd5e1 !important;
+                padding: 0 4px !important;
                 border-radius: 3px !important;
                 white-space: nowrap !important;
                 flex-shrink: 0 !important;
                 line-height: 1.2 !important;
+            }
+            .date-badge-today, .date-badge-adv {
+                font-size: 0.54rem !important;
+                padding: 0 3px !important;
             }
 
             /* Card Section 2: Booking No + Checkbox + Shipping Line, and Next Row Map Time */
@@ -1337,66 +1404,63 @@
                 display: flex !important;
                 flex-direction: column !important;
                 width: 100% !important;
-                gap: 2px !important;
+                gap: 1px !important;
             }
             .booking-main-line {
                 display: flex !important;
                 align-items: center !important;
-                gap: 5px !important;
+                gap: 4px !important;
                 width: 100% !important;
                 white-space: nowrap !important;
                 overflow-x: auto !important;
                 scrollbar-width: none !important;
-                line-height: 1.2 !important;
+                line-height: 1.15 !important;
             }
             .booking-main-line::-webkit-scrollbar {
                 display: none !important;
             }
             .booking-row-chk {
-                width: 13px !important;
-                height: 13px !important;
+                width: 12px !important;
+                height: 12px !important;
                 flex-shrink: 0 !important;
                 margin: 0 !important;
             }
             .booking-num-sym {
                 display: inline-flex !important;
                 align-items: center !important;
-                gap: 4px !important;
+                gap: 3px !important;
                 white-space: nowrap !important;
                 flex-shrink: 0 !important;
             }
             .booking-link {
-                font-size: 0.78rem !important;
+                font-size: 0.68rem !important;
                 font-weight: 800 !important;
             }
             .booking-status-sym {
                 display: inline-block !important;
-                font-size: 0.74rem !important;
+                font-size: 0.62rem !important;
                 line-height: 1 !important;
                 vertical-align: middle !important;
             }
             .booking-line-tag {
-                font-size: 0.68rem !important;
-                font-weight: 700 !important;
-                color: #047857 !important;
+                font-size: 0.56rem !important;
+                font-weight: 800 !important;
                 white-space: nowrap !important;
+                padding: 0 4px !important;
             }
             .booking-time-line {
                 display: flex !important;
                 align-items: center !important;
                 margin-top: 1px !important;
-                margin-bottom: 2px !important;
+                margin-bottom: 1px !important;
             }
             .booking-map-time {
-                font-size: 0.62rem !important;
+                font-size: 0.54rem !important;
                 font-weight: 700 !important;
-                color: #0284c7 !important;
-                background: #e0f2fe !important;
-                border: 1px solid #bae6fd !important;
-                padding: 1px 5px !important;
+                padding: 0 4px !important;
                 border-radius: 3px !important;
                 white-space: nowrap !important;
-                line-height: 1.25 !important;
+                line-height: 1.2 !important;
             }
 
             /* Hide separate container and date table cells on mobile */
@@ -1413,12 +1477,12 @@
             }
             table.plan-styled-table td.cell-status .status-input {
                 width: 100% !important;
-                height: 22px !important;
-                padding: 1px 6px !important;
-                font-size: 0.72rem !important;
+                height: 19px !important;
+                padding: 0 5px !important;
+                font-size: 0.64rem !important;
                 border-radius: 4px !important;
-                background: #f8fafc !important;
-                border: 1px solid #cbd5e1 !important;
+                background: #ffffff !important;
+                border: 1px solid #94a3b8 !important;
                 box-sizing: border-box !important;
                 line-height: 1.2 !important;
             }
@@ -1426,13 +1490,13 @@
             /* Modal adjustments on mobile */
             .modal-card {
                 max-width: 95% !important;
-                padding: 14px !important;
+                padding: 12px !important;
             }
             .whatsapp-float {
-                bottom: 16px !important;
-                right: 16px !important;
-                width: 48px !important;
-                height: 48px !important;
+                bottom: 14px !important;
+                right: 14px !important;
+                width: 44px !important;
+                height: 44px !important;
             }
         }
     </style>
@@ -2093,11 +2157,12 @@
                         const d = doc.data();
                         if (d && d.rowKey && d.bookingNo) {
                             manualBookingMap[d.rowKey] = d.bookingNo;
-                            if (d.customer) {
-                                manualBookingMap['cust_' + d.customer] = d.bookingNo;
-                            }
                         }
                     });
+                    // Clean up any legacy cust_ entries that leaked across rows
+                    for (const k in manualBookingMap) {
+                        if (k.startsWith('cust_')) delete manualBookingMap[k];
+                    }
                     try {
                         localStorage.setItem(MANUAL_MAP_CACHE_KEY, JSON.stringify(manualBookingMap));
                     } catch(e) {}
@@ -2114,14 +2179,12 @@
             }
         }
 
-        // Apply manually mapped booking numbers to parsed rows
+        // Apply manually mapped booking numbers to parsed rows strictly per rowKey
         function applyManualMapsToParsedRows() {
             if (!allParsedRows || allParsedRows.length === 0) return;
             allParsedRows.forEach(r => {
                 if (manualBookingMap[r.rowKey]) {
                     r.booking = manualBookingMap[r.rowKey];
-                } else if (r.customer && manualBookingMap['cust_' + r.customer] && (!r.booking || r.booking === '-')) {
-                    r.booking = manualBookingMap['cust_' + r.customer];
                 }
             });
         }
@@ -2240,7 +2303,8 @@
                     const customerRemark = combinedRemarks.join(', ');
 
                     const cleanB = (booking && booking !== '-') ? booking.replace(/\s+/g, '').toUpperCase() : '';
-                    const rowKey = cleanB ? ('bk_' + cleanB) : ('rec_' + (record.id || 'r') + '_' + rows.length);
+                    const recUid = (record.id || 'r') + '_' + (sdate ? sdate.replace(/[^a-zA-Z0-9]/g, '') : '') + '_' + rows.length;
+                    const rowKey = 'rec_' + recUid + (cleanB ? ('_' + cleanB) : '');
 
                     rows.push({
                         rowKey: rowKey,
@@ -2288,7 +2352,8 @@
                 const customerRemark = combinedRemarks.join(', ');
 
                 const cleanB = (bookingNo && bookingNo !== '-') ? bookingNo.replace(/\s+/g, '').toUpperCase() : '';
-                const rowKey = cleanB ? ('bk_' + cleanB) : ('rec_' + (record.id || 'r') + '_single');
+                const recUid = (record.id || 'r') + '_' + (sdate ? sdate.replace(/[^a-zA-Z0-9]/g, '') : '') + '_single';
+                const rowKey = 'rec_' + recUid + (cleanB ? ('_' + cleanB) : '');
 
                 rows.push({
                     rowKey: rowKey,
@@ -2369,19 +2434,77 @@
             return `(${dd}.${mm}.${yy} ${hh}:${min})`;
         }
 
+        // Helper to allocate containers to rows sharing the same booking based on row capacity
+        function getBookingRowContainersMap() {
+            const rowMap = {};
+            const rowsByBooking = {};
+            
+            allParsedRows.forEach(r => {
+                const b = (r.booking || '').trim().toUpperCase();
+                if (!b || b === '-') return;
+                if (!rowsByBooking[b]) rowsByBooking[b] = [];
+                rowsByBooking[b].push(r);
+            });
+
+            for (const b in rowsByBooking) {
+                const rows = rowsByBooking[b];
+                const dRecord = dispatchData[b];
+                const containers = (dRecord && Array.isArray(dRecord.containers)) ? dRecord.containers : [];
+                
+                // Allocate containers strictly up to totalContainers needed by each row
+                let ptr = 0;
+                rows.forEach(r => {
+                    const req = r.totalContainers || 1;
+                    const allocated = [];
+                    for (let i = 0; i < req && ptr < containers.length; i++) {
+                        allocated.push(containers[ptr]);
+                        ptr++;
+                    }
+                    rowMap[r.rowKey] = allocated;
+                });
+            }
+            return rowMap;
+        }
+
+        function getContainersAllocatedToRow(r) {
+            if (!r) return [];
+            const map = getBookingRowContainersMap();
+            return map[r.rowKey] || [];
+        }
+
+        function getBookingTotalCapacity(bookingNo, fallbackRowKey) {
+            const cleanB = (bookingNo || '').trim().toUpperCase();
+            if (!cleanB || cleanB === '-') {
+                if (fallbackRowKey) {
+                    const fr = allParsedRows.find(r => r.rowKey === fallbackRowKey);
+                    if (fr) return fr.totalContainers || 1;
+                }
+                return 1;
+            }
+            const matchingRows = allParsedRows.filter(r => (r.booking || '').trim().toUpperCase() === cleanB);
+            if (matchingRows.length > 0) {
+                return matchingRows.reduce((sum, r) => sum + (r.totalContainers || 1), 0);
+            }
+            if (fallbackRowKey) {
+                const fr = allParsedRows.find(r => r.rowKey === fallbackRowKey);
+                if (fr) return fr.totalContainers || 1;
+            }
+            return 1;
+        }
+
         // ==========================================
         //  ROW STATUS CLASSIFICATION & HELPER
         // ==========================================
         function getRowStatusInfo(r) {
             const cleanBooking = (r.booking || '').trim().toUpperCase();
             const dRecord = (cleanBooking && cleanBooking !== '-') ? dispatchData[cleanBooking] : null;
-            const containerList = (dRecord && Array.isArray(dRecord.containers)) ? dRecord.containers : [];
-            const dispatchedCount = containerList.length;
+            const rowContainers = getContainersAllocatedToRow(r);
+            const dispatchedCount = rowContainers.length;
             const totalRequired = r.totalContainers || 1;
             const pendingCount = Math.max(0, totalRequired - dispatchedCount);
-            const isAllSent = (cleanBooking && cleanBooking !== '-') && (dispatchedCount >= totalRequired && containerList.length > 0);
+            const isAllSent = (cleanBooking && cleanBooking !== '-') && (dispatchedCount >= totalRequired && dispatchedCount > 0);
 
-            const rowKey = r.rowKey || (cleanBooking && cleanBooking !== '-' ? 'bk_' + cleanBooking : ('rec_' + (r.customer || '') + '_' + r.displayDate + '_' + r.cnt));
+            const rowKey = r.rowKey || (cleanBooking && cleanBooking !== '-' ? 'rec_' + cleanBooking : ('rec_' + (r.customer || '') + '_' + r.displayDate + '_' + r.cnt));
 
             let defaultStatus = 'Pending 1';
             if (cleanBooking && cleanBooking !== '-') {
@@ -2401,6 +2524,11 @@
                 : defaultStatus;
 
             currentStatusVal = currentStatusVal.replace(/🔴\s*/g, '').trim();
+
+            // Auto-correct stale or out-of-bounds dispatch counts
+            if (/^Dispatch\s+\d+/i.test(currentStatusVal)) {
+                currentStatusVal = defaultStatus;
+            }
 
             // User Rule:
             // 1. "Dispatch" word (without pending) OR all containers sent => ✅ Sent
@@ -3101,6 +3229,7 @@
                 } else {
                     const existingContainers = (cleanB && dispatchData[cleanB] && Array.isArray(dispatchData[cleanB].containers)) ? dispatchData[cleanB].containers : [];
                     const existing = existingContainers.length;
+                    const maxAllowed = getBookingTotalCapacity(cleanB, p.manualMappedRowKey);
 
                     // Check if this container is already mapped in this booking
                     const coreP = getCoreContainerNo(p.containerNo);
@@ -3114,12 +3243,16 @@
                         matchBadge.textContent = `⚠️ Container no missing (Status will update)`;
                         matchBadge.style.background = '#fef3c7';
                         matchBadge.style.color = '#b45309';
+                    } else if (existing >= maxAllowed) {
+                        matchBadge.textContent = `⚠️ Capacity Full: Booking me already ${existing}/${maxAllowed} containers map hain!`;
+                        matchBadge.style.background = '#fee2e2';
+                        matchBadge.style.color = '#dc2626';
                     } else if (p.manualCustomer) {
-                        matchBadge.textContent = `✅ MATCHED: ${p.manualCustomer} (Dispatched: ${existing}/${matchRow ? (matchRow.totalContainers || 1) : 1})`;
+                        matchBadge.textContent = `✅ MATCHED: ${p.manualCustomer} (Dispatched: ${existing + 1}/${maxAllowed})`;
                         matchBadge.style.background = '#dcfce7';
                         matchBadge.style.color = '#15803d';
                     } else if (matchRow) {
-                        matchBadge.textContent = `✅ MATCHED: ${matchRow.customer} (Dispatched: ${existing}/${matchRow.totalContainers || 1})`;
+                        matchBadge.textContent = `✅ MATCHED: ${matchRow.customer} (Dispatched: ${existing + 1}/${maxAllowed})`;
                         matchBadge.style.background = '#dcfce7';
                         matchBadge.style.color = '#15803d';
                     } else {
@@ -3139,18 +3272,22 @@
 
                 let allValid = true;
                 let htmlCards = '';
+                const batchBookingAssigned = {};
 
                 currentParsedDispatchList.forEach((p, idx) => {
                     const cleanB = (p.bookingNo || '').trim().toUpperCase();
                     let matchRow = cleanB ? allParsedRows.find(r => (r.booking || '').trim().toUpperCase() === cleanB) : null;
                     if (!matchRow && cleanB) {
-                        matchRow = allParsedRows.find(r => manualBookingMap[r.rowKey] === cleanB || manualBookingMap['cust_' + r.customer] === cleanB);
+                        matchRow = allParsedRows.find(r => manualBookingMap[r.rowKey] === cleanB);
                     }
                     if (!matchRow && p.manualMappedRowKey) {
                         matchRow = allParsedRows.find(r => r.rowKey === p.manualMappedRowKey);
                     }
 
                     const existingContainers = (cleanB && dispatchData[cleanB] && Array.isArray(dispatchData[cleanB].containers)) ? dispatchData[cleanB].containers : [];
+                    const maxAllowed = getBookingTotalCapacity(cleanB, p.manualMappedRowKey);
+                    const alreadyMappedCount = existingContainers.length;
+                    const priorInBatch = batchBookingAssigned[cleanB] || 0;
 
                     // Duplicate check
                     const coreP = getCoreContainerNo(p.containerNo);
@@ -3164,12 +3301,21 @@
                         cardBadge = `<span class="multi-match-badge" style="background:#fef3c7; color:#b45309;">⚠️ Pehle se map hai</span>`;
                     } else if (p.isContainerMissing) {
                         cardBadge = `<span class="multi-match-badge" style="background:#fee2e2; color:#dc2626;">⚠️ Container Missing</span>`;
-                    } else if (p.manualCustomer) {
-                        cardBadge = `<span class="multi-match-badge" style="background:#dcfce7; color:#15803d;">✅ Matched: ${escapeHtml(p.manualCustomer)}</span>`;
-                    } else if (matchRow) {
-                        cardBadge = `<span class="multi-match-badge" style="background:#dcfce7; color:#15803d;">✅ Matched (${existingContainers.length + 1}/${matchRow.totalContainers || 1})</span>`;
+                    } else if (alreadyMappedCount + priorInBatch >= maxAllowed) {
+                        if (p.selected === undefined) {
+                            p.selected = false;
+                        }
+                        cardBadge = `<span class="multi-match-badge" style="background:#fee2e2; color:#dc2626;">⚠️ Capacity Full (${maxAllowed} Max)</span>`;
                     } else {
-                        cardBadge = `<span class="multi-match-badge" style="background:#fef3c7; color:#b45309;">⚠️ Unplanned Booking</span>`;
+                        batchBookingAssigned[cleanB] = priorInBatch + 1;
+                        const currentNum = alreadyMappedCount + priorInBatch + 1;
+                        if (p.manualCustomer) {
+                            cardBadge = `<span class="multi-match-badge" style="background:#dcfce7; color:#15803d;">✅ Matched: ${escapeHtml(p.manualCustomer)} (${currentNum}/${maxAllowed})</span>`;
+                        } else if (matchRow) {
+                            cardBadge = `<span class="multi-match-badge" style="background:#dcfce7; color:#15803d;">✅ Matched (${currentNum}/${maxAllowed})</span>`;
+                        } else {
+                            cardBadge = `<span class="multi-match-badge" style="background:#fef3c7; color:#b45309;">⚠️ Unplanned Booking</span>`;
+                        }
                     }
 
                     const dispCntText = p.isContainerMissing ? '<span style="color:#dc2626;">Missing (/40 ignored)</span>' : escapeHtml(p.containerNo || 'No Container No');
@@ -3498,9 +3644,6 @@
                 // Handle manual customer mapping
                 if (parsed.manualMappedRowKey && cleanB) {
                     manualBookingMap[parsed.manualMappedRowKey] = cleanB;
-                    if (parsed.manualCustomer) {
-                        manualBookingMap['cust_' + parsed.manualCustomer] = cleanB;
-                    }
                     const mappedRow = allParsedRows.find(r => r.rowKey === parsed.manualMappedRowKey);
                     if (mappedRow) {
                         mappedRow.booking = cleanB;
@@ -3565,6 +3708,18 @@
                     }
                 }
 
+                // Capacity check: warn if adding container exceeds booking capacity in plan
+                const maxAllowed = getBookingTotalCapacity(cleanB, parsed.manualMappedRowKey);
+                const currentCount = byBooking[cleanB].length;
+                if (!parsed.isContainerMissing && currentCount >= maxAllowed) {
+                    const allowExcess = confirm(
+                        `⚠️ CAPACITY WARNING:\n\nBooking "${cleanB}" ki required capacity ${maxAllowed} containers hai, lekin aap isme ${currentCount + 1}th container "${parsed.containerNo}" map kar rahe hain.\n\nKya aap fir bhi is container ko save karna chahte hain?`
+                    );
+                    if (!allowExcess) {
+                        continue;
+                    }
+                }
+
                 // Add new container entry
                 byBooking[cleanB].push({
                     id: 'cnt_' + Date.now() + '_' + idx + '_' + Math.random().toString(36).substr(2, 4),
@@ -3588,16 +3743,30 @@
 
             // Auto-update Status to Dispatch for mapped bookings (clearing old remarks)
             for (const bNo of bookingKeys) {
-                const matchRow = allParsedRows.find(r => (r.booking || '').trim().toUpperCase() === bNo);
-                const targetRowKey = matchRow ? matchRow.rowKey : ('bk_' + bNo);
-                const cCount = byBooking[bNo].length;
-                const totalReq = matchRow ? (matchRow.totalContainers || 1) : 1;
+                const rowsForBooking = allParsedRows.filter(r => (r.booking || '').trim().toUpperCase() === bNo);
+                const totalContainersForBooking = byBooking[bNo].length;
 
-                if (!statusUpdates[targetRowKey]) {
-                    const newStatusText = (cCount >= totalReq)
-                        ? `Dispatch ${cCount} (All Sent)`
-                        : `Dispatch ${cCount} | Pending ${Math.max(0, totalReq - cCount)}`;
-                    statusUpdates[targetRowKey] = newStatusText;
+                if (rowsForBooking.length > 0) {
+                    let remainingContainers = totalContainersForBooking;
+                    rowsForBooking.forEach(r => {
+                        const req = r.totalContainers || 1;
+                        const thisRowContainers = Math.min(remainingContainers, req);
+                        remainingContainers = Math.max(0, remainingContainers - thisRowContainers);
+
+                        if (!statusUpdates[r.rowKey]) {
+                            const newStatusText = (thisRowContainers >= req)
+                                ? `Dispatch ${req} (All Sent)`
+                                : (thisRowContainers > 0
+                                    ? `Dispatch ${thisRowContainers} | Pending ${req - thisRowContainers}`
+                                    : 'Pending');
+                            statusUpdates[r.rowKey] = newStatusText;
+                        }
+                    });
+                } else {
+                    const targetRowKey = 'bk_' + bNo;
+                    if (!statusUpdates[targetRowKey]) {
+                        statusUpdates[targetRowKey] = `Dispatch ${totalContainersForBooking} (All Sent)`;
+                    }
                 }
 
                 // Determine customer from byBooking, parsed party name, or existing
@@ -4174,11 +4343,13 @@
 
             const excelRows = [];
             const handledBookings = new Set();
+            const allocatedMap = getBookingRowContainersMap();
+            const exportedContainers = new Set();
 
             allParsedRows.forEach(r => {
                 const cleanB = (r.booking && r.booking !== '-') ? r.booking.trim().toUpperCase() : '';
                 const dRecord = cleanB ? dispatchData[cleanB] : null;
-                const containers = (dRecord && Array.isArray(dRecord.containers)) ? dRecord.containers : [];
+                const rowContainers = allocatedMap[r.rowKey] || [];
                 const info = getRowStatusInfo(r);
                 const mapTime = getBookingMappedTime(cleanB);
                 const mapTimeStr = formatMapTime(mapTime).replace(/[()]/g, '');
@@ -4202,8 +4373,13 @@
                 if (!matchesDate) return;
                 if (cleanB) handledBookings.add(cleanB);
 
-                if (containers.length > 0) {
-                    containers.forEach(c => {
+                if (rowContainers.length > 0) {
+                    rowContainers.forEach(c => {
+                        const coreC = getCoreContainerNo(c.containerNo);
+                        const dedupKey = (cleanB || '') + '_' + (coreC || c.id || Math.random());
+                        if (exportedContainers.has(dedupKey)) return;
+                        exportedContainers.add(dedupKey);
+
                         if (dateType === 'mapping') {
                             const cTimeStr = c.updatedAt || c.addedAt;
                             if (cTimeStr) {
@@ -4288,6 +4464,10 @@
                     const dRecord = dispatchData[bNo];
                     if (!dRecord || !Array.isArray(dRecord.containers)) return;
                     dRecord.containers.forEach(c => {
+                        const coreC = getCoreContainerNo(c.containerNo);
+                        const dedupKey = bNo + '_' + (coreC || c.id || Math.random());
+                        if (exportedContainers.has(dedupKey)) return;
+                        exportedContainers.add(dedupKey);
                         const cTime = c.updatedAt || c.addedAt || dRecord.mappedAt;
                         if (cTime) {
                             const cIso = new Date(cTime).toISOString().slice(0, 10);

@@ -231,6 +231,41 @@
         }
         .stat-item:last-child { border-right: none; }
 
+        .stat-item-clickable {
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.15s ease;
+            border-radius: 8px;
+            padding: 4px 2px;
+        }
+        .stat-item-clickable:hover {
+            background: #f8fafc;
+        }
+        .stat-item-clickable.active {
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+        }
+        #statFilterAll.active {
+            background: #e8f5e9;
+            outline: 1.5px solid #2e7d32;
+        }
+        #statFilterSent.active {
+            background: #dcfce7;
+            outline: 1.5px solid #16a34a;
+        }
+        #statFilterPending.active {
+            background: #fee2e2;
+            outline: 1.5px solid #dc2626;
+        }
+        #statFilterRest.active {
+            background: #fef3c7;
+            outline: 1.5px solid #d97706;
+        }
+        .stat-sym {
+            font-size: 0.88rem;
+            vertical-align: middle;
+            margin-right: 2px;
+        }
+
         .stat-num {
             font-size: 1.15rem;
             font-weight: 800;
@@ -326,6 +361,32 @@
             align-items: center;
             gap: 6px;
             white-space: nowrap;
+        }
+
+        .booking-num-sym {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .booking-status-sym {
+            display: inline-block;
+            font-size: 0.88rem;
+            line-height: 1;
+            vertical-align: middle;
+        }
+
+        /* Desktop status indicator borders */
+        table.plan-styled-table tbody tr.card-status-sent td:first-child {
+            border-left: 4px solid #16a34a;
+        }
+        table.plan-styled-table tbody tr.card-status-pending td:first-child {
+            border-left: 4px solid #dc2626;
+        }
+        table.plan-styled-table tbody tr.card-status-rest td:first-child {
+            border-left: 4px solid #d97706;
         }
 
         .booking-row-chk {
@@ -1010,13 +1071,20 @@
 
             .stats-strip {
                 margin: 0 8px 8px;
-                padding: 6px 4px;
+                padding: 5px 3px;
+                gap: 2px;
             }
             .stat-num {
-                font-size: 1.05rem;
+                font-size: 0.95rem;
             }
             .stat-label {
-                font-size: 0.60rem;
+                font-size: 0.58rem;
+            }
+            .stat-sym {
+                font-size: 0.82rem;
+            }
+            .stat-item-clickable {
+                padding: 3px 1px;
             }
 
             .mobile-select-all-bar {
@@ -1084,6 +1152,23 @@
                 background-color: #ffffff !important;
             }
 
+            /* Mobile Card Border Colors based on Status (✅ Green, 🔴 Red, ⏳ Amber) */
+            table.plan-styled-table tbody tr.card-status-sent {
+                border: 1.5px solid #86efac !important;
+                border-left: 6px solid #16a34a !important;
+                background: #fbfdfb !important;
+            }
+            table.plan-styled-table tbody tr.card-status-pending {
+                border: 1.5px solid #fca5a5 !important;
+                border-left: 6px solid #dc2626 !important;
+                background: #fffafa !important;
+            }
+            table.plan-styled-table tbody tr.card-status-rest {
+                border: 1.5px solid #fde68a !important;
+                border-left: 6px solid #d97706 !important;
+                background: #fffdf5 !important;
+            }
+
             table.plan-styled-table td {
                 display: block !important;
                 border-right: none !important;
@@ -1114,6 +1199,19 @@
                 align-items: center !important;
                 gap: 6px !important;
                 flex-wrap: wrap !important;
+            }
+            .booking-num-sym {
+                display: inline-flex !important;
+                align-items: center !important;
+                gap: 5px !important;
+                white-space: nowrap !important;
+                flex-shrink: 0 !important;
+            }
+            .booking-status-sym {
+                display: inline-block !important;
+                font-size: 0.88rem !important;
+                line-height: 1 !important;
+                vertical-align: middle !important;
             }
             .mobile-meta-tag {
                 display: inline-flex !important;
@@ -1228,23 +1326,27 @@
         </div>
     </div>
 
-    <!-- STATS STRIP -->
-    <div class="stats-strip">
-        <div class="stat-item">
+    <!-- STATS STRIP WITH INTERACTIVE STATUS FILTERS (All, ✅, 🔴, ⏳) -->
+    <div class="stats-strip" id="statsStrip">
+        <div class="stat-item stat-item-clickable active" id="statFilterAll" onclick="setStatusFilter('all')" title="Click to show All Bookings">
             <div class="stat-num" id="statBookings">0</div>
             <div class="stat-label">Bookings</div>
         </div>
-        <div class="stat-item">
-            <div class="stat-num" id="stat20" style="color: #0284c7;">0</div>
-            <div class="stat-label">20" Cntr</div>
+        <div class="stat-item stat-item-clickable" id="statFilterSent" onclick="setStatusFilter('sent')" title="Click to filter ✅ Sent">
+            <div class="stat-num" style="color: #16a34a;"><span class="stat-sym">✅</span><span id="statSent">0</span></div>
+            <div class="stat-label">Sent</div>
         </div>
-        <div class="stat-item">
-            <div class="stat-num" id="stat40" style="color: #7c3aed;">0</div>
-            <div class="stat-label">40" Cntr</div>
+        <div class="stat-item stat-item-clickable" id="statFilterPending" onclick="setStatusFilter('pending')" title="Click to filter 🔴 Pending">
+            <div class="stat-num" style="color: #dc2626;"><span class="stat-sym">🔴</span><span id="statPending">0</span></div>
+            <div class="stat-label">Pending</div>
         </div>
-        <div class="stat-item">
+        <div class="stat-item stat-item-clickable" id="statFilterRest" onclick="setStatusFilter('rest')" title="Click to filter ⏳ Transit-Errors">
+            <div class="stat-num" style="color: #d97706;"><span class="stat-sym">⏳</span><span id="statRest">0</span></div>
+            <div class="stat-label">Transit-Errors</div>
+        </div>
+        <div class="stat-item" id="statItemUnits" title="Total Trailer Units (20' & 40')">
             <div class="stat-num" id="statTrailers" style="color: #2e7d32;">0</div>
-            <div class="stat-label">Total Units</div>
+            <div class="stat-label">Units (<span id="stat20" style="color: #0284c7;">0</span>•<span id="stat40" style="color: #7c3aed;">0</span>)</div>
         </div>
     </div>
 
@@ -1448,8 +1550,9 @@
         let allParsedRows = [];
         let filteredRows = [];
         let currentFilter = 'lastday_adv'; // Default: Last Day se advance kitne bhi din ho
+        let currentStatusFilter = 'all'; // Status filter: 'all', 'sent', 'pending', 'rest'
         let searchQuery = '';
-        const CACHE_KEY = 'kunal_sahi_exact_table_cache_v3';
+        const CACHE_KEY = 'kunal_sahi_exact_table_cache_v4';
         const STATUS_CACHE_KEY = 'kunal_plan_status_data';
         const DISPATCH_CACHE_KEY = 'kunal_dispatch_data_cache';
         const MANUAL_MAP_CACHE_KEY = 'kunal_manual_booking_map_cache';
@@ -1480,7 +1583,7 @@
         let statusSyncTimeout = null;
         let selectedBookings = new Set();
 
-        function saveRowStatus(key, val) {
+        function saveRowStatus(key, val, inputElem) {
             if (!val || val.trim() === '') {
                 delete statusData[key];
             } else {
@@ -1489,6 +1592,27 @@
             try {
                 localStorage.setItem(STATUS_CACHE_KEY, JSON.stringify(statusData));
             } catch(e) {}
+
+            // Real-time visual feedback on row icon, border color, and stats counter
+            if (inputElem) {
+                const tr = inputElem.closest('tr');
+                if (tr) {
+                    const cleanVal = (val || '').replace(/🔴\s*/g, '').trim();
+                    const isStandardPending = /^(?:Dispatch\s*\d+\s*\|\s*)?Pending(?:\s*\d+)?(?:\s*(?:Dispatch|Booking))?$/i.test(cleanVal);
+                    const hasDispatch = (/dispatch/i.test(cleanVal) || /all\s*sent/i.test(cleanVal)) && !/pending/i.test(cleanVal);
+
+                    const newType = hasDispatch ? 'sent' : (isStandardPending ? 'pending' : 'rest');
+                    const newSym = hasDispatch ? '✅' : (isStandardPending ? '🔴' : '⏳');
+
+                    tr.className = `status-row card-status-${newType}`;
+                    const symEl = tr.querySelector('.booking-status-sym');
+                    if (symEl) {
+                        symEl.textContent = newSym;
+                        symEl.title = cleanVal;
+                    }
+                }
+                updateStats();
+            }
 
             // Debounced Firestore sync
             clearTimeout(statusSyncTimeout);
@@ -1545,6 +1669,7 @@
                     await batch.commit();
                 }
                 showToast("✅ Status remarks saved successfully!");
+                applyFiltersAndRender();
             } catch (err) {
                 console.error("Save status remarks error:", err);
                 showToast("Saved locally in browser");
@@ -1920,6 +2045,101 @@
             applyFiltersAndRender();
         }
 
+        // ==========================================
+        //  ROW STATUS CLASSIFICATION & HELPER
+        // ==========================================
+        function getRowStatusInfo(r) {
+            const cleanBooking = (r.booking || '').trim().toUpperCase();
+            const dRecord = (cleanBooking && cleanBooking !== '-') ? dispatchData[cleanBooking] : null;
+            const containerList = (dRecord && Array.isArray(dRecord.containers)) ? dRecord.containers : [];
+            const dispatchedCount = containerList.length;
+            const totalRequired = r.totalContainers || 1;
+            const pendingCount = Math.max(0, totalRequired - dispatchedCount);
+            const isAllSent = (cleanBooking && cleanBooking !== '-') && (dispatchedCount >= totalRequired && containerList.length > 0);
+
+            const rowKey = r.rowKey || (cleanBooking && cleanBooking !== '-' ? 'bk_' + cleanBooking : ('rec_' + (r.customer || '') + '_' + r.displayDate + '_' + r.cnt));
+
+            let defaultStatus = 'Pending 1';
+            if (cleanBooking && cleanBooking !== '-') {
+                if (dispatchedCount > 0) {
+                    defaultStatus = isAllSent
+                        ? `Dispatch ${dispatchedCount} (All Sent)`
+                        : `Dispatch ${dispatchedCount} | Pending ${pendingCount}`;
+                } else {
+                    defaultStatus = `Pending ${totalRequired || 1}`;
+                }
+            } else {
+                defaultStatus = `Pending ${totalRequired || 1}`;
+            }
+
+            let currentStatusVal = (statusData && statusData[rowKey] !== undefined && statusData[rowKey] !== null)
+                ? statusData[rowKey]
+                : defaultStatus;
+
+            currentStatusVal = currentStatusVal.replace(/🔴\s*/g, '').trim();
+
+            // User Rule:
+            // 1. "Dispatch" word (without pending) OR all containers sent => ✅ Sent
+            // 2. Pure/standard "Pending" status (e.g. "Pending 1", "Dispatch 1 | Pending 1") => 🔴 Pending
+            // 3. ANY other remarks (e.g. "Trailer in yard, Sline Pending", "Trailer in yard", "In yard", etc.) => ⏳ Transit-Errors
+            const isStandardPending = /^(?:Dispatch\s*\d+\s*\|\s*)?Pending(?:\s*\d+)?(?:\s*(?:Dispatch|Booking))?$/i.test(currentStatusVal);
+            const hasDispatch = (/dispatch/i.test(currentStatusVal) || /all\s*sent/i.test(currentStatusVal) || isAllSent) && !/pending/i.test(currentStatusVal);
+
+            let statusType = 'rest';
+            let statusSymbol = '⏳';
+            let statusTitle = currentStatusVal || 'Transit-Errors';
+
+            if (hasDispatch) {
+                statusType = 'sent';
+                statusSymbol = '✅';
+                statusTitle = currentStatusVal || `Dispatch (${dispatchedCount}/${totalRequired})`;
+            } else if (isStandardPending) {
+                statusType = 'pending';
+                statusSymbol = '🔴';
+                statusTitle = currentStatusVal || `Pending (${pendingCount || totalRequired} pending)`;
+            } else {
+                statusType = 'rest';
+                statusSymbol = '⏳';
+                statusTitle = currentStatusVal || 'Transit-Errors';
+            }
+
+            return {
+                statusType,
+                statusSymbol,
+                statusTitle,
+                currentStatusVal,
+                defaultStatus,
+                rowKey,
+                isAllSent: hasDispatch,
+                dispatchedCount,
+                pendingCount,
+                totalRequired
+            };
+        }
+
+        function setStatusFilter(type) {
+            if (currentStatusFilter === type && type !== 'all') {
+                currentStatusFilter = 'all';
+            } else {
+                currentStatusFilter = type;
+            }
+            updateStatusFilterUI();
+            applyFiltersAndRender();
+        }
+
+        function updateStatusFilterUI() {
+            ['all', 'sent', 'pending', 'rest'].forEach(t => {
+                const el = document.getElementById('statFilter' + t.charAt(0).toUpperCase() + t.slice(1));
+                if (el) {
+                    if (currentStatusFilter === t) {
+                        el.classList.add('active');
+                    } else {
+                        el.classList.remove('active');
+                    }
+                }
+            });
+        }
+
         function applyFiltersAndRender() {
             const today = new Date();
             const yyyy = today.getFullYear();
@@ -1942,7 +2162,7 @@
             const tmrw_dd = String(tomorrow.getDate()).padStart(2, '0');
             const tmrwISO = `${tomorrow.getFullYear()}-${tmrw_mm}-${tmrw_dd}`;
 
-            filteredRows = allParsedRows.filter(r => {
+            const baseMatchingRows = allParsedRows.filter(r => {
                 const sDate = r.isoDate;
 
                 // Date Filtering
@@ -1967,23 +2187,42 @@
                 return true;
             });
 
+            // Update stats with all records matching current date & search query
+            updateStats(baseMatchingRows);
+
+            // Filter rows by interactive status filter (all, sent, pending, rest)
+            filteredRows = baseMatchingRows.filter(r => {
+                if (currentStatusFilter === 'all') return true;
+                const info = getRowStatusInfo(r);
+                return info.statusType === currentStatusFilter;
+            });
+
             // Priority sort: 1. Trident, 2. Jawandsons, 3. IOL Chemicals, 4. Rest all
             filteredRows.sort(compareCustomerShipper);
 
-            updateStats();
             renderTable();
         }
 
-        function updateStats() {
+        function updateStats(rows) {
             let total20 = 0;
             let total40 = 0;
             let totalBookings = 0;
+            let countSent = 0;
+            let countPending = 0;
+            let countRest = 0;
 
-            filteredRows.forEach(r => {
-                if (r.booking && r.booking !== '-') totalBookings++;
+            const list = rows || filteredRows;
+
+            list.forEach(r => {
+                totalBookings++;
+
+                const info = getRowStatusInfo(r);
+                if (info.statusType === 'sent') countSent++;
+                else if (info.statusType === 'pending') countPending++;
+                else if (info.statusType === 'rest') countRest++;
 
                 // parse cnt string e.g. 1x40, 2x40, 1x20
-                const match = r.cnt.match(/(\d+)[xX](\d+)/);
+                const match = (r.cnt || '').match(/(\d+)[xX](\d+)/);
                 if (match) {
                     const count = parseInt(match[1]) || 1;
                     const size = parseInt(match[2]);
@@ -1994,10 +2233,23 @@
                 }
             });
 
-            document.getElementById('statBookings').textContent = totalBookings;
-            document.getElementById('stat20').textContent = total20;
-            document.getElementById('stat40').textContent = total40;
-            document.getElementById('statTrailers').textContent = total20 + total40;
+            const elBookings = document.getElementById('statBookings');
+            const elSent = document.getElementById('statSent');
+            const elPending = document.getElementById('statPending');
+            const elRest = document.getElementById('statRest');
+            const el20 = document.getElementById('stat20');
+            const el40 = document.getElementById('stat40');
+            const elTrailers = document.getElementById('statTrailers');
+
+            if (elBookings) elBookings.textContent = totalBookings;
+            if (elSent) elSent.textContent = countSent;
+            if (elPending) elPending.textContent = countPending;
+            if (elRest) elRest.textContent = countRest;
+            if (el20) el20.textContent = total20;
+            if (el40) el40.textContent = total40;
+            if (elTrailers) elTrailers.textContent = total20 + total40;
+
+            updateStatusFilterUI();
         }
 
         // ==========================================
@@ -2022,15 +2274,11 @@
             const todayISO = `${yyyy}-${mm}-${dd}`;
 
             filteredRows.forEach(r => {
-                const tr = document.createElement('tr');
-
                 const cleanBooking = (r.booking || '').trim().toUpperCase();
-                const dRecord = dispatchData[cleanBooking];
-                const containerList = (dRecord && Array.isArray(dRecord.containers)) ? dRecord.containers : [];
-                const dispatchedCount = containerList.length;
-                const totalRequired = r.totalContainers || 1;
-                const pendingCount = Math.max(0, totalRequired - dispatchedCount);
-                const isAllSent = dispatchedCount >= totalRequired;
+                const info = getRowStatusInfo(r);
+
+                const tr = document.createElement('tr');
+                tr.className = `status-row card-status-${info.statusType}`;
 
                 // Shipping Line Tag
                 let lineTag = '';
@@ -2038,46 +2286,11 @@
                     lineTag = ` <span class="booking-line-tag">(${escapeHtml(r.line)})</span>`;
                 }
 
-                // Status Column value calculation (Clean text without emoji in the text box)
-                const rowKey = r.rowKey || (cleanBooking && cleanBooking !== '-' ? 'bk_' + cleanBooking : ('rec_' + (r.customer || '') + '_' + r.displayDate + '_' + r.cnt));
+                const currentStatusVal = info.currentStatusVal;
+                const defaultStatus = info.defaultStatus;
+                const rowKey = info.rowKey;
 
-                let defaultStatus = 'Pending 1';
-                if (cleanBooking && cleanBooking !== '-') {
-                    if (dispatchedCount > 0) {
-                        defaultStatus = isAllSent
-                            ? `Dispatch ${dispatchedCount} (All Sent)`
-                            : `Dispatch ${dispatchedCount} | Pending ${pendingCount}`;
-                    } else {
-                        defaultStatus = `Pending ${totalRequired || 1}`;
-                    }
-                } else {
-                    defaultStatus = `Pending ${totalRequired || 1}`;
-                }
-
-                // If user entered custom remarks in statusData, use that; otherwise use defaultStatus
-                let currentStatusVal = (statusData && statusData[rowKey] !== undefined && statusData[rowKey] !== null)
-                    ? statusData[rowKey]
-                    : defaultStatus;
-
-                // Ensure Remarks / Status input box has NO red dot emoji (clean text)
-                currentStatusVal = currentStatusVal.replace(/🔴\s*/g, '').trim();
-
-                // Status Symbol next to Booking No:
-                // All Sent hone par: ✅
-                // 'Pending' word hone par: 🔴
-                // Rest sabhi me: ⏳
-                let statusSymbol = '';
-                if (cleanBooking && cleanBooking !== '-') {
-                    if (isAllSent) {
-                        statusSymbol = ` <span class="booking-status-sym" title="All Sent (${dispatchedCount}/${totalRequired})">✅</span>`;
-                    } else if (/pending/i.test(currentStatusVal)) {
-                        statusSymbol = ` <span class="booking-status-sym" title="Pending (${pendingCount} pending)">🔴</span>`;
-                    } else {
-                        statusSymbol = ` <span class="booking-status-sym" title="${escapeHtml(currentStatusVal)}">⏳</span>`;
-                    }
-                }
-
-                // Booking cell with Checkbox for multi-selection, Hyperlink, line tag, and status symbol
+                // Booking cell with Checkbox for multi-selection, Hyperlink, and inline status symbol
                 let bookingHtml = '-';
                 if (r.booking && r.booking !== '-') {
                     const isChecked = selectedBookings.has(cleanBooking);
@@ -2090,11 +2303,31 @@
                                 ${isChecked ? 'checked' : ''}
                                 title="Select booking to share on WhatsApp"
                             />
-                            <a href="javascript:void(0)" class="booking-link" onclick="openBookingDetailsModal('${escapeHtml(cleanBooking)}')" title="View Dispatched Containers Details">${escapeHtml(r.booking)}</a>${lineTag}${statusSymbol}
+                            <span class="booking-num-sym">
+                                <a href="javascript:void(0)" class="booking-link" onclick="openBookingDetailsModal('${escapeHtml(cleanBooking)}')" title="View Dispatched Containers Details">${escapeHtml(r.booking)}</a>
+                                <span class="booking-status-sym" title="${escapeHtml(info.statusTitle)}">${info.statusSymbol}</span>
+                            </span>
+                            ${lineTag}
                         </span>
                     `;
                 } else if (lineTag) {
-                    bookingHtml = `<span class="cell-booking">${lineTag}</span>`;
+                    bookingHtml = `
+                        <span class="cell-booking">
+                            <span class="booking-num-sym">
+                                <span class="booking-status-sym" title="${escapeHtml(info.statusTitle)}">${info.statusSymbol}</span>
+                            </span>
+                            ${lineTag}
+                        </span>
+                    `;
+                } else {
+                    bookingHtml = `
+                        <span class="cell-booking">
+                            <span class="booking-num-sym">
+                                <span class="booking-status-sym" title="${escapeHtml(info.statusTitle)}">${info.statusSymbol}</span>
+                                <span>-</span>
+                            </span>
+                        </span>
+                    `;
                 }
 
                 // Date badge
@@ -2128,7 +2361,7 @@
                         value="${escapeHtml(currentStatusVal)}"
                         placeholder="${escapeHtml(defaultStatus)}"
                         data-rowkey="${escapeHtml(rowKey)}"
-                        oninput="saveRowStatus('${escapeHtml(rowKey)}', this.value)"
+                        oninput="saveRowStatus('${escapeHtml(rowKey)}', this.value, this)"
                         title="Click to edit status remarks"
                     />
                 `;
@@ -3144,11 +3377,16 @@
             const totalRequired = bRow ? (bRow.totalContainers || 1) : Math.max(1, containers.length);
             const isAllSent = containers.length >= totalRequired;
 
+            const statusRemark = getRowStatusRemark(bRow, bNo);
+
             let msg = `*HTPL CONTAINER DISPATCH REPORT*\n`;
             msg += `📦 Booking: ${bNo} (${line})\n`;
             msg += `🏢 Shipper: ${customer} - ${location}\n`;
             msg += `🗓️ Stuffing Date: ${sDate}\n`;
             msg += `📊 Status: Dispatch ${containers.length} | Pending ${Math.max(0, totalRequired - containers.length)} ${isAllSent ? '(All Sent)' : '(Pending)'}\n`;
+            if (statusRemark) {
+                msg += `📝 Remarks: ${statusRemark}\n`;
+            }
             msg += `------------------------------------\n\n`;
 
             if (containers.length === 0) {
@@ -3261,6 +3499,19 @@
             }
         }
 
+        // Helper to retrieve status remarks from statusData
+        function getRowStatusRemark(bookingRow, bookingNo) {
+            const bkg = (bookingNo || (bookingRow ? bookingRow.booking : '') || '').trim().toUpperCase();
+            const rowKey = (bookingRow && bookingRow.rowKey)
+                ? bookingRow.rowKey
+                : (bkg && bkg !== '-' ? 'bk_' + bkg : ('rec_' + (bookingRow ? bookingRow.customer : '') + '_' + (bookingRow ? bookingRow.displayDate : '') + '_' + (bookingRow ? bookingRow.cnt : '')));
+
+            if (statusData && statusData[rowKey]) {
+                return statusData[rowKey].replace(/🔴\s*/g, '').trim();
+            }
+            return '';
+        }
+
         // Format a single container in exact WhatsApp message format
         function formatContainerForWhatsApp(c, bookingRow) {
             const lines = [];
@@ -3276,6 +3527,13 @@
             const bkg = c.bookingNo || (bookingRow ? bookingRow.booking : '');
             if (bkg && bkg !== '-') lines.push(`BOOKING NO- ${bkg}`);
             if (c.route) lines.push(c.route);
+
+            // Remarks picked directly from Status column in the table
+            const statusRemark = getRowStatusRemark(bookingRow, c.bookingNo);
+            if (statusRemark) {
+                lines.push(`REMARKS- ${statusRemark}`);
+            }
+
             return lines.join('\n');
         }
 
@@ -3307,7 +3565,8 @@
                         if (bRow.location) bMsg += `\nLOCATION- ${bRow.location}`;
                         bMsg += `\nCONTAINER- ${bRow.cnt}`;
                     }
-                    bMsg += `\nSTATUS- Pending Dispatch`;
+                    const statusRemark = getRowStatusRemark(bRow, bookingNo) || 'Pending Dispatch';
+                    bMsg += `\nREMARKS- ${statusRemark}`;
                     messageBlocks.push(bMsg);
                 }
             });
@@ -3348,9 +3607,15 @@
                 const total = r.totalContainers || 1;
                 const stat = count >= total ? '(All Sent)' : `(Dispatch ${count} | Pending ${Math.max(0, total - count)})`;
 
+                const statusRemark = getRowStatusRemark(r, cleanB);
+
                 msg += `*${idx + 1}. ${custLoc}*\n`;
                 msg += `🔖 Booking: ${r.booking}${lineInfo} | ${r.cnt}\n`;
-                msg += `🗓️ Date: ${r.displayDate} - ${stat}\n\n`;
+                msg += `🗓️ Date: ${r.displayDate} - ${stat}\n`;
+                if (statusRemark) {
+                    msg += `📝 Remarks: ${statusRemark}\n`;
+                }
+                msg += `\n`;
             });
 
             msg += `------------------------------------\n`;

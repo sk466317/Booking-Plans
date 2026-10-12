@@ -214,6 +214,159 @@
             box-shadow: 0 2px 5px rgba(56, 142, 60, 0.3);
         }
 
+        .pill-date-range-group {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: #f1f8f1;
+            border: 1px solid #c8e6c9;
+            border-radius: 14px;
+            padding: 2px 8px;
+            font-size: 0.68rem;
+            font-weight: 700;
+            color: #2e7d32;
+            white-space: nowrap;
+            transition: all 0.15s ease;
+        }
+        .pill-date-range-group.active {
+            background: #e8f5e9;
+            border-color: #2e7d32;
+            box-shadow: 0 2px 6px rgba(46, 125, 50, 0.25);
+        }
+        .range-prefix {
+            font-size: 0.75rem;
+            user-select: none;
+        }
+        .range-input-wrap {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            font-size: 0.66rem;
+            color: #2e7d32;
+            cursor: pointer;
+        }
+        .range-input-wrap span {
+            font-weight: 700;
+        }
+        .range-input-wrap input[type="date"] {
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: #1e293b;
+            background: #ffffff;
+            border: 1px solid #94a3b8;
+            border-radius: 4px;
+            padding: 1px 4px;
+            height: 22px;
+            outline: none;
+            cursor: pointer;
+        }
+        .range-input-wrap input[type="date"]:focus {
+            border-color: #16a34a;
+        }
+        .range-arrow {
+            font-size: 0.65rem;
+            color: #64748b;
+            user-select: none;
+            font-weight: 800;
+        }
+        .btn-clear-date-range {
+            background: #fee2e2;
+            color: #dc2626;
+            border: 1px solid #fca5a5;
+            border-radius: 50%;
+            width: 17px;
+            height: 17px;
+            font-size: 0.62rem;
+            line-height: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            padding: 0;
+            margin-left: 2px;
+            font-weight: 800;
+            transition: all 0.15s;
+        }
+        .btn-clear-date-range:hover {
+            background: #dc2626;
+            color: white;
+        }
+
+        .editable-date-btn {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+            background: #f1f5f9;
+            border: 1px dashed #94a3b8;
+            border-radius: 4px;
+            padding: 1px 4px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: #0f172a;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.15s ease;
+        }
+        .editable-date-btn:hover {
+            background: #e2e8f0;
+            border-color: #0284c7;
+        }
+        .editable-date-btn.edited {
+            background: #e0f2fe;
+            border: 1.5px solid #0284c7;
+            color: #0369a1;
+        }
+        .editable-date-btn input[type="date"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .booking-input-inline {
+            font-size: 0.68rem;
+            font-weight: 800;
+            color: #0d47a1;
+            background: #ffffff;
+            border: 1.5px solid #0284c7;
+            border-radius: 4px;
+            padding: 1px 5px;
+            outline: none;
+            max-width: 110px;
+            line-height: 1.2;
+            transition: all 0.15s;
+        }
+        .booking-input-inline.empty {
+            border: 1.5px dashed #2563eb;
+            background: #eff6ff;
+            color: #1d4ed8;
+            max-width: 120px;
+        }
+        .booking-input-inline:focus {
+            border-color: #16a34a;
+            background: #ffffff;
+            box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.2);
+        }
+        .btn-edit-booking-inline {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.62rem;
+            padding: 0 2px;
+            color: #64748b;
+            line-height: 1;
+            vertical-align: middle;
+            transition: transform 0.1s;
+        }
+        .btn-edit-booking-inline:hover {
+            color: #0284c7;
+            transform: scale(1.15);
+        }
+
         /* Stats Bar */
         .stats-strip {
             display: flex;
@@ -1570,13 +1723,25 @@
             <button class="pill-btn" data-filter="today" onclick="setDateFilter('today', this)">Today</button>
             <button class="pill-btn" data-filter="tomorrow" onclick="setDateFilter('tomorrow', this)">Tomorrow</button>
             <button class="pill-btn" data-filter="advance_only" onclick="setDateFilter('advance_only', this)">Advance Only</button>
-            <button class="pill-btn" data-filter="all" onclick="setDateFilter('all', this)">All Records</button>
+            <div class="pill-date-range-group" id="pillDateRangeGroup" title="Filter by Stuffing Date Range (From - To)">
+                <span class="range-prefix">📅</span>
+                <label class="range-input-wrap" title="From Date (Is date se)">
+                    <span>From:</span>
+                    <input type="date" id="dateFilterFrom" onchange="handleDateRangeFilterChange()" />
+                </label>
+                <span class="range-arrow">➔</span>
+                <label class="range-input-wrap" title="To Date (Is date tak)">
+                    <span>To:</span>
+                    <input type="date" id="dateFilterTo" onchange="handleDateRangeFilterChange()" />
+                </label>
+                <button type="button" class="btn-clear-date-range" id="btnClearDateRange" onclick="clearDateRangeFilter()" title="Clear Date Range" style="display:none;">✕</button>
+            </div>
         </div>
     </div>
 
     <!-- STATS STRIP WITH INTERACTIVE STATUS FILTERS (All, ✅, 🔴, ⏳) -->
     <div class="stats-strip" id="statsStrip">
-        <div class="stat-item stat-item-clickable active" id="statFilterAll" onclick="setStatusFilter('all')" title="Click to show All Bookings">
+        <div class="stat-item stat-item-clickable" id="statFilterAll" onclick="setStatusFilter('all')" title="Click to show All Bookings">
             <div class="stat-num" id="statBookings">0</div>
             <div class="stat-label">Bookings</div>
         </div>
@@ -1584,7 +1749,7 @@
             <div class="stat-num" style="color: #16a34a;"><span class="stat-sym">✅</span><span id="statSent">0</span></div>
             <div class="stat-label">Sent</div>
         </div>
-        <div class="stat-item stat-item-clickable" id="statFilterPending" onclick="setStatusFilter('pending')" title="Click to filter 🔴 Pending">
+        <div class="stat-item stat-item-clickable active" id="statFilterPending" onclick="setStatusFilter('pending')" title="Click to filter 🔴 Pending">
             <div class="stat-num" style="color: #dc2626;"><span class="stat-sym">🔴</span><span id="statPending">0</span></div>
             <div class="stat-label">Pending</div>
         </div>
@@ -1891,7 +2056,7 @@
         let allParsedRows = [];
         let filteredRows = [];
         let currentFilter = 'lastday_adv'; // Default: Last Day se advance kitne bhi din ho
-        let currentStatusFilter = 'all'; // Status filter: 'all', 'sent', 'pending', 'rest'
+        let currentStatusFilter = 'pending'; // Default: 'pending' selected on page load
         let searchQuery = '';
         const CACHE_KEY = 'kunal_sahi_exact_table_cache_v4';
         const STATUS_CACHE_KEY = 'kunal_plan_status_data';
@@ -1923,6 +2088,100 @@
         let currentParsedDispatchList = [];
         let statusSyncTimeout = null;
         let selectedBookings = new Set();
+
+        const STUFFING_DATE_CACHE_KEY = 'kunal_edited_stuffing_dates';
+        let editedStuffingDates = {};
+        try {
+            editedStuffingDates = JSON.parse(localStorage.getItem(STUFFING_DATE_CACHE_KEY) || '{}');
+        } catch(e) {
+            editedStuffingDates = {};
+        }
+
+        let pendingBookingEdits = {};
+        let pendingDateEdits = {};
+        let filterDateFromVal = '';
+        let filterDateToVal = '';
+
+        function handleDateRangeFilterChange() {
+            const fromInp = document.getElementById('dateFilterFrom');
+            const toInp = document.getElementById('dateFilterTo');
+            let fromVal = fromInp ? fromInp.value : '';
+            let toVal = toInp ? toInp.value : '';
+
+            if (!fromVal && !toVal) {
+                clearDateRangeFilter();
+                return;
+            }
+
+            if (fromVal && toVal && fromVal > toVal) {
+                // Auto swap if from is after to
+                const temp = fromVal;
+                fromVal = toVal;
+                toVal = temp;
+                if (fromInp) fromInp.value = fromVal;
+                if (toInp) toInp.value = toVal;
+            }
+
+            filterDateFromVal = fromVal;
+            filterDateToVal = toVal;
+            currentFilter = 'date_range';
+
+            document.querySelectorAll('.filter-row .pill-btn').forEach(b => b.classList.remove('active'));
+            const group = document.getElementById('pillDateRangeGroup');
+            if (group) group.classList.add('active');
+
+            const clearBtn = document.getElementById('btnClearDateRange');
+            if (clearBtn) clearBtn.style.display = 'inline-flex';
+
+            applyFiltersAndRender();
+        }
+
+        function clearDateRangeFilter() {
+            filterDateFromVal = '';
+            filterDateToVal = '';
+            const fromInp = document.getElementById('dateFilterFrom');
+            if (fromInp) fromInp.value = '';
+            const toInp = document.getElementById('dateFilterTo');
+            if (toInp) toInp.value = '';
+
+            const group = document.getElementById('pillDateRangeGroup');
+            if (group) group.classList.remove('active');
+
+            const clearBtn = document.getElementById('btnClearDateRange');
+            if (clearBtn) clearBtn.style.display = 'none';
+
+            setDateFilter('lastday_adv', document.querySelector('[data-filter="lastday_adv"]'));
+        }
+
+        function onBookingInputChange(rowKey, val) {
+            const cleanB = (val || '').trim().toUpperCase();
+            pendingBookingEdits[rowKey] = cleanB;
+        }
+
+        function toggleBookingEditInput(rowKey, btn) {
+            const wrap = btn.closest('.booking-num-sym');
+            if (!wrap) return;
+            const link = wrap.querySelector('.booking-link');
+            const input = wrap.querySelector('.booking-input-inline');
+            if (link && input) {
+                link.style.display = 'none';
+                btn.style.display = 'none';
+                input.style.display = 'inline-block';
+                input.focus();
+                input.select();
+            }
+        }
+
+        function onRowDateChange(rowKey, val, inputElem) {
+            if (!val) return;
+            pendingDateEdits[rowKey] = val;
+            const btn = inputElem.closest('.editable-date-btn');
+            if (btn) {
+                btn.classList.add('edited');
+                const txt = btn.querySelector('.date-text');
+                if (txt) txt.textContent = formatStuffingDate(val);
+            }
+        }
 
         function saveRowStatus(key, val, inputElem) {
             if (!val || val.trim() === '') {
@@ -1970,9 +2229,9 @@
             }, 800);
         }
 
-        // Save All Status Remarks immediately to Firestore & localStorage
+        // Save All Status Remarks, Added/Edited Bookings, and Edited Stuffing Dates immediately to Firestore & localStorage
         async function saveAllStatusRemarks() {
-            // Read directly from all active status inputs in the table to capture latest edits
+            // 1. Read directly from all active status inputs in the table to capture latest edits
             document.querySelectorAll('.status-input').forEach(inp => {
                 const rKey = inp.getAttribute('data-rowkey');
                 const val = (inp.value || '').trim();
@@ -1982,9 +2241,24 @@
                 }
             });
 
-            try {
-                localStorage.setItem(STATUS_CACHE_KEY, JSON.stringify(statusData));
-            } catch(e) {}
+            // 2. Read directly from all booking inputs
+            document.querySelectorAll('.booking-input-inline').forEach(inp => {
+                const rKey = inp.getAttribute('data-rowkey');
+                const val = (inp.value || '').trim().toUpperCase();
+                if (rKey && val) {
+                    pendingBookingEdits[rKey] = val;
+                }
+            });
+
+            // 3. Read directly from all edited stuffing date inputs
+            document.querySelectorAll('.row-date-input').forEach(inp => {
+                const rKey = inp.getAttribute('data-rowkey');
+                const val = (inp.value || '').trim();
+                const btn = inp.closest('.editable-date-btn');
+                if (rKey && val && btn && btn.classList.contains('edited')) {
+                    pendingDateEdits[rKey] = val;
+                }
+            });
 
             const saveBtn = document.getElementById('btnSaveStatusRemarks');
             if (saveBtn) {
@@ -1995,25 +2269,130 @@
             try {
                 const batch = db.batch();
                 let opCount = 0;
-                for (const [k, text] of Object.entries(statusData)) {
+
+                // 1. Direct Firebase updates to SALES_COLLECTION (master plan documents)
+                const salesUpdates = {};
+
+                for (const [rKey, dVal] of Object.entries(pendingDateEdits)) {
+                    if (rKey && dVal) {
+                        editedStuffingDates[rKey] = dVal;
+                        const targetRow = allParsedRows.find(r => r.rowKey === rKey);
+                        if (targetRow) {
+                            targetRow.isoDate = dVal;
+                            targetRow.displayDate = formatStuffingDate(dVal);
+                            const recId = targetRow.recordId;
+                            if (recId) {
+                                if (!salesUpdates[recId]) salesUpdates[recId] = { row: targetRow };
+                                salesUpdates[recId].stuffingDate = dVal;
+                            }
+                        }
+                    }
+                }
+
+                for (const [rKey, bNo] of Object.entries(pendingBookingEdits)) {
+                    if (rKey && bNo) {
+                        manualBookingMap[rKey] = bNo;
+                        const targetRow = allParsedRows.find(r => r.rowKey === rKey);
+                        if (targetRow) {
+                            targetRow.booking = bNo;
+                            const recId = targetRow.recordId;
+                            if (recId) {
+                                if (!salesUpdates[recId]) salesUpdates[recId] = { row: targetRow };
+                                salesUpdates[recId].bookingNo = bNo;
+                            }
+                        }
+                    }
+                }
+
+                // Apply SALES_COLLECTION updates in Firebase
+                for (const [recId, data] of Object.entries(salesUpdates)) {
+                    if (recId) {
+                        const sRef = SALES_COLLECTION.doc(recId);
+                        const updatePayload = {
+                            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                        };
+                        if (data.stuffingDate) {
+                            updatePayload.stuffingDate = data.stuffingDate;
+                        }
+                        if (data.bookingNo) {
+                            updatePayload.bookingNo = data.bookingNo;
+                            const row = data.row;
+                            const oldRem = (row && row.rawRecord && (row.rawRecord.remarks || row.rawRecord.remark)) ? (row.rawRecord.remarks || row.rawRecord.remark) : '';
+                            if (oldRem) {
+                                if (oldRem.includes('(')) {
+                                    updatePayload.remarks = oldRem.replace(/\(\s*-\s*,/g, `(${data.bookingNo},`).replace(/\(\s*-\s*\)/g, `(${data.bookingNo})`);
+                                } else {
+                                    updatePayload.remarks = `(${data.bookingNo}, ${(row && row.cnt) || '1x40'}) ${oldRem}`.trim();
+                                }
+                            } else {
+                                updatePayload.remarks = `(${data.bookingNo}, ${(row && row.cnt) || '1x40'})`;
+                            }
+                        }
+                        batch.set(sRef, updatePayload, { merge: true });
+                        opCount++;
+                    }
+                }
+
+                // 2. Persist to STATUS_COLLECTION in Firebase
+                const allKeys = new Set([
+                    ...Object.keys(statusData),
+                    ...Object.keys(pendingDateEdits),
+                    ...Object.keys(pendingBookingEdits)
+                ]);
+
+                for (const k of allKeys) {
                     if (k) {
                         const ref = STATUS_COLLECTION.doc(k);
-                        batch.set(ref, {
+                        const payload = {
                             key: k,
-                            statusText: text,
+                            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                        };
+                        if (statusData[k] !== undefined) payload.statusText = statusData[k];
+                        if (editedStuffingDates[k] !== undefined) payload.stuffingDate = editedStuffingDates[k];
+                        if (manualBookingMap[k] !== undefined) payload.bookingNo = manualBookingMap[k];
+
+                        batch.set(ref, payload, { merge: true });
+                        opCount++;
+                    }
+                }
+
+                // 3. Persist to MANUAL_MAP_COLLECTION in Firebase
+                for (const [rKey, bNo] of Object.entries(pendingBookingEdits)) {
+                    if (rKey && bNo) {
+                        const mRef = MANUAL_MAP_COLLECTION.doc(rKey);
+                        const targetRow = allParsedRows.find(r => r.rowKey === rKey);
+                        batch.set(mRef, {
+                            rowKey: rKey,
+                            bookingNo: bNo,
+                            customer: targetRow ? targetRow.customer : '',
+                            recordId: targetRow ? (targetRow.recordId || '') : '',
                             updatedAt: firebase.firestore.FieldValue.serverTimestamp()
                         }, { merge: true });
                         opCount++;
                     }
                 }
+
+                // Update caches
+                localStorage.setItem(MANUAL_MAP_CACHE_KEY, JSON.stringify(manualBookingMap));
+                localStorage.setItem(STUFFING_DATE_CACHE_KEY, JSON.stringify(editedStuffingDates));
+                localStorage.setItem(STATUS_CACHE_KEY, JSON.stringify(statusData));
+                try {
+                    localStorage.setItem(CACHE_KEY, JSON.stringify(allParsedRows));
+                } catch(e) {}
+
                 if (opCount > 0) {
                     await batch.commit();
                 }
-                showToast("✅ Status remarks saved successfully!");
+
+                pendingBookingEdits = {};
+                pendingDateEdits = {};
+
+                showToast("✅ Status, Booking & Dates Firebase me successfully update ho gaye!");
                 applyFiltersAndRender();
             } catch (err) {
-                console.error("Save status remarks error:", err);
+                console.error("Save status/booking/date error:", err);
                 showToast("Saved locally in browser");
+                applyFiltersAndRender();
             } finally {
                 if (saveBtn) {
                     saveBtn.disabled = false;
@@ -2062,6 +2441,7 @@
                 const cached = localStorage.getItem(CACHE_KEY);
                 if (cached) {
                     allParsedRows = JSON.parse(cached);
+                    applyManualMapsToParsedRows();
                     applyFiltersAndRender();
                 }
             } catch (e) {
@@ -2094,7 +2474,7 @@
                         allParsedRows.push(...parsedList);
                     });
 
-                    // Apply manual booking mappings (for customers mapped manually via dispatch)
+                    // Apply manual booking mappings & edited dates
                     applyManualMapsToParsedRows();
 
                     // Priority sort: Trident -> Jawandsons -> IOL Chemicals -> Others
@@ -2132,19 +2512,31 @@
                     console.warn("Dispatch Listen Error:", err);
                 });
 
-                // 3. Listen to Custom Status Remarks
+                // 3. Listen to Custom Status Remarks & Overrides
                 STATUS_COLLECTION.onSnapshot((snapshot) => {
                     snapshot.docs.forEach(doc => {
                         const d = doc.data();
-                        if (d && d.statusText !== undefined) {
-                            statusData[doc.id] = d.statusText;
+                        if (d) {
+                            if (d.statusText !== undefined) {
+                                statusData[doc.id] = d.statusText;
+                            }
+                            if (d.stuffingDate) {
+                                editedStuffingDates[doc.id] = d.stuffingDate;
+                            }
+                            if (d.bookingNo && !manualBookingMap[doc.id]) {
+                                manualBookingMap[doc.id] = d.bookingNo;
+                            }
                         }
                     });
                     try {
                         localStorage.setItem(STATUS_CACHE_KEY, JSON.stringify(statusData));
+                        localStorage.setItem(STUFFING_DATE_CACHE_KEY, JSON.stringify(editedStuffingDates));
+                        localStorage.setItem(MANUAL_MAP_CACHE_KEY, JSON.stringify(manualBookingMap));
                     } catch(e) {}
-                    // Only re-render if user is not actively typing inside a status input
-                    if (!document.activeElement || !document.activeElement.classList.contains('status-input')) {
+                    applyManualMapsToParsedRows();
+                    // Only re-render if user is not actively typing inside a status or booking input
+                    const activeEl = document.activeElement;
+                    if (!activeEl || (!activeEl.classList.contains('status-input') && !activeEl.classList.contains('booking-input-inline'))) {
                         renderTable();
                     }
                 }, (err) => {
@@ -2179,34 +2571,84 @@
             }
         }
 
-        // Apply manually mapped booking numbers to parsed rows strictly per rowKey
+        // Apply manually mapped booking numbers & edited stuffing dates strictly per rowKey
         function applyManualMapsToParsedRows() {
             if (!allParsedRows || allParsedRows.length === 0) return;
             allParsedRows.forEach(r => {
                 if (manualBookingMap[r.rowKey]) {
                     r.booking = manualBookingMap[r.rowKey];
                 }
+                if (editedStuffingDates[r.rowKey]) {
+                    r.isoDate = normalizeIsoDate(editedStuffingDates[r.rowKey]);
+                    r.displayDate = formatStuffingDate(r.isoDate);
+                }
             });
+        }
+
+        const FULL_MONTH_NAMES = [
+            'January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'
+        ];
+
+        function normalizeIsoDate(dateStr) {
+            if (!dateStr || dateStr === '-') return '';
+            const s = String(dateStr).trim();
+            // YYYY-MM-DD
+            let m = s.match(/^(\d{4})[-/.](\d{1,2})[-/.](\d{1,2})/);
+            if (m) {
+                return `${m[1]}-${String(m[2]).padStart(2, '0')}-${String(m[3]).padStart(2, '0')}`;
+            }
+            // DD-MM-YYYY
+            m = s.match(/^(\d{1,2})[-/.](\d{1,2})[-/.](\d{4})/);
+            if (m) {
+                return `${m[3]}-${String(m[2]).padStart(2, '0')}-${String(m[1]).padStart(2, '0')}`;
+            }
+            return dateStr;
+        }
+
+        function formatStuffingDate(dateStr) {
+            if (!dateStr || dateStr === '-') return '-';
+            const s = String(dateStr).trim();
+            
+            // YYYY-MM-DD
+            let m = s.match(/^(\d{4})[-/.](\d{1,2})[-/.](\d{1,2})/);
+            if (m) {
+                const yyyy = m[1];
+                const mIdx = parseInt(m[2], 10) - 1;
+                const dd = String(m[3]).padStart(2, '0');
+                if (mIdx >= 0 && mIdx < 12) {
+                    return `${dd}-${FULL_MONTH_NAMES[mIdx]}-${yyyy}`;
+                }
+            }
+            
+            // DD-MM-YYYY
+            m = s.match(/^(\d{1,2})[-/.](\d{1,2})[-/.](\d{4})/);
+            if (m) {
+                const dd = String(m[1]).padStart(2, '0');
+                const mIdx = parseInt(m[2], 10) - 1;
+                const yyyy = m[3];
+                if (mIdx >= 0 && mIdx < 12) {
+                    return `${dd}-${FULL_MONTH_NAMES[mIdx]}-${yyyy}`;
+                }
+            }
+            
+            return dateStr;
         }
 
         // ==========================================
         //  PARSER: BREAKS REMARKS INTO INDIVIDUAL ROWS
         // ==========================================
         function parseRecordToBookingRows(record) {
-            const rem = ((record.remarks || record.remark || '')).trim();
+            let rem = ((record.remarks || record.remark || '')).trim();
+            if (record.bookingNo && !rem.includes(record.bookingNo)) {
+                rem = `(${record.bookingNo}) ` + rem;
+            }
             const sdate = (record.stuffingDate || '').trim();
+            const isoDate = normalizeIsoDate(sdate);
+            const displayDate = formatStuffingDate(sdate);
             const loc = (record.location || '').trim().toUpperCase() || 'TRIDENT DHAULA';
             const c20 = parseInt(record.container20) || 0;
             const c40 = parseInt(record.container40) || 0;
-
-            // Formatted Date: DD-MM-YYYY
-            let displayDate = sdate;
-            if (sdate && sdate.includes('-')) {
-                const parts = sdate.split('-');
-                if (parts.length === 3) {
-                    displayDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
-                }
-            }
 
             // Fallback container label
             let fallbackCnt = '';
@@ -2307,12 +2749,14 @@
                     const rowKey = 'rec_' + recUid + (cleanB ? ('_' + cleanB) : '');
 
                     rows.push({
+                        recordId: record.id,
+                        rawRecord: record,
                         rowKey: rowKey,
                         booking: booking,
                         cnt: cnt,
                         totalContainers: totalUnits,
                         displayDate: displayDate,
-                        isoDate: sdate,
+                        isoDate: isoDate,
                         location: loc,
                         line: line,
                         customer: (record.customerName || '').toUpperCase(),
@@ -2356,12 +2800,14 @@
                 const rowKey = 'rec_' + recUid + (cleanB ? ('_' + cleanB) : '');
 
                 rows.push({
+                    recordId: record.id,
+                    rawRecord: record,
                     rowKey: rowKey,
                     booking: bookingNo,
                     cnt: cnt,
                     totalContainers: totalUnits,
                     displayDate: displayDate,
-                    isoDate: sdate,
+                    isoDate: isoDate,
                     location: loc,
                     line: line,
                     customer: (record.customerName || '').toUpperCase(),
@@ -2377,7 +2823,18 @@
         // ==========================================
         function setDateFilter(filterType, element) {
             currentFilter = filterType;
-            document.querySelectorAll('.pill-btn').forEach(b => b.classList.remove('active'));
+            filterDateFromVal = '';
+            filterDateToVal = '';
+            const fromInp = document.getElementById('dateFilterFrom');
+            if (fromInp) fromInp.value = '';
+            const toInp = document.getElementById('dateFilterTo');
+            if (toInp) toInp.value = '';
+            const group = document.getElementById('pillDateRangeGroup');
+            if (group) group.classList.remove('active');
+            const clearBtn = document.getElementById('btnClearDateRange');
+            if (clearBtn) clearBtn.style.display = 'none';
+
+            document.querySelectorAll('.filter-row .pill-btn').forEach(b => b.classList.remove('active'));
             if (element) element.classList.add('active');
             applyFiltersAndRender();
         }
@@ -2426,12 +2883,16 @@
 
         function formatMapTime(dateObj) {
             if (!dateObj || !(dateObj instanceof Date) || isNaN(dateObj.getTime())) return '';
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
             const dd = String(dateObj.getDate()).padStart(2, '0');
-            const mm = String(dateObj.getMonth() + 1).padStart(2, '0');
-            const yy = String(dateObj.getFullYear()).slice(-2);
-            const hh = String(dateObj.getHours()).padStart(2, '0');
+            const mmm = months[dateObj.getMonth()];
+            let hours = dateObj.getHours();
+            const ampm = hours >= 12 ? 'pm' : 'am';
+            hours = hours % 12;
+            hours = hours ? hours : 12;
+            const hh = String(hours).padStart(2, '0');
             const min = String(dateObj.getMinutes()).padStart(2, '0');
-            return `(${dd}.${mm}.${yy} ${hh}:${min})`;
+            return `${dd}-${mmm} ${hh}:${min}${ampm}`;
         }
 
         // Helper to allocate containers to rows sharing the same booking based on row capacity
@@ -2525,9 +2986,12 @@
 
             currentStatusVal = currentStatusVal.replace(/🔴\s*/g, '').trim();
 
-            // Auto-correct stale or out-of-bounds dispatch counts
-            if (/^Dispatch\s+\d+/i.test(currentStatusVal)) {
-                currentStatusVal = defaultStatus;
+            // Auto-correct stale dispatch counts only when containers are mapped and count strictly exceeds totalRequired
+            if (dispatchedCount > 0) {
+                const dispMatch = currentStatusVal.match(/^Dispatch\s+(\d+)/i);
+                if (dispMatch && parseInt(dispMatch[1]) > totalRequired) {
+                    currentStatusVal = defaultStatus;
+                }
             }
 
             // User Rule:
@@ -2627,6 +3091,9 @@
                     if (sDate !== tmrwISO) return false;
                 } else if (currentFilter === 'advance_only') {
                     if (sDate <= tmrwISO) return false;
+                } else if (currentFilter === 'date_range') {
+                    if (filterDateFromVal && sDate < filterDateFromVal) return false;
+                    if (filterDateToVal && sDate > filterDateToVal) return false;
                 }
                 // 'all' shows all history
 
@@ -2751,16 +3218,16 @@
                     lineTag = `<span class="booking-line-tag">(${escapeHtml(r.line)})</span>`;
                 }
 
-                // Map Time Tag: (dd.mm.yy hh:mm)
+                // Map Time Tag: 11-Oct 03:24pm
                 const mapTime = getBookingMappedTime(cleanBooking);
                 const mapTimeStr = formatMapTime(mapTime);
-                const mapTimeLine = mapTimeStr ? `<div class="booking-time-line"><span class="booking-map-time">🕒 (${mapTimeStr})</span></div>` : '';
+                const mapTimeLine = mapTimeStr ? `<div class="booking-time-line"><span class="booking-map-time">✅ ${mapTimeStr}</span></div>` : '';
 
                 const currentStatusVal = info.currentStatusVal;
                 const defaultStatus = info.defaultStatus;
                 const rowKey = info.rowKey;
 
-                // Booking cell with Checkbox for multi-selection, Hyperlink, inline status symbol, and shipping line right with Booking No
+                // Booking cell with Checkbox for multi-selection, Hyperlink, and shipping line right with Booking No
                 let bookingHtml = '-';
                 if (r.booking && r.booking !== '-') {
                     const isChecked = selectedBookings.has(cleanBooking);
@@ -2776,19 +3243,16 @@
                                 />
                                 <span class="booking-num-sym">
                                     <a href="javascript:void(0)" class="booking-link" onclick="openBookingDetailsModal('${escapeHtml(cleanBooking)}')" title="View Dispatched Containers Details">${escapeHtml(r.booking)}</a>
-                                    <span class="booking-status-sym" title="${escapeHtml(info.statusTitle)}">${info.statusSymbol}</span>
-                                    ${lineTag}
-                                </span>
-                            </div>
-                            ${mapTimeLine}
-                        </div>
-                    `;
-                } else if (lineTag) {
-                    bookingHtml = `
-                        <div class="booking-wrap">
-                            <div class="booking-main-line">
-                                <span class="booking-num-sym">
-                                    <span class="booking-status-sym" title="${escapeHtml(info.statusTitle)}">${info.statusSymbol}</span>
+                                    <button type="button" class="btn-edit-booking-inline" onclick="toggleBookingEditInput('${escapeHtml(rowKey)}', this)" title="Edit Booking No">✏️</button>
+                                    <input type="text"
+                                        class="booking-input-inline"
+                                        data-rowkey="${escapeHtml(rowKey)}"
+                                        data-recordid="${escapeHtml(r.recordId || '')}"
+                                        value="${escapeHtml(pendingBookingEdits[rowKey] || r.booking)}"
+                                        style="display:none;"
+                                        placeholder="Booking No"
+                                        oninput="onBookingInputChange('${escapeHtml(rowKey)}', this.value)"
+                                    />
                                     ${lineTag}
                                 </span>
                             </div>
@@ -2800,21 +3264,38 @@
                         <div class="booking-wrap">
                             <div class="booking-main-line">
                                 <span class="booking-num-sym">
-                                    <span class="booking-status-sym" title="${escapeHtml(info.statusTitle)}">${info.statusSymbol}</span>
-                                    <span>-</span>
+                                    <input type="text"
+                                        class="booking-input-inline empty"
+                                        data-rowkey="${escapeHtml(rowKey)}"
+                                        data-recordid="${escapeHtml(r.recordId || '')}"
+                                        value="${escapeHtml(pendingBookingEdits[rowKey] || '')}"
+                                        placeholder="+ Add Booking"
+                                        oninput="onBookingInputChange('${escapeHtml(rowKey)}', this.value)"
+                                        title="Type booking number and click Save Status"
+                                    />
+                                    ${lineTag}
                                 </span>
                             </div>
+                            ${mapTimeLine}
                         </div>
                     `;
                 }
 
-                // Date badge
-                let dateBadge = '';
-                if (r.isoDate === todayISO) {
-                    dateBadge = `<span class="date-badge-today">Today</span>`;
-                } else if (r.isoDate > todayISO) {
-                    dateBadge = `<span class="date-badge-adv">Adv</span>`;
-                }
+                const isDateEdited = !!(pendingDateEdits[rowKey] || (editedStuffingDates && editedStuffingDates[rowKey]));
+                const dateBtnClass = isDateEdited ? 'editable-date-btn edited' : 'editable-date-btn';
+
+                const editableDateHtml = `
+                    <span class="${dateBtnClass}" title="Click to edit Stuffing Date">
+                        <span class="date-text">${escapeHtml(r.displayDate)}</span> ✏️
+                        <input type="date"
+                            class="row-date-input"
+                            data-rowkey="${escapeHtml(rowKey)}"
+                            data-recordid="${escapeHtml(r.recordId || '')}"
+                            value="${escapeHtml(r.isoDate || '')}"
+                            onchange="onRowDateChange('${escapeHtml(rowKey)}', this.value, this)"
+                        />
+                    </span>
+                `;
 
                 // Customer + Location combined display with Customer Remarks (e.g. TRIDENT DHAULA (NISHU))
                 const custName = r.customer || '';
@@ -2827,7 +3308,7 @@
                             <span class="cust-text">${escapeHtml(custName || locName || '-')}${remarkTag}</span>
                             ${(locName && custName && locName.toUpperCase() !== custName.toUpperCase()) ? `<span class="cust-loc-sub">📍 ${escapeHtml(locName)}</span>` : ''}
                         </div>
-                        <span class="mobile-meta-tag">${escapeHtml(r.cnt)} • ${escapeHtml(r.displayDate)}${dateBadge}</span>
+                        <span class="mobile-meta-tag">${escapeHtml(r.cnt)} • ${editableDateHtml}</span>
                     </div>
                 `;
 
@@ -2837,6 +3318,7 @@
                         value="${escapeHtml(currentStatusVal)}"
                         placeholder="${escapeHtml(defaultStatus)}"
                         data-rowkey="${escapeHtml(rowKey)}"
+                        data-recordid="${escapeHtml(r.recordId || '')}"
                         oninput="saveRowStatus('${escapeHtml(rowKey)}', this.value, this)"
                         title="Click to edit status remarks"
                     />
@@ -2848,7 +3330,7 @@
                     <td class="cell-booking-col">${bookingHtml}</td>
                     <td class="cell-status">${statusHtml}</td>
                     <td class="cell-cnt">${escapeHtml(r.cnt)}</td>
-                    <td class="cell-date">${escapeHtml(r.displayDate)}${dateBadge}</td>
+                    <td class="cell-date">${editableDateHtml}</td>
                 `;
 
                 tbody.appendChild(tr);
@@ -4326,13 +4808,6 @@
                 if (r && r.includes('TO')) return r;
             }
             return fallbackRoute || 'PGL TO BARNALA TO HTPL';
-        }
-
-        function formatStuffingDate(dateStr) {
-            if (!dateStr || dateStr === '-') return '-';
-            const m = dateStr.match(/^(\d{4})-(\d{2})-(\d{2})/);
-            if (m) return `${m[3]}-${m[2]}-${m[1]}`;
-            return dateStr;
         }
 
         function getFilteredExcelData() {

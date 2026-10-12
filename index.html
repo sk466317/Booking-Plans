@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#388e3c">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>HTPL - Kunal Sahi Export Plan</title>
+    <title>HTPL - Export Movement Export Plan</title>
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,16 +23,16 @@
 
     <style>
         :root {
-            --tbl-header-bg: #43a047;
-            --tbl-header-bg-gradient: linear-gradient(180deg, #4caf50 0%, #388e3c 100%);
+            --tbl-header-bg: #2b5b84;
+            --tbl-header-bg-gradient: linear-gradient(180deg, #3a75a4 0%, #1e4263 100%);
             --tbl-header-text: #ffffff;
-            --tbl-row-alt: #f0f7f0;
-            --tbl-row-hover: #e3f2e1;
-            --tbl-border: #e0e0e0;
-            --tbl-text: #222222;
-            --app-bg: #1e293b;
-            --card-bg: #ffffff;
-            --accent-green: #388e3c;
+            --tbl-row-alt: #f1f5f9;
+            --tbl-row-hover: #e2e8f0;
+            --tbl-border: #94a3b8;
+            --tbl-text: #0f172a;
+            --app-bg: #cbd5e1;
+            --card-bg: #f8fafc;
+            --accent-green: #2e7d32;
         }
 
         * {
@@ -43,22 +43,24 @@
         }
 
         body {
-            font-family: 'Segoe UI', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            font-family: 'Segoe UI', Tahoma, -apple-system, BlinkMacSystemFont, sans-serif;
             background-color: var(--app-bg);
+            background-image: linear-gradient(180deg, #94a3b8 0%, #cbd5e1 120px);
             color: var(--tbl-text);
             min-height: 100vh;
             padding-bottom: 70px;
         }
 
-        /* Top Mobile App Header */
+        /* Top Mobile App Header - Classic VB 3D Title Bar */
         .app-bar {
-            background: linear-gradient(135deg, #1e3a1e 0%, #2e7d32 100%);
+            background: linear-gradient(180deg, #1e4263 0%, #0d2740 100%);
             color: #ffffff;
-            padding: 12px 14px;
+            padding: 10px 14px;
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            border-bottom: 2px solid #0f172a;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.25);
         }
 
         .app-bar-inner {
@@ -125,32 +127,45 @@
         }
 
         .btn-action {
-            background: rgba(255, 255, 255, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.25);
+            background: linear-gradient(180deg, #334155 0%, #1e293b 100%);
+            border: 2px solid #0f172a;
+            border-top: 2px solid #64748b;
+            border-left: 2px solid #64748b;
+            border-right: 2px solid #0f172a;
+            border-bottom: 2px solid #0f172a;
             color: white;
-            padding: 6px 10px;
-            border-radius: 8px;
+            padding: 5px 11px;
+            border-radius: 4px;
             font-size: 0.76rem;
-            font-weight: 700;
+            font-weight: 800;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
             cursor: pointer;
+            box-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.6);
         }
 
         .btn-action:active {
-            transform: scale(0.95);
-            background: rgba(255, 255, 255, 0.3);
+            border-top: 2px solid #0f172a !important;
+            border-left: 2px solid #0f172a !important;
+            border-right: 2px solid #64748b !important;
+            border-bottom: 2px solid #64748b !important;
+            transform: translate(1px, 1px);
         }
 
-        /* Controls Section */
+        /* Controls Section - 3D VB GroupBox Panel */
         .controls-panel {
-            background: var(--card-bg);
+            background: #e2e8f0;
             margin: 10px 10px 8px;
-            padding: 10px;
-            border-radius: 12px;
-            border: 1px solid #dcdcdc;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            padding: 9px 12px;
+            border-radius: 4px;
+            border: 2px solid #94a3b8;
+            border-top: 2px solid #ffffff;
+            border-left: 2px solid #ffffff;
+            border-right: 2px solid #64748b;
+            border-bottom: 2px solid #64748b;
+            box-shadow: 1px 1px 4px rgba(0,0,0,0.18);
         }
 
         .search-box {
@@ -160,20 +175,25 @@
 
         .search-box input {
             width: 100%;
-            padding: 7px 10px 7px 32px;
+            padding: 6px 10px 6px 32px;
             font-size: 0.80rem;
-            border: 1.5px solid #c8e6c9;
-            border-radius: 8px;
-            background: #fafdfa;
-            color: #222;
+            border: 2px solid #94a3b8;
+            border-top: 2px solid #475569;
+            border-left: 2px solid #475569;
+            border-right: 2px solid #ffffff;
+            border-bottom: 2px solid #ffffff;
+            border-radius: 3px;
+            background: #ffffff;
+            color: #0f172a;
             outline: none;
+            box-shadow: inset 1px 1px 3px rgba(0,0,0,0.15);
             transition: all 0.2s;
         }
 
         .search-box input:focus {
-            border-color: var(--accent-green);
-            background: #ffffff;
-            box-shadow: 0 0 0 3px rgba(67, 160, 71, 0.15);
+            border-top-color: #1e3a1e;
+            border-left-color: #1e3a1e;
+            box-shadow: inset 1px 1px 3px rgba(0,0,0,0.25), 0 0 0 2px rgba(46, 125, 50, 0.25);
         }
 
         .search-box svg {
@@ -181,7 +201,7 @@
             left: 10px;
             top: 50%;
             transform: translateY(-50%);
-            color: #666;
+            color: #475569;
         }
 
         /* Date Filter Bar */
@@ -196,42 +216,66 @@
 
         .pill-btn {
             padding: 4px 10px;
-            border-radius: 14px;
+            border-radius: 3px;
             font-size: 0.68rem;
-            font-weight: 700;
-            border: 1px solid #c8e6c9;
-            background: #f1f8f1;
-            color: #2e7d32;
+            font-weight: 800;
+            border: 2px solid #94a3b8;
+            border-top: 2px solid #ffffff;
+            border-left: 2px solid #ffffff;
+            border-right: 2px solid #475569;
+            border-bottom: 2px solid #475569;
+            background: linear-gradient(180deg, #f8fafc 0%, #cbd5e1 100%);
+            color: #1e293b;
             white-space: nowrap;
             cursor: pointer;
-            transition: all 0.15s;
+            box-shadow: 1px 1px 2px rgba(0,0,0,0.15);
+            transition: all 0.1s;
         }
 
         .pill-btn.active {
-            background: var(--accent-green);
+            background: linear-gradient(180deg, #15803d 0%, #166534 100%);
             color: white;
-            border-color: var(--accent-green);
-            box-shadow: 0 2px 5px rgba(56, 142, 60, 0.3);
+            border-top: 2px solid #0f172a;
+            border-left: 2px solid #0f172a;
+            border-right: 2px solid #86efac;
+            border-bottom: 2px solid #86efac;
+            box-shadow: inset 1px 1px 2px rgba(0,0,0,0.3);
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+        }
+
+        .pill-btn:active {
+            border-top: 2px solid #475569;
+            border-left: 2px solid #475569;
+            border-right: 2px solid #ffffff;
+            border-bottom: 2px solid #ffffff;
         }
 
         .pill-date-range-group {
             display: inline-flex;
             align-items: center;
             gap: 4px;
-            background: #f1f8f1;
-            border: 1px solid #c8e6c9;
-            border-radius: 14px;
+            background: #f1f5f9;
+            border: 2px solid #94a3b8;
+            border-top: 2px solid #ffffff;
+            border-left: 2px solid #ffffff;
+            border-right: 2px solid #475569;
+            border-bottom: 2px solid #475569;
+            border-radius: 3px;
             padding: 2px 8px;
             font-size: 0.68rem;
-            font-weight: 700;
-            color: #2e7d32;
+            font-weight: 800;
+            color: #1e293b;
             white-space: nowrap;
-            transition: all 0.15s ease;
+            box-shadow: 1px 1px 2px rgba(0,0,0,0.15);
+            transition: all 0.1s ease;
         }
         .pill-date-range-group.active {
-            background: #e8f5e9;
-            border-color: #2e7d32;
-            box-shadow: 0 2px 6px rgba(46, 125, 50, 0.25);
+            background: #e2e8f0;
+            border-top: 2px solid #0f172a;
+            border-left: 2px solid #0f172a;
+            border-right: 2px solid #ffffff;
+            border-bottom: 2px solid #ffffff;
+            box-shadow: inset 1px 1px 2px rgba(0,0,0,0.25);
         }
         .range-prefix {
             font-size: 0.75rem;
@@ -367,43 +411,56 @@
             transform: scale(1.15);
         }
 
-        /* Stats Bar */
+        /* Stats Bar - 3D VB Status Panel */
         .stats-strip {
             display: flex;
             align-items: center;
             justify-content: space-around;
-            background: #ffffff;
+            background: #e2e8f0;
             margin: 0 10px 8px;
-            padding: 8px 6px;
-            border-radius: 10px;
-            border: 1px solid #dcdcdc;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            padding: 6px 6px;
+            border-radius: 4px;
+            border: 2px solid #94a3b8;
+            border-top: 2px solid #ffffff;
+            border-left: 2px solid #ffffff;
+            border-right: 2px solid #64748b;
+            border-bottom: 2px solid #64748b;
+            box-shadow: 1px 1px 4px rgba(0,0,0,0.18);
         }
 
         .stat-item {
             text-align: center;
             flex: 1;
-            border-right: 1px solid #eee;
+            border-right: 1px solid #cbd5e1;
+            box-shadow: 1px 0 0 #ffffff;
         }
-        .stat-item:last-child { border-right: none; }
+        .stat-item:last-child { 
+            border-right: none; 
+            box-shadow: none;
+        }
 
         .stat-item-clickable {
             cursor: pointer;
             user-select: none;
-            transition: all 0.15s ease;
-            border-radius: 8px;
-            padding: 4px 2px;
+            transition: all 0.1s ease;
+            border-radius: 3px;
+            padding: 4px 3px;
+            border: 1px solid transparent;
         }
         .stat-item-clickable:hover {
-            background: #f8fafc;
+            background: #f1f5f9;
         }
         .stat-item-clickable.active {
-            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+            box-shadow: inset 1px 1px 3px rgba(0,0,0,0.35) !important;
         }
         #statFilterAll.active {
-            background: #1e3a1e;
+            background: linear-gradient(180deg, #1e3a1e 0%, #0f2411 100%);
             color: #ffffff;
-            outline: 2px solid #14532d;
+            border: 2px solid #0f172a;
+            border-top: 2px solid #0f172a;
+            border-left: 2px solid #0f172a;
+            border-right: 2px solid #86efac;
+            border-bottom: 2px solid #86efac;
         }
         #statFilterAll.active .stat-num {
             color: #ffffff;
@@ -413,9 +470,13 @@
         }
 
         #statFilterSent.active {
-            background: #15803d;
+            background: linear-gradient(180deg, #15803d 0%, #166534 100%);
             color: #ffffff;
-            outline: 2px solid #166534;
+            border: 2px solid #0f172a;
+            border-top: 2px solid #0f172a;
+            border-left: 2px solid #0f172a;
+            border-right: 2px solid #86efac;
+            border-bottom: 2px solid #86efac;
         }
         #statFilterSent.active .stat-num {
             color: #ffffff;
@@ -425,9 +486,13 @@
         }
 
         #statFilterPending.active {
-            background: #b91c1c;
+            background: linear-gradient(180deg, #b91c1c 0%, #991b1b 100%);
             color: #ffffff;
-            outline: 2px solid #991b1b;
+            border: 2px solid #0f172a;
+            border-top: 2px solid #0f172a;
+            border-left: 2px solid #0f172a;
+            border-right: 2px solid #fca5a5;
+            border-bottom: 2px solid #fca5a5;
         }
         #statFilterPending.active .stat-num {
             color: #ffffff;
@@ -437,9 +502,13 @@
         }
 
         #statFilterRest.active {
-            background: #b45309;
+            background: linear-gradient(180deg, #b45309 0%, #92400e 100%);
             color: #ffffff;
-            outline: 2px solid #92400e;
+            border: 2px solid #0f172a;
+            border-top: 2px solid #0f172a;
+            border-left: 2px solid #0f172a;
+            border-right: 2px solid #fde68a;
+            border-bottom: 2px solid #fde68a;
         }
         #statFilterRest.active .stat-num {
             color: #ffffff;
@@ -456,26 +525,30 @@
         .stat-num {
             font-size: 1.15rem;
             font-weight: 800;
-            color: #1e3a1e;
+            color: #0f172a;
             line-height: 1.1;
         }
 
         .stat-label {
             font-size: 0.58rem;
-            font-weight: 700;
-            color: #666666;
+            font-weight: 800;
+            color: #475569;
             text-transform: uppercase;
             margin-top: 2px;
         }
 
-        /* MAIN STYLED TABLE (Matching User Image) */
+        /* MAIN STYLED TABLE - 3D VB DataGrid Container */
         .table-card {
             margin: 0 10px 30px 10px;
             background: #ffffff;
-            border-radius: 8px;
+            border-radius: 4px;
             overflow: hidden;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
-            border: 1px solid #d0d0d0;
+            box-shadow: 2px 2px 6px rgba(0,0,0,0.25);
+            border: 2px solid #94a3b8;
+            border-top: 2px solid #ffffff;
+            border-left: 2px solid #ffffff;
+            border-right: 2px solid #475569;
+            border-bottom: 2px solid #475569;
             width: fit-content;
             max-width: calc(100% - 20px);
         }
@@ -493,24 +566,30 @@
         }
 
         table.plan-styled-table thead th {
-            background-color: var(--tbl-header-bg);
-            color: var(--tbl-header-text);
-            padding: 4px 8px;
-            font-weight: 700;
+            background: linear-gradient(180deg, #3a75a4 0%, #1e4263 100%);
+            color: #ffffff;
+            padding: 5px 9px;
+            font-weight: 800;
             font-size: 0.76rem;
             white-space: nowrap;
-            border-right: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid #0f172a;
+            border-top: 1px solid #60a5fa;
+            border-left: 1px solid #60a5fa;
+            border-right: 1px solid #0f172a;
+            border-bottom: 2px solid #0f172a;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.6);
             position: sticky;
             top: 0;
             z-index: 10;
         }
 
         table.plan-styled-table thead th:last-child {
-            border-right: none;
+            border-right: 1px solid #0f172a;
         }
 
         table.plan-styled-table tbody tr {
-            border-bottom: 1px solid var(--tbl-border);
+            border-bottom: 1px solid #cbd5e1;
             transition: background-color 0.1s ease;
         }
 
@@ -520,11 +599,11 @@
         }
 
         table.plan-styled-table tbody tr:nth-child(odd) {
-            background-color: var(--tbl-row-alt);
+            background-color: #f1f5f9;
         }
 
         table.plan-styled-table tbody tr:hover {
-            background-color: var(--tbl-row-hover);
+            background-color: #e2e8f0;
         }
 
         table.plan-styled-table td {
@@ -532,7 +611,8 @@
             color: var(--tbl-text);
             font-size: 0.76rem;
             vertical-align: middle;
-            border-right: 1px solid #ebebeb;
+            border-right: 1px solid #cbd5e1;
+            border-bottom: 1px solid #cbd5e1;
             white-space: nowrap;
         }
 
@@ -755,20 +835,26 @@
             padding: 3px 6px;
             font-size: 0.72rem;
             font-family: inherit;
-            font-weight: 600;
-            color: #111;
+            font-weight: 700;
+            color: #0f172a;
             background: #ffffff;
-            border: 1.5px solid #c8e6c9;
-            border-radius: 5px;
+            border: 2px solid #94a3b8;
+            border-top: 2px solid #64748b;
+            border-left: 2px solid #64748b;
+            border-right: 2px solid #cbd5e1;
+            border-bottom: 2px solid #cbd5e1;
+            border-radius: 3px;
             outline: none;
-            transition: all 0.2s;
+            box-shadow: inset 1px 1px 2px rgba(0,0,0,0.15);
+            transition: all 0.15s;
             box-sizing: border-box;
         }
 
         .status-input:focus {
-            border-color: #2e7d32;
-            background: #fbfdfb;
-            box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.2);
+            border-top-color: #1e3a1e;
+            border-left-color: #1e3a1e;
+            background: #ffffff;
+            box-shadow: inset 1px 1px 2px rgba(0,0,0,0.2), 0 0 0 2px rgba(46, 125, 50, 0.2);
         }
 
         .booking-link {
@@ -863,12 +949,17 @@
         }
 
         .modal-card {
-            background: #ffffff;
+            background: #f1f5f9;
             width: 100%;
             max-width: 520px;
             max-height: 90vh;
-            border-radius: 14px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.25);
+            border-radius: 6px;
+            border: 2px solid #334155;
+            border-top: 2px solid #94a3b8;
+            border-left: 2px solid #94a3b8;
+            border-right: 2px solid #0f172a;
+            border-bottom: 2px solid #0f172a;
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45), inset 1px 1px 0 #ffffff;
             display: flex;
             flex-direction: column;
             overflow: hidden;
@@ -881,107 +972,162 @@
         }
 
         .modal-header {
-            background: linear-gradient(135deg, #1e3a1e 0%, #2e7d32 100%);
+            background: linear-gradient(180deg, #2e7d32 0%, #1e3a1e 100%);
             color: white;
-            padding: 14px 16px;
+            padding: 10px 14px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            border-bottom: 2px solid #0f172a;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
         }
 
         .modal-title {
-            font-size: 1.05rem;
+            font-size: 0.96rem;
             font-weight: 800;
+            letter-spacing: 0.3px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
         }
 
         .modal-close-btn {
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            color: white;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            font-size: 1.2rem;
+            background: #e2e8f0;
+            border: 2px solid #334155;
+            border-top: 2px solid #ffffff;
+            border-left: 2px solid #ffffff;
+            border-right: 2px solid #0f172a;
+            border-bottom: 2px solid #0f172a;
+            color: #0f172a;
+            width: 26px;
+            height: 26px;
+            border-radius: 3px;
+            font-size: 1.1rem;
+            font-weight: 900;
             line-height: 1;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+        .modal-close-btn:active {
+            border-top: 2px solid #0f172a;
+            border-left: 2px solid #0f172a;
+            border-right: 2px solid #ffffff;
+            border-bottom: 2px solid #ffffff;
         }
 
         .modal-body {
-            padding: 16px;
+            padding: 14px;
             overflow-y: auto;
             flex: 1;
+            background: #f1f5f9;
         }
 
         .modal-footer {
-            padding: 12px 16px;
-            background: #f8fafc;
-            border-top: 1px solid #e2e8f0;
+            padding: 10px 14px;
+            background: #e2e8f0;
+            border-top: 2px solid #cbd5e1;
+            box-shadow: inset 0 1px 0 #ffffff;
             display: flex;
             gap: 10px;
             justify-content: flex-end;
         }
 
         .btn-modal {
-            padding: 9px 16px;
-            border-radius: 8px;
+            padding: 8px 16px;
+            border-radius: 4px;
             font-size: 0.85rem;
-            font-weight: 700;
-            border: none;
+            font-weight: 800;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            transition: all 0.15s;
+            transition: all 0.1s;
+            border: 2px solid;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.25);
         }
 
         .btn-modal-primary {
-            background: #2e7d32;
+            background: linear-gradient(180deg, #388e3c 0%, #1b5e20 100%);
             color: white;
+            border-color: #0f172a;
+            border-top-color: #81c784;
+            border-left-color: #81c784;
+            border-right-color: #0f172a;
+            border-bottom-color: #0f172a;
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
         }
-        .btn-modal-primary:hover { background: #1b5e20; }
+        .btn-modal-primary:hover { background: #2e7d32; }
+        .btn-modal-primary:active {
+            border-top-color: #0f172a;
+            border-left-color: #0f172a;
+            border-right-color: #81c784;
+            border-bottom-color: #81c784;
+        }
 
         .btn-modal-secondary {
-            background: #e2e8f0;
-            color: #334155;
+            background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%);
+            color: #0f172a;
+            border-color: #64748b;
+            border-top-color: #ffffff;
+            border-left-color: #ffffff;
+            border-right-color: #334155;
+            border-bottom-color: #334155;
         }
+        .btn-modal-secondary:active {
+            border-top-color: #334155;
+            border-left-color: #334155;
+            border-right-color: #ffffff;
+            border-bottom-color: #ffffff;
+        }
+
         .btn-modal-whatsapp {
             background: #25D366;
             color: white;
+            border: 2px solid #128C7E;
         }
 
         /* Dispatch Input & Preview */
         .dispatch-textarea {
             width: 100%;
-            height: 150px;
-            padding: 10px;
-            border: 1.5px solid #cbd5e1;
-            border-radius: 8px;
+            height: 140px;
+            padding: 8px 10px;
+            background: #ffffff;
+            border: 2px solid #94a3b8;
+            border-top: 2px solid #475569;
+            border-left: 2px solid #475569;
+            border-right: 2px solid #cbd5e1;
+            border-bottom: 2px solid #cbd5e1;
+            border-radius: 3px;
             font-family: monospace;
             font-size: 0.84rem;
             outline: none;
             resize: vertical;
             box-sizing: border-box;
+            box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.15);
         }
         .dispatch-textarea:focus {
-            border-color: #2e7d32;
-            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.15);
+            border-color: #1e3a1e;
+            box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.2), 0 0 0 2px rgba(46, 125, 50, 0.25);
         }
 
         .preview-box {
-            margin-top: 12px;
-            background: #f8fafc;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 12px;
+            margin-top: 10px;
+            background: #e2e8f0;
+            border: 2px solid #64748b;
+            border-top: 2px solid #475569;
+            border-left: 2px solid #475569;
+            border-right: 2px solid #ffffff;
+            border-bottom: 2px solid #ffffff;
+            border-radius: 4px;
+            padding: 10px;
+            box-shadow: inset 1px 1px 2px rgba(0,0,0,0.12);
         }
 
         .preview-title {
             font-size: 0.78rem;
             font-weight: 800;
-            color: #475569;
+            color: #1e293b;
             text-transform: uppercase;
             margin-bottom: 8px;
             display: flex;
@@ -1051,12 +1197,17 @@
             display: flex;
             align-items: stretch;
             justify-content: space-between;
-            background: #f8fafc;
-            border: 1.5px solid #cbd5e1;
-            border-radius: 6px;
-            padding: 6px 10px;
+            background: #ffffff;
+            border: 2px solid #94a3b8;
+            border-top: 2px solid #64748b;
+            border-left: 2px solid #64748b;
+            border-right: 2px solid #cbd5e1;
+            border-bottom: 2px solid #cbd5e1;
+            border-radius: 4px;
+            padding: 8px 10px;
             margin: 6px 0 8px 0;
             gap: 8px;
+            box-shadow: inset 1px 1px 2px rgba(0,0,0,0.06);
         }
         .crosscheck-col {
             flex: 1;
@@ -1066,9 +1217,9 @@
         }
         .crosscheck-lbl {
             font-size: 0.68rem;
-            font-weight: 700;
+            font-weight: 800;
             text-transform: uppercase;
-            color: #64748b;
+            color: #475569;
             margin-bottom: 2px;
         }
         .crosscheck-val {
@@ -1092,20 +1243,31 @@
 
         /* Customer Picker in Crosscheck Box */
         .btn-crosscheck-select {
-            background: #e0f2fe;
+            background: linear-gradient(180deg, #e0f2fe 0%, #bae6fd 100%);
             color: #0369a1;
-            border: 1px solid #7dd3fc;
-            border-radius: 4px;
+            border: 1px solid #0284c7;
+            border-top: 1px solid #ffffff;
+            border-left: 1px solid #ffffff;
+            border-right: 1px solid #0369a1;
+            border-bottom: 1px solid #0369a1;
+            border-radius: 3px;
             padding: 2px 7px;
             font-size: 0.7rem;
-            font-weight: 700;
+            font-weight: 800;
             cursor: pointer;
             line-height: 1.2;
-            transition: all 0.15s ease;
+            transition: all 0.1s ease;
+            box-shadow: 1px 1px 1px rgba(0,0,0,0.15);
         }
         .btn-crosscheck-select:hover {
             background: #0284c7;
             color: #ffffff;
+        }
+        .btn-crosscheck-select:active {
+            border-top: 1px solid #0369a1;
+            border-left: 1px solid #0369a1;
+            border-right: 1px solid #ffffff;
+            border-bottom: 1px solid #ffffff;
         }
         .cust-picker-menu {
             background: #ffffff;
@@ -1439,39 +1601,50 @@
             table.plan-styled-table tbody {
                 display: flex !important;
                 flex-direction: column !important;
-                gap: 6px !important;
+                gap: 12px !important;
                 width: 100% !important;
+                padding-bottom: 8px !important;
             }
             table.plan-styled-table tbody tr {
                 display: flex !important;
                 flex-direction: column !important;
-                gap: 2px !important;
+                gap: 4px !important;
                 width: 100% !important;
-                padding: 4px 6px !important;
+                padding: 7px 9px !important;
                 background: #ffffff !important;
-                border-radius: 5px !important;
-                border: 1px solid #cbd5e1 !important;
-                box-shadow: 0 2px 6px rgba(0,0,0,0.25) !important;
+                border-radius: 4px !important;
+                border: 2px solid #94a3b8 !important;
+                border-top: 2px solid #ffffff !important;
+                border-left: 2px solid #ffffff !important;
+                border-right: 2px solid #64748b !important;
+                border-bottom: 2px solid #64748b !important;
+                box-shadow: 2px 2px 5px rgba(0,0,0,0.2) !important;
                 box-sizing: border-box !important;
             }
             table.plan-styled-table tbody tr:nth-child(even) {
                 background-color: #ffffff !important;
             }
 
-            /* Darker / richer highlighted background for status cards */
+            /* 3D Highlighted Status Cards */
             table.plan-styled-table tbody tr.card-status-sent {
-                border: 1.5px solid #4ade80 !important;
+                border-top: 2px solid #86efac !important;
                 border-left: 5px solid #15803d !important;
+                border-right: 2px solid #14532d !important;
+                border-bottom: 2px solid #14532d !important;
                 background: #f0fdf4 !important;
             }
             table.plan-styled-table tbody tr.card-status-pending {
-                border: 1.5px solid #f87171 !important;
+                border-top: 2px solid #fca5a5 !important;
                 border-left: 5px solid #dc2626 !important;
+                border-right: 2px solid #7f1d1d !important;
+                border-bottom: 2px solid #7f1d1d !important;
                 background: #fef2f2 !important;
             }
             table.plan-styled-table tbody tr.card-status-rest {
-                border: 1.5px solid #facc15 !important;
+                border-top: 2px solid #fde68a !important;
                 border-left: 5px solid #d97706 !important;
+                border-right: 2px solid #78350f !important;
+                border-bottom: 2px solid #78350f !important;
                 background: #fffbeb !important;
             }
 
@@ -1641,9 +1814,44 @@
             }
 
             /* Modal adjustments on mobile */
+            .modal-overlay {
+                padding: 6px !important;
+            }
             .modal-card {
-                max-width: 95% !important;
-                padding: 12px !important;
+                max-width: 98% !important;
+                width: 98% !important;
+                padding: 0 !important;
+                margin: auto !important;
+                box-sizing: border-box !important;
+            }
+            .modal-body {
+                padding: 8px !important;
+            }
+            .preview-box {
+                padding: 8px 6px !important;
+                margin-top: 8px !important;
+            }
+            .party-crosscheck-box {
+                flex-direction: column !important;
+                gap: 5px !important;
+                padding: 7px 8px !important;
+            }
+            .party-crosscheck-box .crosscheck-vs {
+                display: none !important;
+            }
+            .preview-grid {
+                grid-template-columns: 1fr 1fr !important;
+                gap: 4px 6px !important;
+            }
+            .preview-item {
+                background: #ffffff !important;
+                border: 1px solid #cbd5e1 !important;
+                border-radius: 4px !important;
+                padding: 4px 6px !important;
+                box-shadow: inset 1px 1px 0px #ffffff, 1px 1px 2px rgba(0,0,0,0.06) !important;
+            }
+            .modal-footer {
+                padding: 8px 10px !important;
             }
             .whatsapp-float {
                 bottom: 14px !important;
@@ -1662,7 +1870,7 @@
             <div class="app-title-group">
                 <div class="app-logo">KS</div>
                 <div>
-                    <h1 class="app-title">Kunal Sahi - Export Plan</h1>
+                    <h1 class="app-title">Export Booking - Export Plan</h1>
                     <div class="app-sub">
                         <span class="live-dot" id="liveDot"></span>
                         <span id="syncStatus">Live Data Sync</span>
@@ -1670,7 +1878,7 @@
                 </div>
             </div>
             <div class="header-actions">
-                <button class="btn-action" id="btnSaveStatusRemarks" onclick="saveAllStatusRemarks()" style="background: #15803d; border-color: #22c55e; font-weight: 800;" title="Save Status Remarks">
+                <button class="btn-action" id="btnSaveStatusRemarks" onclick="saveAllStatusRemarks()" style="background: linear-gradient(180deg, #16a34a 0%, #15803d 100%); border-top: 2px solid #86efac; border-left: 2px solid #86efac; border-right: 2px solid #0f172a; border-bottom: 2px solid #0f172a;" title="Save Status Remarks">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                         <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
                         <polyline points="17 21 17 13 7 13 7 21"></polyline>
@@ -1678,13 +1886,13 @@
                     </svg>
                     Save Status
                 </button>
-                <button class="btn-action" onclick="openDispatchModal()" style="background: #2e7d32; border-color: #4caf50; font-weight: 800;" title="Update Container Dispatch">
+                <button class="btn-action" onclick="openDispatchModal()" style="background: linear-gradient(180deg, #2e7d32 0%, #1e4d2b 100%); border-top: 2px solid #4ade80; border-left: 2px solid #4ade80; border-right: 2px solid #0f172a; border-bottom: 2px solid #0f172a;" title="Update Container Dispatch">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                         <path d="M12 5v14M5 12h14"/>
                     </svg>
                     Update Dispatch
                 </button>
-                <button class="btn-action" onclick="openExcelExportModal()" style="background: #0284c7; border-color: #38bdf8; font-weight: 800;" title="Download Dispatch Excel Report">
+                <button class="btn-action" onclick="openExcelExportModal()" style="background: linear-gradient(180deg, #0284c7 0%, #0369a1 100%); border-top: 2px solid #7dd3fc; border-left: 2px solid #7dd3fc; border-right: 2px solid #0f172a; border-bottom: 2px solid #0f172a;" title="Download Dispatch Excel Report">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                         <polyline points="7 10 12 15 17 10"></polyline>
@@ -1953,7 +2161,7 @@
             </div>
             <div class="modal-body" style="padding: 16px;">
                 <p style="font-size: 0.82rem; color: #475569; margin-bottom: 12px; font-weight: 600;">
-                    Kunal Sahi Export Plan & Dispatch Mapping ki complete details excel (.xlsx) me download karne ke liye Date Range chuniye:
+                    Export Plan & Dispatch Mapping ki complete details excel (.xlsx) me download karne ke liye Date Range chuniye:
                 </p>
 
                 <!-- Quick Date Presets -->
@@ -2461,7 +2669,7 @@
                 SALES_COLLECTION.onSnapshot((snapshot) => {
                     const rawRecords = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
-                    // Filter only Kunal Sahi records
+                    // Filter only records
                     const kunalDocs = rawRecords.filter(r => {
                         const sp = (r.salesPerson || '').trim().toLowerCase();
                         return sp === 'kunal sahi';
@@ -4810,6 +5018,34 @@
             return fallbackRoute || 'PGL TO BARNALA TO HTPL';
         }
 
+        // Helper to separate core container number and container size (e.g. "BMOU6111702/40" -> { containerNo: "BMOU6111702", size: "40" })
+        function parseContainerAndSize(rawCntNo, planCntText) {
+            let containerNo = '-';
+            let size = '-';
+
+            // First detect size from plan container field if available (e.g. "1x40" -> "40", "1x20" -> "20")
+            if (planCntText && planCntText !== '-') {
+                const mPlan = planCntText.match(/(\d{2})/);
+                if (mPlan) size = mPlan[1];
+            }
+
+            if (rawCntNo && rawCntNo !== '-' && rawCntNo !== 'MISSING') {
+                const clean = rawCntNo.trim().toUpperCase();
+                if (clean.includes('/')) {
+                    const parts = clean.split('/');
+                    containerNo = parts[0].trim() || '-';
+                    if (parts[1]) {
+                        const mSize = parts[1].match(/(\d{2})/);
+                        if (mSize) size = mSize[1];
+                    }
+                } else {
+                    containerNo = clean;
+                }
+            }
+
+            return { containerNo, size };
+        }
+
         function getFilteredExcelData() {
             const fromDate = document.getElementById('excelFromDate')?.value || '1970-01-01';
             const toDate = document.getElementById('excelToDate')?.value || '2099-12-31';
@@ -4894,15 +5130,18 @@
                             : (extra.lrNo || '-');
 
                         const finalRoute = extractRouteFromMessage(c.rawMessage, c.route || r.location);
+                        const cntInfo = parseContainerAndSize(c.containerNo, r.cnt);
 
                         excelRows.push({
                             bookingNo: r.booking || '-',
                             customerName: finalCust,
+                            location: r.location || '-',
                             containers: r.cnt || '-',
                             shippingLine: finalLine,
                             stuffingDate: formatStuffingDate(r.displayDate || r.isoDate),
                             status: info.currentStatusVal || '-',
-                            containerNo: c.containerNo || '-',
+                            containerNo: cntInfo.containerNo,
+                            containerSize: cntInfo.size,
                             vehicleNo: finalVeh,
                             driverName: finalDriver,
                             mobileNo: finalMobile,
@@ -4913,14 +5152,17 @@
                         });
                     });
                 } else if (scope === 'all') {
+                    const cntInfo = parseContainerAndSize('-', r.cnt);
                     excelRows.push({
                         bookingNo: r.booking || '-',
                         customerName: r.customer || '-',
+                        location: r.location || '-',
                         containers: r.cnt || '-',
                         shippingLine: r.line || '-',
                         stuffingDate: formatStuffingDate(r.displayDate || r.isoDate),
                         status: info.currentStatusVal || 'Pending',
                         containerNo: '-',
+                        containerSize: cntInfo.size,
                         vehicleNo: '-',
                         driverName: '-',
                         mobileNo: '-',
@@ -4958,15 +5200,18 @@
                                 const finalMobile = (c.mobileNo && c.mobileNo !== '-') ? c.mobileNo : (extra.mobileNo || '-');
                                 const finalLr = (c.lrNo && c.lrNo !== '-') ? c.lrNo : (extra.lrNo || '-');
                                 const finalRoute = extractRouteFromMessage(c.rawMessage, c.route);
+                                const cntInfo = parseContainerAndSize(c.containerNo, '1x40');
 
                                 excelRows.push({
                                     bookingNo: bNo,
                                     customerName: finalCust,
+                                    location: dRecord.location || '-',
                                     containers: '1x40',
                                     shippingLine: finalLine,
                                     stuffingDate: formatStuffingDate(cIso),
                                     status: (dRecord.containers.length >= 1 ? `Dispatch ${dRecord.containers.length} (All Sent)` : `Dispatch ${dRecord.containers.length}`),
-                                    containerNo: c.containerNo || '-',
+                                    containerNo: cntInfo.containerNo,
+                                    containerSize: cntInfo.size,
                                     vehicleNo: finalVeh,
                                     driverName: finalDriver,
                                     mobileNo: finalMobile,
@@ -5019,17 +5264,19 @@
             const toDate = document.getElementById('excelToDate').value || 'All';
 
             // Headers matching user requirements exactly:
-            // Booking No, Customer name, Containers, Shipping Line, Stuffing Date, Status,
-            // then mapping details: VEHICLE NO, DRIVER NAME, MOBILE NO, CONTAINER NO, PARTY NAME, SHIPPING LINE, LR NO, ROUTE
+            // S.NO, BOOKING NO, CUSTOMER NAME, LOCATION, CONTAINERS, SHIPPING LINE, STUFFING DATE, STATUS,
+            // CONTAINER NO, SIZE, VEHICLE NO, DRIVER NAME, MOBILE NO, PARTY NAME, LR NO, ROUTE, MAPPING TIME
             const headers = [
                 "S.NO",
                 "BOOKING NO",
                 "CUSTOMER NAME",
+                "LOCATION",
                 "CONTAINERS",
                 "SHIPPING LINE",
                 "STUFFING DATE",
                 "STATUS",
                 "CONTAINER NO",
+                "SIZE",
                 "VEHICLE NO",
                 "DRIVER NAME",
                 "MOBILE NO",
@@ -5045,11 +5292,13 @@
                     idx + 1,
                     r.bookingNo,
                     r.customerName,
+                    r.location,
                     r.containers,
                     r.shippingLine,
                     r.stuffingDate,
                     r.status,
                     r.containerNo,
+                    r.containerSize,
                     r.vehicleNo,
                     r.driverName,
                     r.mobileNo,
@@ -5098,10 +5347,11 @@
                         let align = "left";
                         let isBold = false;
 
-                        // Center alignment for S.No, Dates, Status, Numbers
-                        if (C === 0 || C === 3 || C === 5 || C === 6 || C === 12 || C === 14) {
+                        // Center alignment for S.No, Containers, Stuffing Date, Status, Size, LR, Map Time
+                        // C: 0=S.No, 1=Booking, 2=Customer, 3=Location, 4=Containers, 5=Shipping Line, 6=Stuffing Date, 7=Status, 8=Container No, 9=Size, 10=Vehicle No, 11=Driver, 12=Mobile, 13=Party, 14=LR, 15=Route, 16=Map Time
+                        if (C === 0 || C === 4 || C === 6 || C === 7 || C === 9 || C === 14 || C === 16) {
                             align = "center";
-                        } else if (C === 1 || C === 7 || C === 8) {
+                        } else if (C === 1 || C === 8 || C === 10) {
                             // Booking, Container, Vehicle: Center + Bold
                             align = "center";
                             isBold = true;
@@ -5119,21 +5369,23 @@
 
             // Column Widths
             ws['!cols'] = [
-                { wch: 6 },  // S.NO
-                { wch: 18 }, // BOOKING NO
-                { wch: 28 }, // CUSTOMER NAME
-                { wch: 12 }, // CONTAINERS
-                { wch: 16 }, // SHIPPING LINE
-                { wch: 14 }, // STUFFING DATE
-                { wch: 22 }, // STATUS
-                { wch: 18 }, // CONTAINER NO
-                { wch: 16 }, // VEHICLE NO
-                { wch: 18 }, // DRIVER NAME
-                { wch: 16 }, // MOBILE NO
-                { wch: 28 }, // PARTY NAME
-                { wch: 12 }, // LR NO
-                { wch: 32 }, // ROUTE (PGL TO BARNALA TO HTPL)
-                { wch: 18 }  // MAPPING TIME
+                { wch: 6 },  // 0: S.NO
+                { wch: 18 }, // 1: BOOKING NO
+                { wch: 28 }, // 2: CUSTOMER NAME
+                { wch: 18 }, // 3: LOCATION
+                { wch: 12 }, // 4: CONTAINERS
+                { wch: 16 }, // 5: SHIPPING LINE
+                { wch: 14 }, // 6: STUFFING DATE
+                { wch: 22 }, // 7: STATUS
+                { wch: 18 }, // 8: CONTAINER NO
+                { wch: 10 }, // 9: SIZE
+                { wch: 16 }, // 10: VEHICLE NO
+                { wch: 18 }, // 11: DRIVER NAME
+                { wch: 16 }, // 12: MOBILE NO
+                { wch: 28 }, // 13: PARTY NAME
+                { wch: 12 }, // 14: LR NO
+                { wch: 32 }, // 15: ROUTE
+                { wch: 18 }  // 16: MAPPING TIME
             ];
 
             // Header row height
@@ -5142,7 +5394,7 @@
             const wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, "Dispatch Report");
 
-            const fileName = `Kunal_Sahi_Dispatch_Report_${fromDate}_to_${toDate}.xlsx`;
+            const fileName = `Dispatch_Report_${fromDate}_to_${toDate}.xlsx`;
             XLSX.writeFile(wb, fileName);
 
             closeExcelExportModal();

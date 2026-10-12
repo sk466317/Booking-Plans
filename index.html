@@ -1912,6 +1912,13 @@
                     </svg>
                     Sync
                 </button>
+                <button class="btn-action" onclick="clearAllOldMappingDataFirebase()" style="background: linear-gradient(180deg, #b91c1c 0%, #7f1d1d 100%); border-top: 2px solid #f87171; border-left: 2px solid #f87171; border-right: 2px solid #450a0a; border-bottom: 2px solid #450a0a;" title="Purana Mapping Data Firebase se Delete karein">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+                    Reset Mappings
+                </button>
             </div>
         </div>
     </header>
@@ -2260,50 +2267,24 @@
         const STATUS_COLLECTION = db.collection('artifacts').doc(appId).collection('public').doc('data').collection('status_remarks');
         const MANUAL_MAP_COLLECTION = db.collection('artifacts').doc(appId).collection('public').doc('data').collection('manual_booking_maps');
 
-        // State
+        // State - 100% Firebase Driven (No local browser caching)
         let allParsedRows = [];
         let filteredRows = [];
         let currentFilter = 'lastday_adv'; // Default: Last Day se advance kitne bhi din ho
         let currentStatusFilter = 'pending'; // Default: 'pending' selected on page load
         let searchQuery = '';
-        const CACHE_KEY = 'kunal_sahi_exact_table_cache_v4';
-        const STATUS_CACHE_KEY = 'kunal_plan_status_data';
-        const DISPATCH_CACHE_KEY = 'kunal_dispatch_data_cache';
-        const MANUAL_MAP_CACHE_KEY = 'kunal_manual_booking_map_cache';
 
         let statusData = {};
-        try {
-            statusData = JSON.parse(localStorage.getItem(STATUS_CACHE_KEY) || '{}');
-        } catch(e) {
-            statusData = {};
-        }
-
         let dispatchData = {};
-        try {
-            dispatchData = JSON.parse(localStorage.getItem(DISPATCH_CACHE_KEY) || '{}');
-        } catch(e) {
-            dispatchData = {};
-        }
-
         let manualBookingMap = {};
-        try {
-            manualBookingMap = JSON.parse(localStorage.getItem(MANUAL_MAP_CACHE_KEY) || '{}');
-        } catch(e) {
-            manualBookingMap = {};
-        }
-
-        let activeBookingForModal = null;
-        let currentParsedDispatchList = [];
-        let statusSyncTimeout = null;
-        let selectedBookings = new Set();
-
-        const STUFFING_DATE_CACHE_KEY = 'kunal_edited_stuffing_dates';
         let editedStuffingDates = {};
+        let selectedBookings = new Set();
+        let activeBookingForModal = null;
+
+        // 100% Cloud Synced: Clear all browser local storage so nothing is cached locally
         try {
-            editedStuffingDates = JSON.parse(localStorage.getItem(STUFFING_DATE_CACHE_KEY) || '{}');
-        } catch(e) {
-            editedStuffingDates = {};
-        }
+            localStorage.clear();
+        } catch(e) {}
 
         let pendingBookingEdits = {};
         let pendingDateEdits = {};
@@ -2397,9 +2378,7 @@
             } else {
                 statusData[key] = val;
             }
-            try {
-                localStorage.setItem(STATUS_CACHE_KEY, JSON.stringify(statusData));
-            } catch(e) {}
+            // 100% Firebase Cloud Synced (No local storage caching)
 
             // Real-time visual feedback on row icon, border color, and stats counter
             if (inputElem) {
@@ -2580,14 +2559,6 @@
                     }
                 }
 
-                // Update caches
-                localStorage.setItem(MANUAL_MAP_CACHE_KEY, JSON.stringify(manualBookingMap));
-                localStorage.setItem(STUFFING_DATE_CACHE_KEY, JSON.stringify(editedStuffingDates));
-                localStorage.setItem(STATUS_CACHE_KEY, JSON.stringify(statusData));
-                try {
-                    localStorage.setItem(CACHE_KEY, JSON.stringify(allParsedRows));
-                } catch(e) {}
-
                 if (opCount > 0) {
                     await batch.commit();
                 }
@@ -2599,7 +2570,7 @@
                 applyFiltersAndRender();
             } catch (err) {
                 console.error("Save status/booking/date error:", err);
-                showToast("Saved locally in browser");
+                showToast("Error saving to Firebase: " + err.message);
                 applyFiltersAndRender();
             } finally {
                 if (saveBtn) {
@@ -2637,25 +2608,74 @@
         }
 
         // ==========================================
+        //  RESET / CLEAR ALL OLD MAPPINGS (FIREBASE OPTION A)
+        // ==========================================
+        async function clearAllOldMappingDataFirebase(skipConfirm = false) {
+            if (!skipConfirm) {
+                const confirmed = confirm("⚠️ KYA AAP SURE HAIN?\n\nFirebase se saara puraana mapping data (Container dispatches & Manual bookings) permanently DELETE ho jaayega aur sabhi rows fresh Pending ho jaayengi.");
+                if (!confirmed) return;
+            }
+
+            const syncStatus = document.getElementById('syncStatus');
+            if (syncStatus) syncStatus.textContent = 'Deleting mappings...';
+
+            try {
+                // 1. Delete all docs in DISPATCH_COLLECTION
+                const dispSnap = await DISPATCH_COLLECTION.get();
+                let dispDeleted = 0;
+                if (!dispSnap.empty) {
+                    const batch1 = db.batch();
+                    dispSnap.docs.forEach(doc => {
+                        batch1.delete(doc.ref);
+                        dispDeleted++;
+                    });
+                    await batch1.commit();
+                }
+
+                // 2. Delete all docs in MANUAL_MAP_COLLECTION
+                const mapSnap = await MANUAL_MAP_COLLECTION.get();
+                let mapDeleted = 0;
+                if (!mapSnap.empty) {
+                    const batch2 = db.batch();
+                    mapSnap.docs.forEach(doc => {
+                        batch2.delete(doc.ref);
+                        mapDeleted++;
+                    });
+                    await batch2.commit();
+                }
+
+                // 3. Clear memory variables
+                dispatchData = {};
+                manualBookingMap = {};
+
+                // 4. Clean local storage completely
+                try { localStorage.clear(); } catch(e) {}
+
+                // 5. Re-parse and update rows
+                applyManualMapsToParsedRows();
+                applyFiltersAndRender();
+
+                const msg = `✅ Purana mapping data Firebase se successfully delete ho gaya! (${dispDeleted} Dispatches, ${mapDeleted} Manual Maps removed).`;
+                console.log(msg);
+                showToast(msg);
+                if (!skipConfirm) alert(msg);
+                return { success: true, dispDeleted, mapDeleted };
+            } catch (err) {
+                console.error("Error clearing mapping data:", err);
+                showToast("❌ Delete failed: " + err.message);
+                if (!skipConfirm) alert("Delete failed: " + err.message);
+                return { success: false, error: err.message };
+            } finally {
+                if (syncStatus) syncStatus.textContent = 'Live Synced';
+            }
+        }
+
+        // ==========================================
         //  INITIALIZATION
         // ==========================================
         document.addEventListener('DOMContentLoaded', () => {
-            loadFromCache();
             fetchLiveData();
         });
-
-        function loadFromCache() {
-            try {
-                const cached = localStorage.getItem(CACHE_KEY);
-                if (cached) {
-                    allParsedRows = JSON.parse(cached);
-                    applyManualMapsToParsedRows();
-                    applyFiltersAndRender();
-                }
-            } catch (e) {
-                console.warn("Cache load failed", e);
-            }
-        }
 
         async function fetchLiveData() {
             const syncStatus = document.getElementById('syncStatus');
@@ -2688,17 +2708,12 @@
                     // Priority sort: Trident -> Jawandsons -> IOL Chemicals -> Others
                     allParsedRows.sort(compareCustomerShipper);
 
-                    // Cache
-                    try {
-                        localStorage.setItem(CACHE_KEY, JSON.stringify(allParsedRows));
-                    } catch (e) {}
-
                     syncStatus.textContent = 'Live Synced';
                     liveDot.style.backgroundColor = '#00e676';
                     applyFiltersAndRender();
                 }, (err) => {
                     console.error("Firestore Listen Error:", err);
-                    syncStatus.textContent = 'Offline (Cached)';
+                    syncStatus.textContent = 'Offline (Reconnecting)';
                     liveDot.style.backgroundColor = '#f59e0b';
                 });
 
@@ -2708,9 +2723,6 @@
                     snapshot.docs.forEach(doc => {
                         dispatchData[doc.id] = doc.data();
                     });
-                    try {
-                        localStorage.setItem(DISPATCH_CACHE_KEY, JSON.stringify(dispatchData));
-                    } catch(e) {}
                     applyFiltersAndRender();
                     // If booking modal is open, refresh it live
                     if (activeBookingForModal && document.getElementById('bookingDetailsModal').classList.contains('active')) {
@@ -2736,11 +2748,6 @@
                             }
                         }
                     });
-                    try {
-                        localStorage.setItem(STATUS_CACHE_KEY, JSON.stringify(statusData));
-                        localStorage.setItem(STUFFING_DATE_CACHE_KEY, JSON.stringify(editedStuffingDates));
-                        localStorage.setItem(MANUAL_MAP_CACHE_KEY, JSON.stringify(manualBookingMap));
-                    } catch(e) {}
                     applyManualMapsToParsedRows();
                     // Only re-render if user is not actively typing inside a status or booking input
                     const activeEl = document.activeElement;
@@ -2763,9 +2770,6 @@
                     for (const k in manualBookingMap) {
                         if (k.startsWith('cust_')) delete manualBookingMap[k];
                     }
-                    try {
-                        localStorage.setItem(MANUAL_MAP_CACHE_KEY, JSON.stringify(manualBookingMap));
-                    } catch(e) {}
                     applyManualMapsToParsedRows();
                     applyFiltersAndRender();
                 }, (err) => {
@@ -2774,7 +2778,7 @@
 
             } catch (err) {
                 console.error("Auth Error:", err);
-                syncStatus.textContent = 'Offline (Cached)';
+                syncStatus.textContent = 'Offline (Reconnecting)';
                 liveDot.style.backgroundColor = '#f59e0b';
             }
         }
@@ -4492,10 +4496,6 @@
                 saveRowStatus(rowKey, statusUpdates[rowKey]);
             }
 
-            try {
-                localStorage.setItem(DISPATCH_CACHE_KEY, JSON.stringify(dispatchData));
-                localStorage.setItem(MANUAL_MAP_CACHE_KEY, JSON.stringify(manualBookingMap));
-            } catch(e) {}
 
             closeDispatchModal();
             applyManualMapsToParsedRows();
@@ -4610,10 +4610,7 @@
                     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
                 }, { merge: true });
 
-                dispatchData[bNo].containers = updated;
-                try {
-                    localStorage.setItem(DISPATCH_CACHE_KEY, JSON.stringify(dispatchData));
-                } catch(e) {}
+
 
                 // Sync Status upon container deletion
                 const bRow = allParsedRows.find(r => (r.booking || '').trim().toUpperCase() === bNo);

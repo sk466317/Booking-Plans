@@ -824,6 +824,20 @@
             display: inline-block;
         }
 
+        .booking-received-tag {
+            font-size: 0.68rem;
+            font-weight: 700;
+            color: #1e3a8a;
+            background: #e0f2fe;
+            border: 1px solid #bae6fd;
+            padding: 1px 6px;
+            border-radius: 4px;
+            margin-left: 4px;
+            display: inline-block;
+            white-space: nowrap;
+            vertical-align: middle;
+        }
+
         .cell-status {
             padding: 4px 6px !important;
             width: 1%;
@@ -1774,6 +1788,13 @@
                 white-space: nowrap !important;
                 padding: 0 4px !important;
             }
+            .booking-received-tag {
+                font-size: 0.56rem !important;
+                font-weight: 700 !important;
+                white-space: nowrap !important;
+                padding: 0 4px !important;
+                margin-left: 2px !important;
+            }
             .booking-time-line {
                 display: flex !important;
                 align-items: center !important;
@@ -2610,6 +2631,23 @@
             const pA = getShipperPriority(a.customer, a.location);
             const pB = getShipperPriority(b.customer, b.location);
             if (pA !== pB) return pA - pB;
+
+            // Requirement: For Trident (Priority 1), sort by latest added (entryDate & timestamp descending) so recent additions appear at the very top!
+            if (pA === 1) {
+                const timeA = a.entryTimeMs || 0;
+                const timeB = b.entryTimeMs || 0;
+                if (timeB !== timeA) return timeB - timeA; // Latest entry timestamp first
+
+                const dateCmp = (b.entryIso || '').localeCompare(a.entryIso || '');
+                if (dateCmp !== 0) return dateCmp;
+
+                // If entry dates are identical, sort by stuffing date (advance first)
+                const stuffCmp = (b.isoDate || '').localeCompare(a.isoDate || '');
+                if (stuffCmp !== 0) return stuffCmp;
+
+                return (a.booking || '').localeCompare(b.booking || '');
+            }
+
             // Within same priority, sort by customer name alphabetically
             const cmp = (a.customer || '').localeCompare(b.customer || '');
             if (cmp !== 0) return cmp;
@@ -2885,6 +2923,20 @@
             return { items, cleanText };
         }
 
+        function formatDateTimeDotted(dateObj) {
+            if (!dateObj || !(dateObj instanceof Date) || isNaN(dateObj.getTime())) return '';
+            const dd = String(dateObj.getDate()).padStart(2, '0');
+            const mm = String(dateObj.getMonth() + 1).padStart(2, '0');
+            const yy = String(dateObj.getFullYear()).slice(-2);
+            let hours = dateObj.getHours();
+            const ampm = hours >= 12 ? 'pm' : 'am';
+            hours = hours % 12;
+            hours = hours ? hours : 12;
+            const hh = String(hours).padStart(2, '0');
+            const min = String(dateObj.getMinutes()).padStart(2, '0');
+            return `${dd}.${mm}.${yy} ${hh}.${min}${ampm}`;
+        }
+
         function parseRecordToBookingRows(record) {
             let rem = ((record.remarks || record.remark || '')).trim();
             if (record.bookingNo && !rem.includes(record.bookingNo)) {
@@ -2893,6 +2945,56 @@
             const sdate = (record.stuffingDate || '').trim();
             const isoDate = normalizeIsoDate(sdate);
             const displayDate = formatStuffingDate(sdate);
+
+            // Entry date & timestamp calculation (when booking was added/received)
+            let entryIso = '';
+            if (record.entryDate) {
+                entryIso = normalizeIsoDate(record.entryDate);
+            }
+            let entryDateObj = null;
+            let entryTimeMs = 0;
+            if (record.timestamp) {
+                try {
+                    const dt = record.timestamp.toDate ? record.timestamp.toDate() : new Date(record.timestamp);
+                    if (!isNaN(dt.getTime())) {
+                        entryDateObj = dt;
+                        entryTimeMs = dt.getTime();
+                        if (!entryIso) entryIso = dt.toISOString().slice(0, 10);
+                    }
+                } catch(e) {}
+            }
+            if (!entryDateObj && record.createdAt) {
+                try {
+                    const dt = record.createdAt.toDate ? record.createdAt.toDate() : new Date(record.createdAt);
+                    if (!isNaN(dt.getTime())) {
+                        entryDateObj = dt;
+                        if (!entryTimeMs) entryTimeMs = dt.getTime();
+                        if (!entryIso) entryIso = dt.toISOString().slice(0, 10);
+                    }
+                } catch(e) {}
+            }
+            if (!entryDateObj && entryIso) {
+                const dt = new Date(entryIso + 'T00:00:00');
+                if (!isNaN(dt.getTime())) {
+                    entryDateObj = dt;
+                    if (!entryTimeMs) entryTimeMs = dt.getTime();
+                }
+            }
+
+            // Format dd.mm.yy hh.mma/pm (e.g. 17.10.26 09.10am)
+            let receivedOnFormatted = '';
+            if (entryDateObj && (record.timestamp || record.createdAt)) {
+                receivedOnFormatted = formatDateTimeDotted(entryDateObj);
+            } else if (entryIso) {
+                const parts = entryIso.split('-');
+                if (parts.length === 3) {
+                    const yy = parts[0].slice(-2);
+                    const mm = parts[1].padStart(2, '0');
+                    const dd = parts[2].padStart(2, '0');
+                    receivedOnFormatted = `${dd}.${mm}.${yy}`;
+                }
+            }
+
             const loc = (record.location || '').trim().toUpperCase() || 'TRIDENT DHAULA';
             const c20 = parseInt(record.container20) || 0;
             const c40 = parseInt(record.container40) || 0;
@@ -3027,6 +3129,9 @@
                         totalContainers: totalUnits,
                         displayDate: displayDate,
                         isoDate: isoDate,
+                        entryIso: entryIso,
+                        entryTimeMs: entryTimeMs,
+                        receivedOnFormatted: receivedOnFormatted,
                         location: loc,
                         line: line,
                         customer: (record.customerName || '').toUpperCase(),
@@ -3102,6 +3207,9 @@
                     totalContainers: totalUnits,
                     displayDate: displayDate,
                     isoDate: isoDate,
+                    entryIso: entryIso,
+                    entryTimeMs: entryTimeMs,
+                    receivedOnFormatted: receivedOnFormatted,
                     location: loc,
                     line: line,
                     customer: (record.customerName || '').toUpperCase(),
@@ -3176,17 +3284,7 @@
         }
 
         function formatMapTime(dateObj) {
-            if (!dateObj || !(dateObj instanceof Date) || isNaN(dateObj.getTime())) return '';
-            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-            const dd = String(dateObj.getDate()).padStart(2, '0');
-            const mmm = months[dateObj.getMonth()];
-            let hours = dateObj.getHours();
-            const ampm = hours >= 12 ? 'pm' : 'am';
-            hours = hours % 12;
-            hours = hours ? hours : 12;
-            const hh = String(hours).padStart(2, '0');
-            const min = String(dateObj.getMinutes()).padStart(2, '0');
-            return `${dd}-${mmm} ${hh}:${min}${ampm}`;
+            return formatDateTimeDotted(dateObj);
         }
 
         // Helper to allocate containers to rows sharing the same booking based on row capacity
@@ -3524,10 +3622,13 @@
                     lineTag = `<span class="booking-line-tag">(${escapeHtml(r.line)})</span>`;
                 }
 
-                // Map Time Tag: 11-Oct 03:24pm
+                // Received On Tag: (Recived on : dd.mm.yy)
+                const receivedTag = r.receivedOnFormatted ? `<span class="booking-received-tag" title="Booking Received On: ${escapeHtml(r.receivedOnFormatted)}">(Recived on : ${escapeHtml(r.receivedOnFormatted)})</span>` : '';
+
+                // Map Time Tag: e.g. (Sent on : 18.10.26 11.05am)
                 const mapTime = getBookingMappedTime(cleanBooking);
                 const mapTimeStr = formatMapTime(mapTime);
-                const mapTimeLine = mapTimeStr ? `<div class="booking-time-line"><span class="booking-map-time">✅ ${mapTimeStr}</span></div>` : '';
+                const mapTimeLine = mapTimeStr ? `<div class="booking-time-line"><span class="booking-map-time">(Sent on : ${mapTimeStr})</span></div>` : '';
 
                 const currentStatusVal = info.currentStatusVal;
                 const defaultStatus = info.defaultStatus;
@@ -3559,6 +3660,7 @@
                                         placeholder="Booking No"
                                         oninput="onBookingInputChange('${escapeHtml(rowKey)}', this.value)"
                                     />
+                                    ${receivedTag}
                                     ${lineTag}
                                 </span>
                             </div>
@@ -3579,6 +3681,7 @@
                                         oninput="onBookingInputChange('${escapeHtml(rowKey)}', this.value)"
                                         title="Type booking number and click Save Status"
                                     />
+                                    ${receivedTag}
                                     ${lineTag}
                                 </span>
                             </div>
@@ -5287,6 +5390,8 @@
 
                         excelRows.push({
                             bookingNo: r.booking || '-',
+                            receivedOn: r.receivedOnFormatted || '-',
+                            sentOn: cMapTime || '-',
                             customerName: finalCust,
                             location: r.location || '-',
                             containers: r.cnt || '-',
@@ -5308,6 +5413,8 @@
                     const cntInfo = parseContainerAndSize('-', r.cnt);
                     excelRows.push({
                         bookingNo: r.booking || '-',
+                        receivedOn: r.receivedOnFormatted || '-',
+                        sentOn: '-',
                         customerName: r.customer || '-',
                         location: r.location || '-',
                         containers: r.cnt || '-',
@@ -5354,9 +5461,12 @@
                                 const finalLr = (c.lrNo && c.lrNo !== '-') ? c.lrNo : (extra.lrNo || '-');
                                 const finalRoute = extractRouteFromMessage(c.rawMessage, c.route);
                                 const cntInfo = parseContainerAndSize(c.containerNo, '1x40');
+                                const cMapTime = formatMapTime(new Date(cTime)).replace(/[()]/g, '');
 
                                 excelRows.push({
                                     bookingNo: bNo,
+                                    receivedOn: '-',
+                                    sentOn: cMapTime || '-',
                                     customerName: finalCust,
                                     location: dRecord.location || '-',
                                     containers: '1x40',
@@ -5371,7 +5481,7 @@
                                     partyName: finalParty,
                                     lrNo: finalLr,
                                     route: finalRoute,
-                                    mapTime: formatMapTime(new Date(cTime)).replace(/[()]/g, '')
+                                    mapTime: cMapTime || '-'
                                 });
                             }
                         }
@@ -5417,11 +5527,13 @@
             const toDate = document.getElementById('excelToDate').value || 'All';
 
             // Headers matching user requirements exactly:
-            // S.NO, BOOKING NO, CUSTOMER NAME, LOCATION, CONTAINERS, SHIPPING LINE, STUFFING DATE, STATUS,
+            // S.NO, BOOKING NO, RECEIVED ON, SENT ON, CUSTOMER NAME, LOCATION, CONTAINERS, SHIPPING LINE, STUFFING DATE, STATUS,
             // CONTAINER NO, SIZE, VEHICLE NO, DRIVER NAME, MOBILE NO, PARTY NAME, LR NO, ROUTE, MAPPING TIME
             const headers = [
                 "S.NO",
                 "BOOKING NO",
+                "RECEIVED ON",
+                "SENT ON",
                 "CUSTOMER NAME",
                 "LOCATION",
                 "CONTAINERS",
@@ -5444,6 +5556,8 @@
                 aoa.push([
                     idx + 1,
                     r.bookingNo,
+                    r.receivedOn || '-',
+                    r.sentOn || '-',
                     r.customerName,
                     r.location,
                     r.containers,
@@ -5500,11 +5614,11 @@
                         let align = "left";
                         let isBold = false;
 
-                        // Center alignment for S.No, Containers, Stuffing Date, Status, Size, LR, Map Time
-                        // C: 0=S.No, 1=Booking, 2=Customer, 3=Location, 4=Containers, 5=Shipping Line, 6=Stuffing Date, 7=Status, 8=Container No, 9=Size, 10=Vehicle No, 11=Driver, 12=Mobile, 13=Party, 14=LR, 15=Route, 16=Map Time
-                        if (C === 0 || C === 4 || C === 6 || C === 7 || C === 9 || C === 14 || C === 16) {
+                        // Center alignment for S.No, Received On, Sent On, Containers, Stuffing Date, Status, Size, LR, Map Time
+                        // C: 0=S.No, 1=Booking, 2=Received On, 3=Sent On, 4=Customer, 5=Location, 6=Containers, 7=Shipping Line, 8=Stuffing Date, 9=Status, 10=Container No, 11=Size, 12=Vehicle No, 13=Driver, 14=Mobile, 15=Party, 16=LR, 17=Route, 18=Map Time
+                        if (C === 0 || C === 2 || C === 3 || C === 6 || C === 8 || C === 9 || C === 11 || C === 16 || C === 18) {
                             align = "center";
-                        } else if (C === 1 || C === 8 || C === 10) {
+                        } else if (C === 1 || C === 10 || C === 12) {
                             // Booking, Container, Vehicle: Center + Bold
                             align = "center";
                             isBold = true;
@@ -5524,21 +5638,23 @@
             ws['!cols'] = [
                 { wch: 6 },  // 0: S.NO
                 { wch: 18 }, // 1: BOOKING NO
-                { wch: 28 }, // 2: CUSTOMER NAME
-                { wch: 18 }, // 3: LOCATION
-                { wch: 12 }, // 4: CONTAINERS
-                { wch: 16 }, // 5: SHIPPING LINE
-                { wch: 14 }, // 6: STUFFING DATE
-                { wch: 22 }, // 7: STATUS
-                { wch: 18 }, // 8: CONTAINER NO
-                { wch: 10 }, // 9: SIZE
-                { wch: 16 }, // 10: VEHICLE NO
-                { wch: 18 }, // 11: DRIVER NAME
-                { wch: 16 }, // 12: MOBILE NO
-                { wch: 28 }, // 13: PARTY NAME
-                { wch: 12 }, // 14: LR NO
-                { wch: 32 }, // 15: ROUTE
-                { wch: 18 }  // 16: MAPPING TIME
+                { wch: 20 }, // 2: RECEIVED ON
+                { wch: 20 }, // 3: SENT ON
+                { wch: 28 }, // 4: CUSTOMER NAME
+                { wch: 18 }, // 5: LOCATION
+                { wch: 12 }, // 6: CONTAINERS
+                { wch: 16 }, // 7: SHIPPING LINE
+                { wch: 14 }, // 8: STUFFING DATE
+                { wch: 22 }, // 9: STATUS
+                { wch: 18 }, // 10: CONTAINER NO
+                { wch: 10 }, // 11: SIZE
+                { wch: 16 }, // 12: VEHICLE NO
+                { wch: 18 }, // 13: DRIVER NAME
+                { wch: 16 }, // 14: MOBILE NO
+                { wch: 28 }, // 15: PARTY NAME
+                { wch: 12 }, // 16: LR NO
+                { wch: 32 }, // 17: ROUTE
+                { wch: 20 }  // 18: MAPPING TIME
             ];
 
             // Header row height
